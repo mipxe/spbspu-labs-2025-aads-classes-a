@@ -21,6 +21,28 @@ BiList * arrayToBiList(int * numbers, int count)
   return head;
 }
 
+void printReverse(BiList * list) {
+  while (list->next != nullptr)
+  {
+    list = list->next;
+  }
+  while (list != nullptr)
+  {
+    std::cout << list->value << " ";
+    list = list->prev;
+  }
+  std::cout << "\n";
+}
+
+void freeBiList(BiList * list)
+{
+  while (list != nullptr)
+  {
+    BiList * next = list->next;
+    delete list;
+    list = next;
+  }
+}
 
 int main()
 {
@@ -32,5 +54,8 @@ int main()
     std::cin >> numbers[count];
     ++count;
   }
+  BiList * list = arrayToBiList(numbers, count);
+  printReverse(list);
+  freeBiList(list);
   delete[] numbers;
 }
