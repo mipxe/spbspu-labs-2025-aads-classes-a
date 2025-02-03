@@ -2,9 +2,9 @@
 
 struct List
 {
-  int value;
-  List * next;
-  List * before;
+	int value;
+	List * next;
+	List * before;
 };
 
 List* convertArrayToList(int* array, int countElementOfArray)
@@ -13,17 +13,16 @@ List* convertArrayToList(int* array, int countElementOfArray)
   head->value = array[0];
   head->next = nullptr;
   head->before = nullptr;
-  
   List* nowHead = head;
-  
+
   for (size_t i = 1; i < countElementOfArray; ++i)
   {
-    List* newNewHead = new List; 
+    List* newNewHead = new List;
     newNewHead->value = array[i];
     newNewHead->next = nullptr;
     newNewHead->before = nowHead;
-    
-    nowHead->next = newNewHead; 
+
+    nowHead->next = newNewHead;
     nowHead = newNewHead;
   }
   return head;
@@ -45,9 +44,9 @@ int main()
     array[i] = input;
     realCount++;
   }
-  
+
   List * arr = convertArrayToList(array, realCount);
-  
+
   for (size_t i = 0; i < realCount; i++)
   {
   // круто вывести 
