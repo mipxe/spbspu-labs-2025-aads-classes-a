@@ -7,25 +7,29 @@ struct BiList {
 
 BiList * convert(int * arr, size_t count)
 {
+  if (count == 0)
+  {
+    return nullptr;
+  }
   BiList * head = new BiList {arr[0], nullptr, nullptr};
-
+  BiList * current = head;
   for (size_t i = 1; i < count; i++)
   {
-    BiList * subhead = new BiList {arr[i], head, nullptr};
-    head->next = subhead;
-    head = subhead;
+    BiList * subhead = new BiList {arr[i], current, nullptr};
+    current->next = subhead;
+    current = subhead;
   }
-  head->next = nullptr;
   return head;
 }
 
 void deleteBiList(BiList * head)
 {
-  while (head != nullptr)
+  BiList * temp = head;
+  while (temp)
   {
-    BiList * temp = head;
-    head = head->next;
+    BiList * nextHead = temp->next;
     delete temp;
+    temp = nextHead;
   }
 }
 
@@ -37,13 +41,18 @@ int main()
   {
     k++;
   }
-  BiList * list = convert(num, k);
-  while (list != nullptr)
+  BiList * listHead = convert(num, k);
+  BiList * current = listHead;
+  while (current && current->next != nullptr)
   {
-    std::cout << list->value << " ";
-    list = list->prev;
+    current = current->next;
+  }
+  while (current != nullptr)
+  {
+    std::cout << current->value << " ";
+    current = current->prev;
   }
   std::cout << '\n';
-  deleteBiList(list);
+  deleteBiList(listHead);
   delete[] num;
 }
