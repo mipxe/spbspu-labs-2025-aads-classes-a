@@ -57,7 +57,16 @@ namespace
 int main()
 {
   size_t counter = 0;
-  int* array = new int[10];
+  int* array = nullptr;
+  try
+  {
+    array = new int[10];
+  }
+  catch (const std::bad_alloc&)
+  {
+    std::cerr << "Not enough memory\n";
+    return 1;
+  }
   while(counter < 10 && std::cin >> array[counter])
   {
     counter++;
