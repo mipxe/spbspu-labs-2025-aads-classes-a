@@ -55,7 +55,7 @@ int main()
 
     std::cin >> arr[size];
   }
-  
+
   BiList* head = nullptr;
   try
   {
@@ -81,7 +81,7 @@ int main()
     subtail = subtail->prev;
   }
   std::cout << '\n';
-  
+
   deleteList(head);
   delete[] arr;
   return 0;
