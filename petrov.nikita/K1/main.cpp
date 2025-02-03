@@ -54,12 +54,14 @@ int main()
     }
     start_of_list = end_of_list;
   }
+  std::cout << "\n";
+  delete start_of_list;
   for (size_t i = 1; i < size; i++)
   {
-    delete start_of_list;
     start_of_list = start_of_list->next;
+    delete start_of_list;
   }
-  std::cout << "\n";
+  delete[] ptr_massive;
 }
 
 BiList * transformArrayToList(int * start, size_t size)
