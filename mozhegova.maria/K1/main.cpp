@@ -47,9 +47,11 @@ int main()
   {
     current = current->next;
   }
-  while (current != nullptr)
+  std::cout << current->value;
+  current = current->prev;
+  for (size_t i = k - 1; i > 0; i--)
   {
-    std::cout << current->value << " ";
+    std::cout << " " << current->value;
     current = current->prev;
   }
   std::cout << '\n';
