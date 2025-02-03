@@ -14,7 +14,7 @@ namespace
       tail = prev_tail;
     }
   }
-  
+
   void printReverseList(std::ostream& out, const tkach::BiList* tail)
   {
     out << tail->value;
