@@ -33,11 +33,11 @@ int main()
 {
   int * num = new int[10];
   size_t k = 0;
-  while (k < 10 && !std::cin.eof())
+  while (k < 10 && std::cin >> num[k] && !std::cin.eof())
   {
-    std::cin >> num[k++];
+    k++;
   }
-  BiList * list = convert(num, 10);
+  BiList * list = convert(num, k);
   while (list != nullptr)
   {
     std::cout << list->value << " ";
@@ -45,4 +45,5 @@ int main()
   }
   std::cout << '\n';
   deleteBiList(list);
+  delete[] num;
 }
