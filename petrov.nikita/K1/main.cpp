@@ -55,11 +55,10 @@ int main()
     start_of_list = end_of_list;
   }
   std::cout << "\n";
-  delete start_of_list;
   start_of_list = start_of_list->next;
-  for (size_t i = 1; i < size; i++)
+  for (size_t i = 0; i < size; i++)
   {
-    delete start_of_list;
+    delete start_of_list->prev;
     start_of_list = start_of_list->next;
   }
   delete[] ptr_massive;
@@ -82,11 +81,10 @@ BiList * transformArrayToList(int * start, size_t size)
   }
   catch(const std::bad_alloc & e)
   {
-    delete head;
     head = head->prev;
     for (size_t i = 1; i < created; i++)
     {
-      delete head;
+      delete head->next;
       head = head->prev;
     }
     throw;
