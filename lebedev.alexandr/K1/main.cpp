@@ -8,17 +8,21 @@ struct BiList
 
 BiList* convert(int* arr, size_t size)
 {
-  BiList* head = nullptr;
+  if (size == 0)
+  {
+    return nullptr;
+  }
+
+  BiList* head = new BiList{ arr[0], nullptr, nullptr };
   BiList* tail = head;
-  head = new BiList{arr[0], nullptr, nullptr};
 
   for (size_t i = 1; i < size; i++)
   {
     BiList* temp = tail;
-    tail = new BiList{arr[i], temp, nullptr};
+    tail = new BiList{ arr[i], temp, nullptr };
     temp->next = tail;
   }
-  return tail;
+  return head;
 }
 
 void deleteList(BiList* head)
@@ -51,15 +55,34 @@ int main()
 
     std::cin >> arr[size];
   }
-  BiList* tail = convert(arr, size);
+  
+  BiList* head = nullptr;
+  try
+  {
+    head = convert(arr, size);
+  }
+  catch (const std::bad_alloc& e)
+  {
+    std::cerr << "Memory allocation error!\n";
+    return 2;
+  }
+
+  BiList* tail = head;
+  while (tail && tail->next)
+  {
+    tail = tail->next;
+  }
 
   std::cout << tail->value;
-  BiList* subtail = tail;
+  BiList* subtail = tail->prev;
   for (size_t i = 0; i < size - 1; i++)
   {
-    subtail = subtail->prev;
     std::cout << ' ' << subtail->value;
+    subtail = subtail->prev;
   }
-  deleteList(subtail);
+  std::cout << '\n';
+  
+  deleteList(head);
+  delete[] arr;
   return 0;
 }
