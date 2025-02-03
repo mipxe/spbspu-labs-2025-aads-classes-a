@@ -5,9 +5,11 @@ namespace
 {
   void printReverseList(std::ostream& out, const tkach::BiList* tail)
   {
+    out << tail->value;
+    tail = tail->prev;
     while(tail != nullptr)
     {
-      out << tail->value << " ";
+      out << " " << tail->value;
       tail = tail->prev;
     }
   }
