@@ -1,8 +1,20 @@
 #include <iostream>
+#include <cstddef>
+#include <stdexcept>
 #include "list.hpp"
 
 namespace
 {
+  void deleteList(tkach::BiList* tail)
+  {
+    while(tail != nullptr)
+    {
+      tkach::BiList* prev_tail = tail->prev;
+      delete tail;
+      tail = prev_tail;
+    }
+  }
+  
   void printReverseList(std::ostream& out, const tkach::BiList* tail)
   {
     out << tail->value;
@@ -25,21 +37,20 @@ namespace
     BiList* tail = head;
     for (size_t i = 1; i < size; ++i)
     {
-      BiList* new_list = new BiList{array[i], tail, nullptr};
+      BiList* new_list = nullptr;
+      try
+      {
+        new_list = new BiList{array[i], tail, nullptr};
+      }
+      catch (const std::bad_alloc&)
+      {
+        deleteList(tail);
+        throw;
+      }
       tail->next = new_list;
       tail = new_list;
     }
     return tail;
-  }
-
-  void deleteList(tkach::BiList* tail)
-  {
-    while(tail != nullptr)
-    {
-      tkach::BiList* prev_tail = tail->prev;
-      delete tail;
-      tail = prev_tail;
-    }
   }
 }
 
@@ -51,7 +62,17 @@ int main()
   {
     counter++;
   }
-  tkach::BiList* tail = createlist(array, counter);
+  tkach::BiList* tail = nullptr;
+  try
+  {
+    tail = createlist(array, counter);
+  }
+  catch (const std::bad_alloc&)
+  {
+    delete[] array;
+    std::cerr << "Not enough memory\n";
+    return 1;
+  }
   printReverseList(std::cout, tail);
   std::cout << "\n";
   delete[] array;
