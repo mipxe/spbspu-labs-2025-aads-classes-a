@@ -15,10 +15,10 @@ BiList * arrayToBiList(int * numbers, int count)
   BiList * current = head;
   for (int i = 1; i < count; ++i)
   {
-    current->next = new BiList{array[i], current, nullptr};
+    current->next = new BiList{numbers[i], current, nullptr};
     current = current->next;
   }
-   return head;
+  return head;
 }
 
 
@@ -32,6 +32,5 @@ int main()
     std::cin >> numbers[count];
     ++count;
   }
-  BiList * list = arrayToBiList(numbers, count);
-  delete numbers[];
+  delete[] numbers;
 }
