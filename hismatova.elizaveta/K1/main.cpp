@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 struct BiList
 {
@@ -34,27 +35,51 @@ BiList* arrayToBiList(int* array, int count)
 }
 void deleteList(BiList* head)
 {
-  BiList* current = head;
-  while (current)
+  while (head)
   {
-    BiList* nextNode = current->next;
-    delete current;
-    current = nextNode;
+    BiList* nextNode = head->next;
+    delete head;
+    head = nextNode;
   }
 }
 int main()
 {
   const int maxi = 10;
-  int numbers[maxi];
+  int* numbers = nullptr;
+  try
+  {
+    numbers = new int[maxi];
+  }
+  catch (const std::bad_alloc&)
+  {
+    std::cerr << "ERROR: out of memory\n";
+    return 1;
+  }
   int count = 0;
   while (count < maxi && std::cin >> numbers[count])
   {
     ++count;
   }
-  BiList* listHead = arrayToBiList(numbers, count);
-  BiList* current = listHead;
-  if (current)
+  if (std::cin.fail() && !std::cin.eof())
   {
+    std::cerr << "ERROR: invalid input\n";
+    delete[] numbers;
+    return 1;
+  }
+  BiList* listHead = nullptr;
+  try
+  {
+    listHead = arrayToBiList(numbers, count);
+  }
+  catch (const std::bad_alloc&)
+  {
+    std::cerr << "ERROR: out of memory\n";
+    delete[] numbers;
+    return 1;
+  }
+  if (listHead)
+  {
+    BiList* current = listHead;
     while (current->next)
     {
       current = current->next;
@@ -67,5 +92,6 @@ int main()
     std::cout << "\n";
   }
   deleteList(listHead);
+  delete[] numbers;
   return 0;
 }
