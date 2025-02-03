@@ -3,7 +3,7 @@
 
 namespace
 {
-  void printReverseList(std::ostream& out, tkach::BiList* tail)
+  void printReverseList(std::ostream& out, const tkach::BiList* tail)
   {
     while(tail != nullptr)
     {
@@ -12,7 +12,7 @@ namespace
     }
   }
 
-  tkach::BiList* createlist(int* array, size_t size)
+  tkach::BiList* createlist(const int* const array, const size_t size)
   {
     using namespace tkach;
     if (size == 0)
@@ -21,15 +21,23 @@ namespace
     }
     BiList* head = new BiList{array[0], nullptr, nullptr};
     BiList* tail = head;
-    BiList* current = head;
     for (size_t i = 1; i < size; ++i)
     {
-      BiList* new_list = new BiList{array[i], current, nullptr};
-      current->next = new_list;
-      current = new_list;
+      BiList* new_list = new BiList{array[i], tail, nullptr};
+      tail->next = new_list;
+      tail = new_list;
     }
-    tail = current;
     return tail;
+  }
+
+  void deleteList(tkach::BiList* tail)
+  {
+    while(tail != nullptr)
+    {
+      tkach::BiList* prev_tail = tail->prev;
+      delete tail;
+      tail = prev_tail;
+    }
   }
 }
 
@@ -37,14 +45,14 @@ int main()
 {
   size_t counter = 0;
   int* array = new int[10];
-  while(!std::cin.eof() && counter <= 9 && !std::cin.fail())
+  while(counter < 10 && std::cin >> array[counter])
   {
-    std::cin >> array[counter];
     counter++;
   }
-  counter--;
-  printReverseList(std::cout, createlist(array, counter));
+  tkach::BiList* tail = createlist(array, counter);
+  printReverseList(std::cout, tail);
   std::cout << "\n";
   delete[] array;
+  deleteList(tail);
   return 0;
 }
