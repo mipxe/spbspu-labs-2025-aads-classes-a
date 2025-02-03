@@ -7,13 +7,13 @@ struct BiList
 };
 
 BiList * toBiList(int * array, size_t size);
-void print(BiList * head);
+void print(std::ostream & out, BiList * head);
 
 int main()
 {
   int * numbers = nullptr;
   size_t count = 0;
-  const size_t size = 10;
+  constexpr size_t size = 10;
   try
   {
     int number = 0;
@@ -28,12 +28,12 @@ int main()
     std::cerr << "Memory error\n";
   }
   BiList * head = toBiList(numbers, count);
-  print(head);
+  print(std::cout, head);
   std::cout << "\n";
   delete[] numbers;
 }
 
-void print(BiList * head)
+void print(std::ostream & out, BiList * head)
 {
   BiList * subhead = head;
   while(subhead->next)
@@ -42,10 +42,14 @@ void print(BiList * head)
   }
   while(subhead)
   {
-    std::cout << subhead->value << " ";
+    out << subhead->value;
     BiList * prev = subhead->prev;
     delete subhead;
     subhead = prev;
+    if (subhead != nullptr)
+    {
+      out << " ";
+    }
   }
 }
 
@@ -67,4 +71,3 @@ BiList * toBiList(int * array, size_t size)
   }
   return head;
 }
-
