@@ -5,7 +5,7 @@ struct BiList {
   BiList * prev, * next;
 };
 
-BiList * arrayToBiList(int * numbers, int count)
+BiList * arrayToBiList(int * numbers, size_t count)
 {
   if (count == 0)
   {
@@ -13,7 +13,7 @@ BiList * arrayToBiList(int * numbers, int count)
   }
   BiList * head = new BiList{numbers[0], nullptr, nullptr};
   BiList * current = head;
-  for (int i = 1; i < count; ++i)
+  for (size_t i = 1; i < count; ++i)
   {
     current->next = new BiList{numbers[i], current, nullptr};
     current = current->next;
@@ -27,9 +27,11 @@ void printReverse(BiList * list)
   {
     list = list->next;
   }
+  std::cout << list->value;
+  list = list->prev;
   while (list != nullptr)
   {
-    std::cout << list->value << " ";
+    std::cout << " " << list->value;
     list = list->prev;
   }
   std::cout << "\n";
