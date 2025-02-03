@@ -18,7 +18,7 @@ BiList* convert(int* arr, size_t size)
     tail = new BiList{arr[i], temp, nullptr};
     temp->next = tail;
   }
-  return head;
+  return tail;
 }
 
 int main()
@@ -39,8 +39,16 @@ int main()
       break;
     }
     
+    std::cin >> arr[size];
   }
+  BiList* tail = convert(arr, size);
 
-  
+  std::cout << tail->value;
+  BiList* subtail = tail->prev;
+  for (size_t i = 0; i < size - 1; i++)
+  {
+    std::cout << ' ' << subtail->value;
+    subtail = subtail->prev;
+  }
   return 0;
 }
