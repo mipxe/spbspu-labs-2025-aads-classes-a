@@ -42,6 +42,7 @@ int main()
     std::cin >> array[counter];
     counter++;
   }
+  counter--;
   printReverseList(std::cout, createlist(array, counter));
   std::cout << "\n";
   delete[] array;
