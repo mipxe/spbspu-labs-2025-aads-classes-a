@@ -86,10 +86,14 @@ int main()
     }
     while (current)
     {
-      std::cout << current->value << " ";
+      std::cout << current->value;
       current = current->prev;
+      if (current != nullptr)
+      {
+        std::cout << " ";
+      }
     }
-    std::cout << "\n";
+    std::cout << "!\n";
   }
   deleteList(listHead);
   delete[] numbers;
