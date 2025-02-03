@@ -30,7 +30,7 @@ void deleteList(Bilist * subhead)
   {
     Bilist * prev = subhead->prev;
     delete subhead;
-    subhead = prev
+    subhead = prev;
   }
 }
 
