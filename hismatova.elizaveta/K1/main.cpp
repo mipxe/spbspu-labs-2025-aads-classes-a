@@ -46,30 +46,20 @@ int main()
 {
   const int maxi = 10;
   int* numbers = nullptr;
+  size_t count = 0;
   try
   {
     numbers = new int[maxi];
+    int temp = 0;
+    while (count < maxi && std::cin >> temp && !std::cin.eof())
+    {
+      numbers[count++] = temp;
+    }
   }
   catch (const std::bad_alloc&)
   {
     std::cerr << "ERROR: out of memory\n";
     return 1;
-  }
-  int count = 0;
-  while (count < maxi)
-  {
-    int temp = 0;
-    if (!(std::cin >> temp))
-    {
-      if (std::cin.eof())
-      {
-        break;
-      }
-      std::cerr << "ERROR: invalid input\n";
-      delete[] numbers;
-      return 1;
-    }
-    numbers[count++] = temp;
   }
   BiList* listHead = nullptr;
   try
