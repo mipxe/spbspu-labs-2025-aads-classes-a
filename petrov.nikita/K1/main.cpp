@@ -32,6 +32,7 @@ int main()
       size--;
     }
   }
+  BiList * start_of_list = nullptr;
   if (size)
   {
     int * start_of_massive = ptr_massive;
@@ -51,6 +52,12 @@ int main()
       end_of_list = end_of_list->prev;
       std::cout << " " << end_of_list->value;
     }
+    start_of_list = end_of_list;
+  }
+  for (size_t i = 1; i < size; i++)
+  {
+    delete start_of_list;
+    start_of_list = start_of_list->next;
   }
   std::cout << "\n";
 }
@@ -72,9 +79,12 @@ BiList * transformArrayToList(int * start, size_t size)
   }
   catch(const std::bad_alloc & e)
   {
-    for (size_t i = 0; i < created; i++)
+    delete head;
+    head = head->prev;
+    for (size_t i = 1; i < created; i++)
     {
       delete head;
+      head = head->prev;
     }
     throw;
   }
