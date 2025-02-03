@@ -56,15 +56,20 @@ int main()
     return 1;
   }
   int count = 0;
-  while (count < maxi && std::cin >> numbers[count])
+  while (count < maxi)
   {
-    ++count;
-  }
-  if (std::cin.fail() && !std::cin.eof())
-  {
-    std::cerr << "ERROR: invalid input\n";
-    delete[] numbers;
-    return 1;
+    int temp = 0;
+    if (!(std::cin >> temp))
+    {
+      if (std::cin.eof())
+      {
+        break;
+      }
+      std::cerr << "ERROR: invalid input\n";
+      delete[] numbers;
+      return 1;
+    }
+    numbers[count++] = temp;
   }
   BiList* listHead = nullptr;
   try
