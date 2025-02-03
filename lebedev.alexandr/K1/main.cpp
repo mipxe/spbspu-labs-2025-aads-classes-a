@@ -21,6 +21,16 @@ BiList* convert(int* arr, size_t size)
   return tail;
 }
 
+void deleteList(BiList* head)
+{
+  while (head != nullptr)
+  {
+    BiList* subHead = head->next;
+    delete head;
+    head = subHead;
+  }
+}
+
 int main()
 {
   int* arr = new int[10];
@@ -44,11 +54,12 @@ int main()
   BiList* tail = convert(arr, size);
 
   std::cout << tail->value;
-  BiList* subtail = tail->prev;
+  BiList* subtail = tail;
   for (size_t i = 0; i < size - 1; i++)
   {
-    std::cout << ' ' << subtail->value;
     subtail = subtail->prev;
+    std::cout << ' ' << subtail->value;
   }
+  deleteList(subtail);
   return 0;
 }
