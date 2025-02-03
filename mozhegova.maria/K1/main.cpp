@@ -7,12 +7,11 @@ struct BiList {
 
 BiList * convert(int * arr, size_t count)
 {
-  BiList * head = new BiList {arr[0], nullptr};
+  BiList * head = new BiList {arr[0], nullptr, nullptr};
 
   for (size_t i = 1; i < count; i++)
   {
-    BiList * subhead = new BiList {arr[i], nullptr};
-    head->prev = head;
+    BiList * subhead = new BiList {arr[i], head, nullptr};
     head->next = subhead;
     head = subhead;
   }
@@ -34,11 +33,9 @@ int main()
 {
   int * num = new int[10];
   size_t k = 0;
-  while (k < 10 || !std::cin.eof())
+  while (k < 10 && !std::cin.eof())
   {
-    int a = 0;
-    std::cin >> a;
-    num[k++] = a;
+    std::cin >> num[k++];
   }
   BiList * list = convert(num, 10);
   while (list != nullptr)
