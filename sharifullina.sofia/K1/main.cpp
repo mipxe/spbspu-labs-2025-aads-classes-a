@@ -1,6 +1,6 @@
 #include <iostream>
 
-struct BiList
+struct Bilist
 {
   int value;
   BiList * prev, * next;
@@ -39,11 +39,11 @@ int main()
   }
   Bilist * tail = createList(array, k);
   delete[] array;
-  for (BiList* node = tail; node; node = node->prev)
+  for (Bilist* node = tail; node; node = node->prev)
   {
     std::cout << node->value << " ";
   }
-  deleteBiList(tail);
+  deleteList(tail);
   return 0;
 }
 
