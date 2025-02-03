@@ -93,7 +93,7 @@ int main()
         std::cout << " ";
       }
     }
-    std::cout << "!\n";
+    std::cout << "\n";
   }
   deleteList(listHead);
   delete[] numbers;
