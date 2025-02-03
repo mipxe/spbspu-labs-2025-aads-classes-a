@@ -21,10 +21,10 @@ int main()
   if (tail)
   {
     std::cout << tail->value;
-  }
-  for (rychkov::BiList* node = tail->prev; node != nullptr; node = node->prev)
-  {
-    std:: cout << ' ' << node->value;
+    for (rychkov::BiList* node = tail->prev; node != nullptr; node = node->prev)
+    {
+      std:: cout << ' ' << node->value;
+    }
   }
   std::cout << '\n';
   rychkov::destroy(tail);

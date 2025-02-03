@@ -2,15 +2,21 @@
 
 rychkov::BiList* rychkov::convert(int* arr, size_t size)
 {
+  if (size == 0)
+    return nullptr;
+
   BiList* tail = new BiList[size];
   for (size_t i = 0; i < size; i++)
   {
     tail[size - i - 1].value = arr[i];
   }
-  for (size_t i = 1; i < size; i++)
+  for (size_t iHead = size - 1; iHead > 0; iHead--)
   {
-    tail[i].next = tail + (i - 1);
-    tail[i + 1].prev = tail + i;
+    tail[iHead].next = tail + (iHead - 1);
+  }
+  for (size_t iTail = 0; iTail < size - 1; iTail++)
+  {
+    tail[iTail].prev = tail + (iTail + 1);
   }
   return tail;
 }
