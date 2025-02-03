@@ -63,13 +63,13 @@ int main()
   int realCount = 0;
   for (size_t i = 0; i < maxCount; i++)
   {
-  	std::cin >> input;
-  	if (std::cin.fail() && !std::cin.eof())
-  	{
+    std::cin >> input;
+    if (std::cin.fail() && !std::cin.eof())
+    {
       break;
-  	}
-  	array[i] = input;
-  	realCount++;
+    }
+    array[i] = input;
+    realCount++;
   }
 
   List* newCoolList = nullptr;
