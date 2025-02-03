@@ -82,7 +82,7 @@ BiList * transformArrayToList(int * start, size_t size)
   catch(const std::bad_alloc & e)
   {
     head = head->prev;
-    for (size_t i = 1; i < created; i++)
+    for (size_t i = 0; i < created; i++)
     {
       delete head->next;
       head = head->prev;
