@@ -22,13 +22,11 @@ int main()
     return 1;
   }
   size_t size = 0;
-  while (size != 10 && !std::cin.eof())
+  while (size != 10 && !std::cin.eof() && std::cin)
   {
     std::cin >> ptr_massive[size++];
     if (!std::cin)
     {
-      std::cin.clear();
-      std::cin.ignore(1);
       size--;
     }
   }
