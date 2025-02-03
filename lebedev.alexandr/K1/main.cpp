@@ -26,7 +26,7 @@ int main()
   int* arr = new int[10];
   size_t size = 0;
   std::cin >> arr[0];
-  
+
   while (!std::cin.eof())
   {
     if (std::cin.fail())
@@ -38,7 +38,7 @@ int main()
     {
       break;
     }
-    
+
     std::cin >> arr[size];
   }
   BiList* tail = convert(arr, size);
