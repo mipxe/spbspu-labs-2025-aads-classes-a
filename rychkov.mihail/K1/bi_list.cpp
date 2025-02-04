@@ -1,9 +1,11 @@
 #include "bi_list.hpp"
 
-rychkov::BiList* rychkov::convert(int* arr, size_t size)
+rychkov::BiList* rychkov::convert(const int* arr, size_t size)
 {
   if (size == 0)
+  {
     return nullptr;
+  }
 
   BiList* tail = new BiList[size];
   for (size_t i = 0; i < size; i++)

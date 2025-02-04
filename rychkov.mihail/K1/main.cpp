@@ -5,14 +5,15 @@ int main()
 {
   size_t nEntered = 0;
   constexpr size_t maxEntered = 10;
-  int arr[maxEntered] = {};
-  for (; (nEntered < maxEntered) && (std::cin >> arr[nEntered]); nEntered++)
-  {}
-
   rychkov::BiList* tail = nullptr;
+
   try
   {
+    int* arr = new int[maxEntered];
+    for (; (nEntered < maxEntered) && (std::cin >> arr[nEntered]); nEntered++)
+    {}
     tail = rychkov::convert(arr, nEntered);
+    delete[] arr;
   }
   catch (...)
   {

@@ -10,7 +10,7 @@ namespace rychkov
     BiList* prev = nullptr;
     BiList* next = nullptr;
   };
-  BiList* convert(int* arr, size_t size);
+  BiList* convert(const int* arr, size_t size);
   void destroy(BiList* tail);
 }
 
