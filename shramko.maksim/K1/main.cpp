@@ -6,6 +6,18 @@ struct BiList
   BiList * prev, * next;
 };
 
+
+void rmList(BiList* head)
+{
+  while (head == nullptr)
+  {
+    BiList* subHead = head->next;
+    delete head;
+    head = subHead;
+  }
+}
+
+
 int main()
 {
   try
