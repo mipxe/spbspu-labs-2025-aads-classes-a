@@ -8,10 +8,9 @@ struct BiList
 
 int main()
 {
-  int* l = nullptr;
   try
   {
-    l = new int[10];
+    int* l = new int[10];
   }
   catch (const std::bad_alloc & e)
   {
@@ -20,14 +19,53 @@ int main()
     return 1;
   }
 
-  int n = 0;
-  for (size_t i = 0; i < 10; i++)
+  size_t n = 0;
+  while (!std::cin.eof())
   {
-    std::cin >> n;
+    if (std::cin.fail())
+    {
+      break;
+    }
+
+    size++;
+
+    if (n == 10)
+    {
+      break;
+    }
+
+    std::cin >> l[n];
   }
 
-  for (size_t j = 0; j < 10; j++)
+  BiList* head = nullptr;
+
+  try
   {
-    std::cout << l[j];
+    head = transform(l, n);
   }
+  catch (const std::bad_alloc & e)
+  {
+    delete[] l;
+    std::cerr << "Mem trsfm err!\n";
+    return 1;
+  }
+
+  BiList* tail = head;
+
+  while (tail && tail->next)
+  {
+    tail = tail->next;
+  }
+
+  std::cout << tail->value;
+  BiList* subTail = tail->prerv;
+  for (size_t i = 0; i < n - 1; i++)
+  {
+    std::cout << " " << subTail->value;
+    subTail = subTail->prev;
+  }
+  std::cout << "\n";
+
+  rmList(head);
+  delete[] l;
 }
