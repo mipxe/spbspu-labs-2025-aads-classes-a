@@ -1,55 +1,52 @@
-#include <iostream>
 #include "bilist.hpp"
-
+#include <iostream>
 
 BiList* toDoubleLinkedList(int* array, size_t res)
 {
-  BiList* head = new BiList{ array[0],nullptr, nullptr };
-  BiList* tail = head;
-  BiList* temporary = head;
-  for (size_t i = 1; i < res; i++)
-  {
-    temporary->next = new BiList{ array[i], temporary, nullptr };
-    temporary = temporary->next;
-    tail = temporary;
-  }
-  return tail;
+	BiList* head = new BiList{ array[0],nullptr, nullptr };
+	BiList* tail = head;
+	BiList* temporary = head;
+	for (size_t i = 1; i < res; i++)
+	{
+		temporary->next = new BiList{ array[i], temporary, nullptr };
+		tail = temporary->next;
+		temporary = temporary->next;
+	}
+	return tail;
 }
 
-void toDeleteList(BiList* head)
+void deleteList(BiList* tail)
 {
-  BiList* current = head;
-  while(current != nullptr)
-  {
-    BiList* next = current->next;
-    delete current;
-    current = next;
-  }
+	while (tail != nullptr)
+	{
+		BiList* prev = tail->prev;
+		delete tail;
+		tail = prev;
+	}
 }
 
 int main()
 {
-  size_t res = 0;
-  int* array = new int[10];
-  int a = 0;
-  while (std::cin >> a && !std::cin.eof())
-  {
-    array[res++] = a;
-    if (res >= 10)
-    {
-      break;
-    }
-  }
-  BiList* buf = toDoubleLinkedList(array, res);
-  BiList* temporary = buf;
-  int b = 0;
-  for (size_t i = 0; i < res; i++)
-  {
-    b = temporary->value;
-    temporary = temporary->prev;
-    std::cout << b << ' ';
-  }
-  delete[] array;
-  toDeleteList(buf);
+	size_t res = 0;
+	int* array = new int[10000];
+	int a = 0;
+	while (std::cin >> a && !std::cin.eof())
+	{
+		array[res++] = a;
+		if (res >= 10)
+		{
+			break;
+		}
+	}
+	BiList* buf = toDoubleLinkedList(array, res);
+	BiList* temporary = buf;
+	int b = 0;
+	for (size_t i = 0; i < res; i++)
+	{
+		int b = temporary->value;
+		std::cout << b << ' ';
+		temporary = temporary->prev;
+	}
+	delete[] array;
+	deleteList(buf);
 }
-
