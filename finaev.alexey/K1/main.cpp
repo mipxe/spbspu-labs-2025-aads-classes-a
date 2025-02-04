@@ -8,7 +8,7 @@ int main()
   {
     arr = new int[10];
   }
-  catch (std::bad_alloc& e)
+  catch (const std::bad_alloc&)
   {
     std::cerr << "Bad alloc!\n";
     return 1;
@@ -42,7 +42,7 @@ int main()
   {
     p = finaev::convertToList(arr, count);
   }
-  catch (std::bad_alloc& e)
+  catch (const std::bad_alloc&)
   {
     std::cerr << "Bad alloc!\n";
     return 1;

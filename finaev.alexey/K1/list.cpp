@@ -8,7 +8,7 @@ finaev::BiList* finaev::convertToList(const int* arr, const size_t count)
   {
     head = new BiList{ arr[0], nullptr, nullptr };
   }
-  catch (std::bad_alloc&)
+  catch (const std::bad_alloc&)
   {
     throw;
   }
@@ -19,7 +19,7 @@ finaev::BiList* finaev::convertToList(const int* arr, const size_t count)
     {
       p->next = new BiList{ arr[i], p, nullptr };
     }
-    catch (std::bad_alloc&)
+    catch (const std::bad_alloc&)
     {
       deleteList(p);
       throw;
