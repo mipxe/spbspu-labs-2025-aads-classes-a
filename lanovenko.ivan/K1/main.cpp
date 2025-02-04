@@ -28,7 +28,7 @@ void deleteList(BiList* tail)
 int main()
 {
   size_t res = 0;
-  int* array = new int[10000];
+  int* array = new int[10];
   int a = 0;
   while (std::cin >> a && !std::cin.eof())
   {
@@ -50,4 +50,5 @@ int main()
   }
   delete[] array;
   deleteList(buf);
+  return 0;
 }
