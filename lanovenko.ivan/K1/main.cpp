@@ -40,12 +40,13 @@ int main()
   }
   BiList* buf = toDoubleLinkedList(array, res);
   BiList* temporary = buf;
-  int b = 0;
-  for (size_t i = 0; i < res; i++)
+  int b = temporary->value;
+  std::cout << b;
+  for (size_t i = 1; i < res; i++)
   {
-    b = temporary->value;
-    std::cout << b << ' ';
     temporary = temporary->prev;
+    b = temporary->value;
+    std::cout << ' ' << b;
   }
   delete[] array;
   deleteList(buf);
