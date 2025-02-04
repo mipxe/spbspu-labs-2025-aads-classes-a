@@ -3,6 +3,10 @@
 
 BiList* toDoubleLinkedList(int* array, size_t res)
 {
+  if (res == 0)
+  {
+    return nullptr;
+  }
   BiList* head = new BiList{ array[0],nullptr, nullptr };
   BiList* tail = head;
   BiList* temporary = head;
@@ -39,6 +43,10 @@ int main()
     }
   }
   BiList* buf = toDoubleLinkedList(array, res);
+  if (buf == nullptr)
+  {
+    throw;
+  }
   BiList* temporary = buf;
   int b = temporary->value;
   std::cout << b;
