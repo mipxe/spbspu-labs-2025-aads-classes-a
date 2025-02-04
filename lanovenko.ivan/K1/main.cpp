@@ -43,7 +43,7 @@ int main()
   int b = 0;
   for (size_t i = 0; i < res; i++)
   {
-    int b = temporary->value;
+    b = temporary->value;
     std::cout << b << ' ';
     temporary = temporary->prev;
   }
