@@ -5,6 +5,17 @@ struct BiList {
   BiList * prev, * next;
 };
 
+void deleteBiList(BiList * head)
+{
+  BiList * temp = head;
+  while (temp)
+  {
+    BiList * nextHead = temp->next;
+    delete temp;
+    temp = nextHead;
+  }
+}
+
 BiList * convert(const int * const arr, size_t count)
 {
   if (count == 0)
@@ -29,17 +40,6 @@ BiList * convert(const int * const arr, size_t count)
     current = subhead;
   }
   return head;
-}
-
-void deleteBiList(BiList * head)
-{
-  BiList * temp = head;
-  while (temp)
-  {
-    BiList * nextHead = temp->next;
-    delete temp;
-    temp = nextHead;
-  }
 }
 
 int main()
