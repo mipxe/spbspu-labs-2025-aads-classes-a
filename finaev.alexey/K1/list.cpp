@@ -1,7 +1,7 @@
 #include "list.hpp"
 #include <iostream>
 
-finaev::BiList* finaev::convertToList(int* arr, int count)
+finaev::BiList* finaev::convertToList(const int* arr, const size_t count)
 {
   BiList* head = nullptr;
   try
@@ -10,19 +10,18 @@ finaev::BiList* finaev::convertToList(int* arr, int count)
   }
   catch (std::bad_alloc&)
   {
-    std::cerr << "Bad alloc!\n";
     throw;
   }
   BiList* p = head;
-  for (int i = 1; i < count; ++i)
+  for (size_t i = 1; i < count; ++i)
   {
     try
     {
       p->next = new BiList{ arr[i], p, nullptr };
     }
-    catch (std::bad_alloc& e)
+    catch (std::bad_alloc&)
     {
-      std::cerr << "Bad alloc!\n";
+      deleteList(p);
       throw;
     }
     p = p->next;
@@ -42,9 +41,11 @@ void finaev::deleteList(finaev::BiList* p)
 
 void finaev::printList(std::ostream& out, const finaev::BiList* p)
 {
+  out << p->value;
+  p = p->prev;
   while (p != nullptr)
   {
-    out << p->value << " ";
+    out << " " << p->value;
     p = p->prev;
   }
 }

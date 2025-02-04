@@ -14,7 +14,7 @@ int main()
     return 1;
   }
   int a = 0;
-  int count = 0;
+  size_t count = 0;
   while (!std::cin.eof())
   {
     if (count == 10)
@@ -34,6 +34,7 @@ int main()
   if (count == 0)
   {
     std::cerr << "uncorrect str!\n";
+    delete[] arr;
     return 1;
   }
   finaev::BiList* p = nullptr;

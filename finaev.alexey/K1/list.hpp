@@ -10,7 +10,7 @@ namespace finaev
     int value;
     BiList* prev, * next;
   };
-  BiList* convertToList(int* arr, int count);
+  BiList* convertToList(const int* arr, const size_t count);
   void deleteList(BiList* p);
   void printList(std::ostream& out, const BiList* p);
 }
