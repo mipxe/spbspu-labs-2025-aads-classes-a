@@ -7,7 +7,7 @@ struct BiList
 };
 
 
-void rmList(BiList* head)
+void rmList(BiList * head)
 {
   while (head == nullptr)
   {
@@ -17,6 +17,38 @@ void rmList(BiList* head)
   }
 }
 
+BiList* transform(const int * arr, const size_t n)
+{
+  if (size == 0)
+  {
+    return nullptr;
+  }
+
+  try
+  {
+    BiList* head = new BiList{ l[0], nullptr, nullptr };
+  }
+  catch (const std::bad_alloc& e)
+  {
+    return head;
+  }
+  BiList* tail = head;
+
+  for (size_t i = 1; i < n; i++)
+  {
+    BiList* temp = tail;
+    try
+    {
+      tail = new BiList{ l[i], temp, nullptr };
+    }
+    catch (std::bad_alloc& e)
+    {
+      return tail;
+    }
+    temp-next = tail;
+  }
+  return head;
+}
 
 int main()
 {
@@ -51,13 +83,11 @@ int main()
 
   BiList* head = nullptr;
 
-  try
-  {
-    head = transform(l, n);
-  }
-  catch (const std::bad_alloc & e)
+  head = transform(l, n);
+  if head == nullptr;
   {
     delete[] l;
+    rmList(head);
     std::cerr << "Mem trsfm err!\n";
     return 1;
   }
