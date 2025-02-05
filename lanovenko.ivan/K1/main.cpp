@@ -56,6 +56,7 @@ int main()
     b = temporary->value;
     std::cout << " " << b;
   }
+  std::cout << '\n';
   delete[] array;
   deleteList(buf);
   return 0;
