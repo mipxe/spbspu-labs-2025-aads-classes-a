@@ -7,14 +7,28 @@ BiList* toDoubleLinkedList(int* array, size_t res)
   {
     return nullptr;
   }
-  BiList* head = new BiList{ array[0],nullptr, nullptr };
-  BiList* tail = head;
-  BiList* temporary = head;
-  for (size_t i = 1; i < res; i++)
+  BiList* head = nullptr;
+  BiList* tail = nullptr;
+  try
   {
-    temporary->next = new BiList{ array[i], temporary, nullptr };
-    tail = temporary->next;
-    temporary = temporary->next;
+    head = new BiList{ array[0], nullptr, nullptr };
+    tail = head;
+    BiList* temporary = head;
+    for (size_t i = 1; i < res; i++)
+    {
+      temporary->next = new BiList{ array[i], temporary, nullptr };
+      tail = temporary->next;
+      temporary = temporary->next;
+    }
+  }
+  catch (const std::bad_alloc& e)
+  {
+    while(head != nullptr)
+    {
+      BiList* temporary = head;
+      delete temporary;
+      head = head->next;
+    }
   }
   return tail;
 }
