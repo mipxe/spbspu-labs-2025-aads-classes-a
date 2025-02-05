@@ -54,7 +54,7 @@ int main()
   {
     temporary = temporary->prev;
     b = temporary->value;
-    std::cout << ' ' << b;
+    std::cout << " " << b;
   }
   delete[] array;
   deleteList(buf);
