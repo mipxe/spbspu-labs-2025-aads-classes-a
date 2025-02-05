@@ -1,6 +1,16 @@
 #include "bilist.hpp"
 #include <iostream>
 
+void deleteList(BiList* tail)
+{
+  while (tail != nullptr)
+  {
+    BiList* temporary = tail;
+    tail = tail->prev;
+    delete temporary;
+  }
+}
+
 BiList* toDoubleLinkedList(int* array, size_t res)
 {
   if (res == 0)
@@ -23,24 +33,10 @@ BiList* toDoubleLinkedList(int* array, size_t res)
   }
   catch (const std::bad_alloc& e)
   {
-    while(head != nullptr)
-    {
-      BiList* temporary = head;
-      head = head->next;
-      delete temporary;
-    }
+    deleteList(tail);
+    throw;
   }
   return tail;
-}
-
-void deleteList(BiList* tail)
-{
-  while (tail != nullptr)
-  {
-    BiList* prev = tail->prev;
-    delete tail;
-    tail = prev;
-  }
 }
 
 int main()
@@ -56,12 +52,21 @@ int main()
       break;
     }
   }
-  BiList* buf = toDoubleLinkedList(array, res);
-  if (buf == nullptr)
+  BiList* buf = nullptr;
+  try
   {
+    buf = toDoubleLinkedList(array,res);
+  }
+  catch (const std::bad_alloc& e)
+  {
+    deleteList(buf);
     throw;
   }
   BiList* temporary = buf;
+  if (temporary == nullptr)
+  {
+    throw;
+  }
   int b = temporary->value;
   std::cout << b;
   for (size_t i = 1; i < res; i++)
