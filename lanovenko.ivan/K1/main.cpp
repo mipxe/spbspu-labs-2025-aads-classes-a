@@ -26,8 +26,8 @@ BiList* toDoubleLinkedList(int* array, size_t res)
     while(head != nullptr)
     {
       BiList* temporary = head;
-      delete temporary;
       head = head->next;
+      delete temporary;
     }
   }
   return tail;
