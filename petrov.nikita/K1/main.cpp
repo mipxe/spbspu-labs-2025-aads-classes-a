@@ -6,7 +6,8 @@ struct BiList
   BiList * prev, * next;
 };
 
-BiList * transformArrayToList(int * start, size_t size);
+BiList * transformArrayToList(const int * start, size_t size);
+void clearListFromTail(BiList * tail, size_t size_of_list);
 
 int main()
 {
@@ -30,7 +31,7 @@ int main()
       size--;
     }
   }
-  BiList * start_of_list = nullptr;
+  BiList * tail = nullptr;
   if (size)
   {
     int * start_of_massive = ptr_massive;
@@ -38,31 +39,29 @@ int main()
     try
     {
       end_of_list = transformArrayToList(start_of_massive, size);
+      tail = end_of_list;
     }
     catch(const std::bad_alloc & e)
     {
+      delete[] ptr_massive;
       std::cerr << "ERROR: Out of memory\n";
       return 1;
     }
     std::cout << end_of_list->value;
-    for (size_t i = 1; i < size; i++)
+    size_t i = 1;
+    while (i != size)
     {
       end_of_list = end_of_list->prev;
       std::cout << " " << end_of_list->value;
+      i++;
     }
-    start_of_list = end_of_list;
   }
   std::cout << "\n";
-  for (size_t i = 1; i < size; i++)
-  {
-    start_of_list = start_of_list->next;
-    delete start_of_list->prev;
-  }
-  delete start_of_list;
+  clearListFromTail(tail, size);
   delete[] ptr_massive;
 }
 
-BiList * transformArrayToList(int * start, size_t size)
+BiList * transformArrayToList(const int * start, size_t size)
 {
   BiList * head = nullptr;
   size_t created = 0;
@@ -70,22 +69,28 @@ BiList * transformArrayToList(int * start, size_t size)
   created++;
   try
   {
-    for (size_t i = 1; i < size; i++)
+    while (created != size)
     {
-      head->next = new BiList{ start[i], head, nullptr };
+      head->next = new BiList{ start[created++], head, nullptr };
       head = head->next;
-      created++;
     }
   }
   catch(const std::bad_alloc & e)
   {
-    for (size_t i = 1; i < created; i++)
-    {
-      head = head->prev;
-      delete head->next;
-    }
-    delete head;
+    clearListFromTail(head, created);
     throw;
   }
   return head;
+}
+
+void clearListFromTail(BiList * tail, size_t size_of_list)
+{
+  size_t i = 1;
+  while (i != size_of_list)
+  {
+    tail = tail->prev;
+    delete tail->next;
+    i++;
+  }
+  delete tail;
 }
