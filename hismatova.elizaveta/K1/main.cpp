@@ -7,7 +7,7 @@ struct BiList
   BiList* prev;
   BiList* next;
 };
-BiList* arrayToBiList(int* array, int count)
+BiList* arrayToBiList(const int* array, int count)
 {
   if (count == 0)
   {
@@ -17,10 +17,7 @@ BiList* arrayToBiList(int* array, int count)
   BiList* tail = nullptr;
   for (int i = 0; i < count; ++i)
   {
-    BiList* newNode = new BiList();
-    newNode->value = array[i];
-    newNode->prev = tail;
-    newNode->next = nullptr;
+    BiList* newNode = new BiList{array[i], tail, nullptr};
     if (tail)
     {
       tail->next = newNode;
@@ -79,14 +76,14 @@ int main()
     {
       current = current->next;
     }
-    while (current)
+    while (tail)
     {
-      std::cout << current->value;
-      current = current->prev;
-      if (current != nullptr)
+      std::cout << tail->value;
+      if (tail->prev)
       {
         std::cout << " ";
       }
+      tail = tail->prev;
     }
     std::cout << "\n";
   }
