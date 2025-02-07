@@ -27,21 +27,23 @@ BiList* convertToList(const int* arr, const size_t count)
   {
     throw;
   }
-  BiList* p = head;
+  BiList* tail = head;
   for (size_t i = 1; i < count; ++i)
   {
+    BiList* new_element = nullptr;
     try
     {
-      p->next = new BiList{ arr[i], p, nullptr };
+      new_element = new BiList{ arr[i], tail, nullptr };
     }
     catch (const std::bad_alloc&)
     {
-      deleteList(p);
+      deleteList(tail);
       throw;
     }
-    p = p->next;
+    tail->next = new_element;
+    tail = new_element;
   }
-  return p;
+  return tail;
 }
 
 void printList(std::ostream& out, const BiList* p)
