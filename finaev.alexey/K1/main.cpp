@@ -6,13 +6,13 @@ struct BiList
   BiList* prev, * next;
 };
 
-void deleteList(BiList* p)
+void deleteList(BiList* tail)
 {
-  while (p != nullptr)
+  while (tail != nullptr)
   {
-    BiList* back = p->prev;
-    delete p;
-    p = back;
+    BiList* back = tail->prev;
+    delete tail;
+    tail = back;
   }
 }
 
@@ -46,14 +46,14 @@ BiList* convertToList(const int* arr, const size_t count)
   return tail;
 }
 
-void printList(std::ostream& out, const BiList* p)
+void printReverseList(std::ostream& out, const BiList* tail)
 {
-  out << p->value;
-  p = p->prev;
-  while (p != nullptr)
+  out << tail->value;
+  tail = tail->prev;
+  while (tail != nullptr)
   {
-    out << " " << p->value;
-    p = p->prev;
+    out << " " << tail->value;
+    tail = tail->prev;
   }
 }
 
@@ -93,18 +93,18 @@ int main()
     delete[] arr;
     return 1;
   }
-  BiList* p = nullptr;
+  BiList* list_tail = nullptr;
   try
   {
-    p = convertToList(arr, count);
+    list_tail = convertToList(arr, count);
   }
   catch (const std::bad_alloc&)
   {
     std::cerr << "Bad alloc!\n";
     return 1;
   }
-  printList(std::cout, p);
+  printReverseList(std::cout, list_tail);
   std::cout << "\n";
-  deleteList(p);
+  deleteList(list_tail);
   delete[] arr;
 }
