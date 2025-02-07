@@ -71,7 +71,7 @@ int main()
   }
   catch (const std::bad_alloc&)
   {
-    std::cerr << "out of memory" << std::endl;
+    std::cerr << "out of memory\n";
     delete[] array;
     return 1;
   }
