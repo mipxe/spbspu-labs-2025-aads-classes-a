@@ -1,5 +1,59 @@
 #include <iostream>
-#include "list.hpp"
+
+struct BiList
+{
+  int value;
+  BiList* prev, * next;
+};
+
+void deleteList(BiList* p)
+{
+  while (p != nullptr)
+  {
+    BiList* back = p->prev;
+    delete p;
+    p = back;
+  }
+}
+
+BiList* convertToList(const int* arr, const size_t count)
+{
+  BiList* head = nullptr;
+  try
+  {
+    head = new BiList{ arr[0], nullptr, nullptr };
+  }
+  catch (const std::bad_alloc&)
+  {
+    throw;
+  }
+  BiList* p = head;
+  for (size_t i = 1; i < count; ++i)
+  {
+    try
+    {
+      p->next = new BiList{ arr[i], p, nullptr };
+    }
+    catch (const std::bad_alloc&)
+    {
+      deleteList(p);
+      throw;
+    }
+    p = p->next;
+  }
+  return p;
+}
+
+void printList(std::ostream& out, const BiList* p)
+{
+  out << p->value;
+  p = p->prev;
+  while (p != nullptr)
+  {
+    out << " " << p->value;
+    p = p->prev;
+  }
+}
 
 int main()
 {
@@ -37,18 +91,18 @@ int main()
     delete[] arr;
     return 1;
   }
-  finaev::BiList* p = nullptr;
+  BiList* p = nullptr;
   try
   {
-    p = finaev::convertToList(arr, count);
+    p = convertToList(arr, count);
   }
   catch (const std::bad_alloc&)
   {
     std::cerr << "Bad alloc!\n";
     return 1;
   }
-  finaev::printList(std::cout, p);
+  printList(std::cout, p);
   std::cout << "\n";
-  finaev::deleteList(p);
+  deleteList(p);
   delete[] arr;
 }
