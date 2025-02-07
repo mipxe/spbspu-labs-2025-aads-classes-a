@@ -8,6 +8,7 @@ struct BiList
 
 BiList * toBiList(int * array, size_t size);
 void print(std::ostream & out, BiList * head);
+void clearBiList(BiList * head);
 
 int main()
 {
@@ -24,7 +25,6 @@ int main()
     }
     BiList * head = toBiList(numbers, count);
     print(std::cout, head);
-    clearBiList(head);
   }
   catch (const std::bad_alloc &)
   {
