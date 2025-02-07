@@ -24,15 +24,17 @@ int main()
     }
     BiList * head = toBiList(numbers, count);
     print(std::cout, head);
+    clearBiList(head);
   }
   catch (const std::bad_alloc &)
   {
+    delete[] numbers;
     std::cerr << "Memory error\n";
+    return 1;
   }
   std::cout << "\n";
   delete[] numbers;
 }
-
 void print(std::ostream & out, BiList * head)
 {
   BiList * subhead = head;
@@ -52,7 +54,6 @@ void print(std::ostream & out, BiList * head)
     }
   }
 }
-
 BiList * toBiList(int * array, size_t size)
 {
   BiList * head = new BiList{array[0], nullptr, nullptr};
@@ -66,10 +67,21 @@ BiList * toBiList(int * array, size_t size)
     }
     catch (const std::bad_alloc &)
     {
+      clearBiList(head);
       throw;
     }
     subhead->next = node;
     subhead = node;
   }
   return head;
+}
+void clearBiList(BiList * head)
+{
+  BiList * subhead = head;
+  while (subhead != nullptr)
+  {
+    BiList * next = subhead->next;
+    delete subhead;
+    subhead = next;
+  }
 }
