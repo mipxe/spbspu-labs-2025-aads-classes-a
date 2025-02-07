@@ -3,7 +3,7 @@
 struct BiList
 {
   int value;
-  BiList* prev, * next;
+  BiList * prev, * next;
 };
 
 void deleteList(BiList* tail)
