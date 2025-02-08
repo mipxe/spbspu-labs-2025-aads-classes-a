@@ -6,25 +6,6 @@ struct BiList
   BiList * prev, * next;
 };
 
-BiList* convert(int* arr, size_t size)
-{
-  if (size == 0)
-  {
-    return nullptr;
-  }
-
-  BiList* head = new BiList{ arr[0], nullptr, nullptr };
-  BiList* tail = head;
-
-  for (size_t i = 1; i < size; i++)
-  {
-    BiList* temp = tail;
-    tail = new BiList{ arr[i], temp, nullptr };
-    temp->next = tail;
-  }
-  return head;
-}
-
 void deleteList(BiList* head)
 {
   while (head != nullptr)
@@ -33,6 +14,36 @@ void deleteList(BiList* head)
     delete head;
     head = subHead;
   }
+}
+
+BiList* convert(const int* arr, size_t size)
+{
+  if (size == 0)
+  {
+    return nullptr;
+  }
+
+  BiList* head = nullptr;
+  BiList* tail = nullptr;
+
+  try
+  {
+    head = new BiList{ arr[0], nullptr, nullptr };
+    tail = head;
+
+    for (size_t created = 1; created < size; created++)
+    {
+      BiList* temp = tail;
+      tail = new BiList{ arr[created], temp, nullptr };
+      temp->next = tail;
+    }
+  }
+  catch (const std::bad_alloc& e)
+  {
+    deleteList(head);
+    throw;
+  }
+  return tail;
 }
 
 int main()
@@ -57,26 +68,33 @@ int main()
   }
 
   BiList* head = nullptr;
+  BiList* tail = nullptr;
+
+  if (size == 0)
+  {
+    delete[] arr;
+    return 0;
+  }
+
   try
   {
-    head = convert(arr, size);
+    tail = convert(arr, size);
   }
   catch (const std::bad_alloc& e)
   {
     std::cerr << "Memory allocation error!\n";
+    delete[] arr;
     return 2;
-  }
-
-  BiList* tail = head;
-  while (tail && tail->next)
-  {
-    tail = tail->next;
   }
 
   std::cout << tail->value;
   BiList* subtail = tail->prev;
   for (size_t i = 0; i < size - 1; i++)
   {
+    if (subtail->prev == nullptr)
+    {
+      head = subtail;
+    }
     std::cout << ' ' << subtail->value;
     subtail = subtail->prev;
   }
