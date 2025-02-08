@@ -5,7 +5,17 @@ struct BiList {
   BiList * prev, * next;
 };
 
-BiList * arrayToBiList(int * numbers, size_t count)
+void deleteBiList(BiList * list)
+{
+  while (list != nullptr)
+  {
+    BiList * next = list->next;
+    delete list;
+    list = next;
+  }
+}
+
+BiList * arrayToBiList(const int * const numbers, size_t count)
 {
   if (count == 0)
   {
@@ -15,13 +25,23 @@ BiList * arrayToBiList(int * numbers, size_t count)
   BiList * current = head;
   for (size_t i = 1; i < count; ++i)
   {
-    current->next = new BiList{numbers[i], current, nullptr};
-    current = current->next;
+    BiList * newNode = nullptr;
+    try
+    {
+      newNode = new BiList{numbers[i], current, nullptr};
+    }
+    catch (const std::bad_alloc & e)
+    {
+      deleteBiList(head);
+      throw;
+    }
+    current->next = newNode;
+    current = newNode;
   }
   return head;
 }
 
-void printReverse(BiList * list)
+void printReverse(const BiList * list)
 {
   while (list->next != nullptr)
   {
@@ -37,26 +57,35 @@ void printReverse(BiList * list)
   std::cout << "\n";
 }
 
-void deleteBiList(BiList * list)
-{
-  while (list != nullptr)
-  {
-    BiList * next = list->next;
-    delete list;
-    list = next;
-  }
-}
-
 int main()
 {
   constexpr size_t max_size = 10;
-  int * numbers = new int[max_size];
+  int * numbers = nullptr;
   size_t count = 0;
+  try
+  {
+    numbers = new int[max_size];
+  }
+  catch (const std::bad_alloc & e)
+  {
+    std::cerr << "Out of memory\n";
+    return 1;
+  }
   while (count < max_size && std::cin >> numbers[count])
   {
     ++count;
   }
-  BiList * list = arrayToBiList(numbers, count);
+  BiList * list = nullptr;
+  try
+  {
+    list = arrayToBiList(numbers, count);
+  }
+  catch (const std::bad_alloc & e)
+  {
+    delete[] numbers;
+    std::cerr << "Out of memory\n";
+    return 1;
+  }
   printReverse(list);
   deleteBiList(list);
   delete[] numbers;
