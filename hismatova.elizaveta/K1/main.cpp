@@ -22,7 +22,6 @@ BiList* arrayToBiList(const int* array, int count)
   {
     return nullptr;
   }
-  BiList* head = nullptr;
   BiList* tail = nullptr;
   for (int i = 0; i < count; ++i)
   {
@@ -31,18 +30,14 @@ BiList* arrayToBiList(const int* array, int count)
     {
       newNode = new BiList{array[i], tail, nullptr};
     }
-    catch (const std::bad_alloc& e)
+    catch (const std::bad_alloc&)
     {
-      deleteList(head);
+      deleteList(tail);
       throw;
     }
     if (tail)
     {
       tail->next = newNode;
-    }
-    else
-    {
-      head = newNode;
     }
     tail = newNode;
   }
