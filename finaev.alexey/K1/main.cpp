@@ -18,15 +18,7 @@ void deleteList(BiList* tail)
 
 BiList* convertToList(const int* arr, const size_t count)
 {
-  BiList* head = nullptr;
-  try
-  {
-    head = new BiList{ arr[0], nullptr, nullptr };
-  }
-  catch (const std::bad_alloc&)
-  {
-    throw;
-  }
+  BiList * head = new BiList { arr[0], nullptr, nullptr };
   BiList* tail = head;
   for (size_t i = 1; i < count; ++i)
   {
@@ -100,6 +92,7 @@ int main()
   }
   catch (const std::bad_alloc&)
   {
+    delete[] arr;
     std::cerr << "Bad alloc!\n";
     return 1;
   }
