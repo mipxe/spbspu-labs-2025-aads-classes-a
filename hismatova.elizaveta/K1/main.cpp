@@ -7,6 +7,15 @@ struct BiList
   BiList* prev;
   BiList* next;
 };
+void deleteList(BiList* head)
+{
+  while (head)
+  {
+    BiList* nextNode = head->next;
+    delete head;
+    head = nextNode;
+  }
+}
 BiList* arrayToBiList(const int* array, int count)
 {
   if (count == 0)
@@ -17,7 +26,16 @@ BiList* arrayToBiList(const int* array, int count)
   BiList* tail = nullptr;
   for (int i = 0; i < count; ++i)
   {
-    BiList* newNode = new BiList{array[i], tail, nullptr};
+    BiList* newNode = nullptr;
+    try
+    {
+      newNode = new BiList{array[i], tail, nullptr};
+    }
+    catch (const std::bad_alloc& e)
+    {
+      deleteList(head);
+      throw;
+    }
     if (tail)
     {
       tail->next = newNode;
@@ -28,16 +46,7 @@ BiList* arrayToBiList(const int* array, int count)
     }
     tail = newNode;
   }
-  return head;
-}
-void deleteList(BiList* head)
-{
-  while (head)
-  {
-    BiList* nextNode = head->next;
-    delete head;
-    head = nextNode;
-  }
+  return tail;
 }
 int main()
 {
@@ -56,12 +65,13 @@ int main()
   catch (const std::bad_alloc&)
   {
     std::cerr << "ERROR: out of memory\n";
+    delete[] numbers;
     return 1;
   }
-  BiList* listHead = nullptr;
+  BiList* listTail = nullptr;
   try
   {
-    listHead = arrayToBiList(numbers, count);
+    listTail = arrayToBiList(numbers, count);
   }
   catch (const std::bad_alloc&)
   {
@@ -69,25 +79,17 @@ int main()
     delete[] numbers;
     return 1;
   }
-  if (listHead)
+  while (listTail)
   {
-    BiList* current = listHead;
-    while (current->next)
+    std::cout << listTail->value;
+    listTail = listTail->prev;
+    if (listTail)
     {
-      current = current->next;
+      std::cout << " ";
     }
-    while (tail)
-    {
-      std::cout << tail->value;
-      if (tail->prev)
-      {
-        std::cout << " ";
-      }
-      tail = tail->prev;
-    }
-    std::cout << "\n";
   }
-  deleteList(listHead);
+  std::cout << "\n";
+  deleteList(listTail);
   delete[] numbers;
   return 0;
 }
