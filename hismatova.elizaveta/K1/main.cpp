@@ -7,13 +7,13 @@ struct BiList
   BiList* prev;
   BiList* next;
 };
-void deleteList(BiList* head)
+void deleteList(BiList* tail)
 {
-  while (head)
+  while (tail)
   {
-    BiList* nextNode = head->next;
-    delete head;
-    head = nextNode;
+    BiList* prevNode = tail->prev;
+    delete tail;
+    tail = prevNode;
   }
 }
 BiList* arrayToBiList(const int* array, int count)
