@@ -74,6 +74,7 @@ int main()
     delete[] numbers;
     return 1;
   }
+  BiList* saveTail = listTail;
   while (listTail)
   {
     std::cout << listTail->value;
@@ -84,7 +85,7 @@ int main()
     }
   }
   std::cout << "\n";
-  deleteList(listTail);
+  deleteList(saveTail);
   delete[] numbers;
   return 0;
 }
