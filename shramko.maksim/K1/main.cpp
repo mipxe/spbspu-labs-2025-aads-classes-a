@@ -7,7 +7,7 @@ struct BiList
 };
 
 
-void rmList(BiList * head)
+void rmList(BiList* tail)
 {
   while (tail != nullptr)
   {
@@ -17,7 +17,7 @@ void rmList(BiList * head)
   }
 }
 
-BiList* transform(const int* const l, const size_t n)
+BiList* transform(const int* l, const size_t n)
 {
   if (n == 0)
   {
@@ -29,7 +29,7 @@ BiList* transform(const int* const l, const size_t n)
 
   try
   {
-    head = new BiList{ arr[0], nullptr, nullptr };
+    head = new BiList{ l[0], nullptr, nullptr };
     tail = head;
 
     for (size_t i = 1; i < n; i++)
@@ -39,7 +39,7 @@ BiList* transform(const int* const l, const size_t n)
       temp->next = tail;
     }
   }
-  catch (catch std::bad_alloc& e)
+  catch (const std::bad_alloc& e)
   {
     rmList(head);
     throw;
@@ -50,7 +50,6 @@ BiList* transform(const int* const l, const size_t n)
 int main()
 {
   int* l = new int[10];
-
   std::cin >> l[0];
   size_t n = 0;
 
@@ -71,7 +70,7 @@ int main()
     std::cin >> l[n];
   }
 
-  BiList* head = nullptr;
+  BiList* tail = nullptr;
   try
   {
     tail = transform(l, n);
