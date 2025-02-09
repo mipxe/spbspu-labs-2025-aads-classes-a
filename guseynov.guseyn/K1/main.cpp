@@ -62,7 +62,7 @@ BiList * toBiList(int * arr, size_t size)
 {
   BiList * head = new BiList{arr[0], nullptr, nullptr};
   BiList * subhead = head;
-  for (size_t i = 0; i < size; i++)
+  for (size_t i = 1; i < size; ++i)
   {
     BiList * record = nullptr;
     try
