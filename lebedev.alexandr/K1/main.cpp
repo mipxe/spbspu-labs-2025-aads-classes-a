@@ -6,13 +6,13 @@ struct BiList
   BiList * prev, * next;
 };
 
-void deleteList(BiList* head)
+void deleteList(BiList* tail)
 {
-  while (head != nullptr)
+  while (tail != nullptr)
   {
-    BiList* subHead = head->next;
-    delete head;
-    head = subHead;
+    BiList* subTail = tail->prev;
+    delete tail;
+    tail = subTail;
   }
 }
 
@@ -67,7 +67,6 @@ int main()
     std::cin >> arr[size];
   }
 
-  BiList* head = nullptr;
   BiList* tail = nullptr;
 
   if (size == 0)
@@ -91,16 +90,12 @@ int main()
   BiList* subtail = tail->prev;
   for (size_t i = 0; i < size - 1; i++)
   {
-    if (subtail->prev == nullptr)
-    {
-      head = subtail;
-    }
     std::cout << ' ' << subtail->value;
     subtail = subtail->prev;
   }
   std::cout << '\n';
 
-  deleteList(head);
+  deleteList(tail);
   delete[] arr;
   return 0;
 }
