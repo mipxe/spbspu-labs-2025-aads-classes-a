@@ -19,21 +19,22 @@ int main()
   try
   {
     arr = new int[size];
+    while (i < size && std::cin >> number && !std::cin.eof())
+    {
+      arr[i++] = number;
+    }
+    if (i == 0)
+    {
+      return 1;
+    }
+    BiList * head = toBiList(arr, i);
+    print(std::cout, head);
   }
   catch(std::bad_alloc &)
   {
+    delete[] arr;
     return 1;
   }
-  while (i < size && std::cin >> number && !std::cin.eof())
-  {
-    arr[i++] = number;
-  }
-  if (arr == nullptr)
-  {
-    return 1;
-  }
-  BiList * head = toBiList(arr, i);
-  print(std::cout, head);
   std::cout << "\n";
   delete[] arr;
 }
