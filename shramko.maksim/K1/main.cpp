@@ -32,16 +32,17 @@ BiList* transform(const int* const l, const size_t n)
     BiList* temp = nullptr;
     try
     {
-      tail = new BiList{ l[i], temp, nullptr };
+      temp = new BiList{ l[i], tail, nullptr };
     }
     catch (std::bad_alloc& e)
     {
-      rmList(head);
+      rmList(tail);
       throw;
     }
-    temp->next = tail;
+    tail->next = temp;
+    tail = temp;
   }
-  return head;
+  return tail;
 }
 
 int main()
