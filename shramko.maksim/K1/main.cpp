@@ -25,24 +25,24 @@ BiList* transform(const int* const l, const size_t n)
   }
 
   BiList* head = new BiList{ l[0], nullptr, nullptr };
-  BiList* tail = head;
+  BiList* now = head;
 
   for (size_t i = 1; i < n; i++)
   {
     BiList* temp = nullptr;
     try
     {
-      temp = new BiList{ l[i], tail, nullptr };
+      temp = new BiList{ l[i], now, nullptr };
     }
     catch (std::bad_alloc& e)
     {
-      rmList(tail);
+      rmList(head);
       throw;
     }
-    tail->next = temp;
-    tail = temp;
+    now->next = temp;
+    now = temp;
   }
-  return tail;
+  return head;
 }
 
 int main()
