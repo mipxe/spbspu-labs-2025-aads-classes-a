@@ -26,6 +26,7 @@ int main()
     if (i == 0)
     {
       std::cout << "empty numbers \n";
+      delete[] arr;
       return 1;
     }
     BiList * head = toBiList(arr, i);
