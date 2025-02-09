@@ -9,11 +9,11 @@ struct BiList
 
 void rmList(BiList * head)
 {
-  while (head == nullptr)
+  while (tail != nullptr)
   {
-    BiList* temp = head->next;
-    delete head;
-    head = temp;
+    BiList* temp = tail->prev;
+    delete tail;
+    tail = temp;
   }
 }
 
@@ -49,15 +49,7 @@ BiList* transform(const int* const l, const size_t n)
 
 int main()
 {
-  int* l = nullptr;
-  try
-  {
-    l = new int[10];
-  }
-  catch (const std::bad_alloc& e)
-  {
-    std::cerr << "Main mem err!\n";
-    return 1;
+  int* l = new int[10];
   }
 
   std::cin >> l[0];
@@ -83,7 +75,7 @@ int main()
   BiList* head = nullptr;
   try
   {
-    head = transform(l, n);
+    tail = transform(l, n);
   }
   catch (const std::bad_alloc& e)
   {
@@ -92,15 +84,9 @@ int main()
     return 1;
   }
 
-  BiList* tail = head;
-
-  while (tail && tail->next)
-  {
-    tail = tail->next;
-  }
-
-  std::cout << tail->value;
+  std::cout << tail->value;;
   BiList* subTail = tail->prev;
+
   for (size_t i = 0; i < n - 1; i++)
   {
     std::cout << " " << subTail->value;
@@ -108,6 +94,6 @@ int main()
   }
   std::cout << "\n";
 
-  rmList(head);
+  rmList(tail);
   delete[] l;
 }
