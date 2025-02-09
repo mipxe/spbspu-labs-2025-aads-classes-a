@@ -26,7 +26,7 @@ int main()
   }
   while (i < size && std::cin >> number && !std::cin.eof())
   {
-    arr[i] = number;
+    arr[i++] = number;
   }
   if (arr == nullptr)
   {
