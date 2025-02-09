@@ -27,7 +27,7 @@ int main()
     {
       std::cerr << "empty numbers \n";
       delete[] arr;
-      return 2;
+      return 1;
     }
     BiList * head = toBiList(arr, i);
     print(std::cout, head);
