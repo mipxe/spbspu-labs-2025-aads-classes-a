@@ -13,10 +13,6 @@ void deleteList(BiList* tail)
 
 BiList* toDoubleLinkedList(const int* array, size_t res)
 {
-  if (res == 0)
-  {
-    return nullptr;
-  }
   BiList* head = nullptr;
   BiList* tail = nullptr;
   try
@@ -42,7 +38,7 @@ BiList* toDoubleLinkedList(const int* array, size_t res)
 int main()
 {
   size_t res = 0;
-  int* array = new int[10];
+  int* array = new int[10]{};
   int a = 0;
   while (std::cin >> a && !std::cin.eof())
   {
@@ -63,10 +59,6 @@ int main()
     return 1;
   }
   BiList* temporary = buf;
-  if (temporary == nullptr)
-  {
-    return 1;
-  }
   int b = temporary->value;
   std::cout << b;
   for (size_t i = 1; i < res; i++)
