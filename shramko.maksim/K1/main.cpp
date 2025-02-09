@@ -11,9 +11,9 @@ void rmList(BiList * head)
 {
   while (head == nullptr)
   {
-    BiList* subHead = head->next;
+    BiList* temp = head->next;
     delete head;
-    head = subHead;
+    head = temp;
   }
 }
 
@@ -25,22 +25,22 @@ BiList* transform(const int* const l, const size_t n)
   }
 
   BiList* head = new BiList{ l[0], nullptr, nullptr };
-  BiList* now = head;
+  BiList* tail = head;
 
   for (size_t i = 1; i < n; i++)
   {
     BiList* temp = nullptr;
     try
     {
-      temp = new BiList{ l[i], now, nullptr };
+      temp = new BiList{ l[i], tail, nullptr };
     }
     catch (std::bad_alloc& e)
     {
       rmList(head);
       throw;
     }
-    now->next = temp;
-    now = temp;
+    temp->next = tail;
+    tail = temp;
   }
   return head;
 }
