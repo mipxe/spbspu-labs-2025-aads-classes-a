@@ -1,4 +1,4 @@
-#include <iostream>
+.#include <iostream>
 
 struct BiList
 {
@@ -24,25 +24,27 @@ BiList* transform(const int* const l, const size_t n)
     return nullptr;
   }
 
-  BiList* head = new BiList{ l[0], nullptr, nullptr };
-  BiList* tail = head;
+  BiList* head = nullptr;
+  BiList* tail = nullptr;
 
-  for (size_t i = 1; i < n; i++)
+  try
   {
-    BiList* temp = nullptr;
-    try
+    head = new BiList{ arr[0], nullptr, nullptr };
+    tail = head;
+
+    for (size_t i = 1; i < n; i++)
     {
-      temp = new BiList{ l[i], tail, nullptr };
+      BiList* temp = tail;
+      tail = new BiList{ l[i], temp, nullptr };
+      temp->next = tail;
     }
-    catch (std::bad_alloc& e)
-    {
-      rmList(head);
-      throw;
-    }
-    temp->next = tail;
-    tail = temp;
   }
-  return head;
+  catch (catch std::bad_alloc& e)
+  {
+    rmList(head);
+    throw;
+  }
+  return tail;
 }
 
 int main()
