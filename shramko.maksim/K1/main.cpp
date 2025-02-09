@@ -50,7 +50,6 @@ BiList* transform(const int* const l, const size_t n)
 int main()
 {
   int* l = new int[10];
-  }
 
   std::cin >> l[0];
   size_t n = 0;
