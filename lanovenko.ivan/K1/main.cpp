@@ -11,7 +11,7 @@ void deleteList(BiList* tail)
   }
 }
 
-BiList* toDoubleLinkedList(int* array, size_t res)
+BiList* toDoubleLinkedList(const int* array, size_t res)
 {
   if (res == 0)
   {
@@ -60,12 +60,12 @@ int main()
   catch (const std::bad_alloc& e)
   {
     deleteList(buf);
-    throw;
+    return 1;
   }
   BiList* temporary = buf;
   if (temporary == nullptr)
   {
-    throw;
+    return 1;
   }
   int b = temporary->value;
   std::cout << b;
