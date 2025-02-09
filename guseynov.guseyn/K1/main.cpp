@@ -6,7 +6,7 @@ struct BiList
   BiList * prev, * next;
 };
 
-BiList * toBiList(int * array, size_t size);
+BiList * toBiList(int * arr, size_t size);
 void print(std::ostream & out, BiList * head);
 void clearBiList(BiList * head);
 
