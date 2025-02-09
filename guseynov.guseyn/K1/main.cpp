@@ -25,7 +25,7 @@ int main()
     }
     if (i == 0)
     {
-      std::cout << "empty numbers \n";
+      std::cerr << "empty numbers \n";
       delete[] arr;
       return 1;
     }
