@@ -62,6 +62,7 @@ int main()
   }
   if (array[0] == 0 || array[0] == 11)
   {
+    delete[] array;
     std::cerr << "Bad Index\n";
     return 1;
   }
