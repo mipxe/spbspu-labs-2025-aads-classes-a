@@ -16,7 +16,7 @@ void deleteList(FwdList* head)
   }
 }
 
-void addNewElems(FwdList* head, size_t i, size_t count)
+FwdList* addNewElems(FwdList* head, size_t i, size_t count)
 {
   FwdList* ptr = head;
   if (ptr != nullptr)
@@ -36,6 +36,7 @@ void addNewElems(FwdList* head, size_t i, size_t count)
       ptr = new_el;
     }
   }
+  return ptr;
 }
 
 void printList(std::ostream& out, const FwdList* head)
@@ -73,7 +74,7 @@ int main()
     size_t a = 0;
     size_t b = 0;
     std::cin >> a;
-    if (a > 10)
+    if (a > 10 || a < 1)
     {
       deleteList(head);
       std::cerr << "out of range\n";
