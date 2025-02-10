@@ -71,6 +71,13 @@ int main()
   }
 
   BiList* tail = nullptr;
+
+  if (n == 0)
+  {
+    delete[] l;
+    return 0;
+  }
+
   try
   {
     tail = transform(l, n);
