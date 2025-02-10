@@ -63,7 +63,7 @@ int main()
   FwdList * tail = nullptr;
   try
   {
-    for (int i = 1; i < 11; ++i)
+    for (int i = 0; i < 10; ++i)
     {
       FwdList * newElement = new FwdList{i, nullptr};
       if (head == nullptr)
