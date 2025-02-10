@@ -49,7 +49,7 @@ FwdList* createList()
 
 int main()
 {
-  int* array = new int[10000]{};
+  int* array = new int[10000]{2};
   std::size_t capacity = 0;
   int a = 0;
   while (std::cin >> a && !std::cin.eof())
