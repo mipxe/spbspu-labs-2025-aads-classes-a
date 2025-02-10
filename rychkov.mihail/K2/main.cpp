@@ -33,11 +33,12 @@ int main()
     }
   }
 
-  char delim = '\0';
+  char delim[2] = {'\0', '\0'};
   for (int& i : list)
   {
+
     std::cout << delim << i;
-    delim = ' ';
+    delim[0] = ' ';
   }
   std::cout << '\n';
   rychkov::destroy(list.head);
