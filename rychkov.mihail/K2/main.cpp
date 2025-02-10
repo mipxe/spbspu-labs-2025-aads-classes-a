@@ -14,6 +14,7 @@ int main()
       rychkov::FwdList* found = rychkov::duplicateNode(head, id - 1, dups);
       if (!found)
       {
+        rychkov::destroy(head);
         return 1;
       }
     }
@@ -29,5 +30,6 @@ int main()
   {
     std::cout << ' ' << i;
   }
+  std::cout << '\n';
   rychkov::destroy(head);
 }
