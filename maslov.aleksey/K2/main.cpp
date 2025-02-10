@@ -22,7 +22,7 @@ int main()
   FwdList * head = nullptr;
   FwdList * tail = nullptr;
   try
-  { 
+  {
     for (int i = 0; i < 10; ++i)
     {
       FwdList * newElement = new FwdList{i, nullptr};
@@ -53,9 +53,9 @@ int main()
     }
     if (index > 0)
     {
-    std::cerr << "the element number exceeds the number of element in the list\n";
-    freeList(head);
-    return 1;
+      std::cerr << "the element number exceeds the number of element in the list\n";
+      freeList(head);
+      return 1;
     }
   }
 }
