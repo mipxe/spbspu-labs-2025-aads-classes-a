@@ -22,7 +22,7 @@ namespace
   FwdList* insertDuplicates(FwdList* const head, const size_t index, const size_t count)
   {
     FwdList* curr = head;
-    for (size_t i = 0; i < index && curr != nullptr; ++i)
+    for (size_t i = 0; i < index; ++i)
     {
       curr = curr->next;
     }
@@ -87,13 +87,13 @@ int main()
     std::cerr << "Not enough memory\n";
     return 1;
   }
-  size_t index = 0, count = 0, size = 10;
+  int index = 0, count = 0, size = 10;
   while(std:: cin >> index >> count)
   {
-    if (index > size || count < 1)
+    if (index > size || index <= 0 || count < 0)
     {
       deleteList(head);
-      return 0;
+      return 1;
     }
     insertDuplicates(head, index - 1, count);
     size += count;
