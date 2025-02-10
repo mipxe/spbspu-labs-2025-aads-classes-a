@@ -23,18 +23,19 @@ FwdList* addNewElems(FwdList* head, size_t i, size_t count)
     throw std::logic_error("out of range\n");
   }
   FwdList* ptr = head;
-  if (ptr != nullptr)
+  for (size_t j = 1; (ptr != nullptr) && (j < i) ; ++j)
   {
-    for (size_t j = 1; (ptr != nullptr) && (j < i) ; ++j)
-    {
-      ptr = ptr->next;
-    }
-    for (size_t j = 0; j < count; ++j)
-    {
-      FwdList* new_el = new FwdList{ ptr->value, ptr->next };
-      ptr->next = new_el;
-      ptr = new_el;
-    }
+    ptr = ptr->next;
+  }
+  if (ptr == nullptr)
+  {
+    throw std::logic_error("out of range!\n");
+  }
+  for (size_t j = 0; j < count; ++j)
+  {
+    FwdList* new_el = new FwdList{ ptr->value, ptr->next };
+    ptr->next = new_el;
+    ptr = new_el;
   }
   return ptr;
 }
@@ -74,12 +75,6 @@ int main()
     size_t a = 0;
     size_t b = 0;
     std::cin >> a;
-    if (a > 10)
-    {
-      deleteList(head);
-      std::cerr << "out of range\n";
-      return 1;
-    }
     std::cin >> b;
     if (std::cin.fail())
     {
