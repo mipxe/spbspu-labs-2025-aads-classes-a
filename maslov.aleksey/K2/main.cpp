@@ -7,29 +7,94 @@ struct FwdList
   int value;
   FwdList * next;
 };
+void printList(std::ostream & out, FwdList * head);
+void freeList(FwdList * head);
+size_t getLength(FwdList * head);
+FwdList * duplicateElements(FwdList * head, size_t index, size_t count);
 
+int main()
+{
+  FwdList * head = nullptr;
+  FwdList * tail = nullptr;
+  try
+  {
+    FwdList * newElement = new FwdList{0, nullptr};
+    head = newElement;
+    tail = newElement;
+    for (int i = 1; i < 10; ++i)
+    {
+      FwdList * newElement = new FwdList{i, nullptr};
+      tail->next = newElement;
+      tail = newElement;
+    }
+  }
+  catch (const std::bad_alloc &)
+  {
+    std::cerr << "Memory error\n";
+    freeList(head);
+    return 1;
+  }
+  size_t index = 0, count = 0;
+  while (std::cin >> index && !std::cin.eof())
+  {
+    if (index > getLength(head))
+    {
+      std::cerr << "the element number exceeds the number of element in the list\n";
+      freeList(head);
+      return 1;
+    }
+    if (std::cin >> count)
+    {
+      try
+      {
+        duplicateElements(head, index, count);
+      }
+      catch (const std::exception & e)
+      {
+        std::cerr << e.what() << "\n";
+        return 1;
+      }
+    }
+    else
+    {
+      break;
+    }
+  }
+  printList(std::cout, head);
+  std::cout << "\n";
+  freeList(head);
+}
+
+void printList(std::ostream & out, FwdList * head)
+{
+  out << head->value;
+  head = head->next;
+  while (head)
+  {
+    out << " " << head->value;
+    head = head->next;
+  }
+}
 void freeList(FwdList * head)
 {
-  FwdList * subhead = head;
-  while (subhead)
+  while (head)
   {
-    FwdList * next = subhead->next;
-    delete subhead;
-    subhead = next;
+    FwdList * next = head->next;
+    delete head;
+    head = next;
   }
 }
 size_t getLength(FwdList * head)
 {
   size_t length = 0;
-  FwdList * subhead = head;
-  while (subhead)
+  while (head)
   {
     length++;
-    subhead = subhead->next;
+    head = head->next;
   }
   return length;
 }
-FwdList * duplicate(FwdList * head, size_t index, size_t count)
+FwdList * duplicateElements(FwdList * head, size_t index, size_t count)
 {
   if (index < 1)
   {
@@ -59,79 +124,4 @@ FwdList * duplicate(FwdList * head, size_t index, size_t count)
     throw;
   }
   return subhead;
-}
-
-int main()
-{
-  FwdList * head = nullptr;
-  FwdList * tail = nullptr;
-  try
-  {
-    for (int i = 0; i < 10; ++i)
-    {
-      FwdList * newElement = new FwdList{i, nullptr};
-      if (head == nullptr)
-      {
-        head = newElement;
-        tail = newElement;
-      }
-      else
-      {
-        tail->next = newElement;
-        tail = newElement;
-      }
-    }
-  }
-  catch (const std::bad_alloc &)
-  {
-    std::cerr << "Memory error\n";
-    freeList(head);
-    return 1;
-  }
-  size_t index = 0, count = 0;
-  while (std::cin >> index && !std::cin.eof())
-  {
-    if (std::cin.fail())
-    {
-      break;
-    }
-    if (index > getLength(head))
-    {
-      std::cerr << "the element number exceeds the number of element in the list\n";
-      freeList(head);
-      return 1;
-    }
-    if (std::cin >> count)
-    {
-      if (std::cin.fail())
-      {
-        break;
-      }
-      try
-      {
-        duplicate(head, index, count);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-    }
-    else
-    {
-      break;
-    }
-  }
-  FwdList * subhead = head;
-  while (subhead)
-  {
-    std::cout << subhead->value;
-    if (subhead->next)
-    {
-      std::cout << " ";
-    }
-    subhead = subhead->next;
-  }
-  std::cout << "\n";
-  freeList(head);
 }
