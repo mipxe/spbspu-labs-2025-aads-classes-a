@@ -50,8 +50,8 @@ BiList* transform(const int* l, size_t n)
 int main()
 {
   int* l = new int[10];
-  std::cin >> l[0];
   size_t n = 0;
+  std::cin >> l[0];
 
   while (!std::cin.eof())
   {
@@ -84,8 +84,8 @@ int main()
   }
   catch (const std::bad_alloc& e)
   {
-    delete[] l;
     std::cerr << "Mem trsfm err!\n";
+    delete[] l;
     return 1;
   }
 
