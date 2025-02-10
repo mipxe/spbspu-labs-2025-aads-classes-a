@@ -18,14 +18,18 @@ void deleteList(FwdList * head)
 
 FwdList * duplicate(FwdList * head, size_t index, size_t count)
 {
-  FwdList * current = head;
-  for (size_t i = 1; i < index; i++)
+  if (index < 1)
   {
-    if (current == nullptr)
-    {
-      throw std::out_of_range("Position exceeds the list size");
-    }
+    throw std::out_of_range("Out of range");
+  }
+  FwdList * current = head;
+  for (size_t i = 1; i < index && current != nullptr; i++)
+  {
     current = current->next;
+  }
+  if (current == nullptr)
+  {
+    throw std::out_of_range("Out of range");
   }
   for (size_t i = 0; i < count; i++)
   {
@@ -75,10 +79,10 @@ int main()
       std::cerr << "Out of memory\n";
       return 1;
     }
-    catch (const std::out_of_range & e)
+    catch (const std::out_of_range &)
     {
       deleteList(head);
-      std::cerr << e.what() << "\n";
+      std::cerr << "Out of range\n";
       return 1;
     }
   }
