@@ -61,7 +61,6 @@ int main()
     current->next = subhead;
     current = subhead;
   }
-  
 
   size_t index = 0, count = 0;
   while (std::cin >> index >> count && !std::cin.eof())
