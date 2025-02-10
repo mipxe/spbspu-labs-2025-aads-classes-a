@@ -37,3 +37,26 @@ void rychkov::destroy(FwdList* head)
     head = temp;
   }
 }
+
+rychkov::ForwardIterator& rychkov::ForwardIterator::operator++()
+{
+  node_ = node_->next;
+  return *this;
+}
+int& rychkov::ForwardIterator::operator*()
+{
+  return node_->value;
+}
+bool rychkov::ForwardIterator::operator!=(const ForwardIterator& rhs)
+{
+  return node_ != rhs.node_;
+}
+
+rychkov::ForwardIterator rychkov::FwdList::begin()
+{
+  return {this};
+}
+rychkov::ForwardIterator rychkov::FwdList::end()
+{
+  return {nullptr};
+}
