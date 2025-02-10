@@ -5,20 +5,37 @@ struct FwdList {
   FwdList* next;
 };
 
-FwdList* addNewEls(FwdList* head, size_t i, size_t count)
+void addNewElems(FwdList* head, size_t i, size_t count)
 {
-  FwdList* tail = head;
-  for (size_t j = 0;(tail != nullptr) && (j < i); ++j)
+  FwdList* ptr = head;
+  if (ptr != nullptr)
   {
-    tail = tail->next;
+    for (size_t j = 1; j < i ; ++j)
+    {
+      while (ptr->value == ptr->next->value)
+      {
+        ptr = ptr->next;
+      }
+      ptr = ptr->next;
+    }
+    for (size_t j = 0; j < count; ++j)
+    {
+      FwdList* new_el = new FwdList{ ptr->value, ptr->next };
+      ptr->next = new_el;
+      ptr = new_el;
+    }
   }
-  for (size_t j = 0; j < count; ++j)
+}
+
+void printList(std::ostream& out, const FwdList* head)
+{
+  out << head->value;
+  FwdList* ptr = head->next;
+  while (ptr != nullptr)
   {
-    FwdList* new_el = new FwdList{ tail->value, tail->next };
-    tail->next = new_el;
-    tail = new_el;
+    out << " " << ptr->value;
+    ptr = ptr->next;
   }
-  return tail;
 }
 
 void deleteList(FwdList* head)
@@ -45,22 +62,28 @@ int main()
     catch (const std::bad_alloc&)
     {
       deleteList(head);
-      throw;
+      return 1;
     }
     tail->next = new_element;
     tail = new_element;
   }
-  ListIterator head_ptr;
-  head_ptr.node = head;
-  int a = 0;
-  int b = 0;
   while (!std::cin.eof())
   {
+    size_t a = 0;
+    size_t b = 0;
     std::cin >> a;
+    if (a > 10)
+    {
+      std::cerr << "out of range\n";
+      return 1;
+    }
     std::cin >> b;
     if (std::cin.fail())
     {
       break;
     }
+    addNewElems(head, a, b);
   }
+  printList(std::cout, head);
+  deleteList(head);
 }
