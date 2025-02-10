@@ -8,7 +8,7 @@ struct FwdList {
 
 void deleteList(FwdList* head)
 {
-  while (head->next != nullptr)
+  while (head != nullptr)
   {
     FwdList* subHead = head->next;
     delete head;
@@ -31,16 +31,7 @@ void addNewElems(FwdList* head, size_t i, size_t count)
     }
     for (size_t j = 0; j < count; ++j)
     {
-      FwdList* new_el = nullptr;
-      try
-      {
-        new_el = new FwdList{ ptr->value, ptr->next };
-      }
-      catch(std::bad_alloc&)
-      {
-        deleteList(head);
-        throw;
-      }
+      FwdList* new_el = new FwdList{ ptr->value, ptr->next };
       ptr->next = new_el;
       ptr = new_el;
     }
@@ -84,6 +75,7 @@ int main()
     std::cin >> a;
     if (a > 10)
     {
+      deleteList(head);
       std::cerr << "out of range\n";
       return 1;
     }
@@ -98,6 +90,7 @@ int main()
     }
     catch(std::bad_alloc&)
     {
+      deleteList(head);
       std::cerr << "bad alloc!\n";
       return 1;
     }
