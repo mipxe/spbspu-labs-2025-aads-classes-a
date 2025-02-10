@@ -6,11 +6,11 @@ struct FwdList {
   FwdList * next;
 };
 
-FwdList* inDuplicates(FwdList* head, int pos, int c)
+FwdList* inDuplicates(FwdList* head, int pos, size_t c)
 {
   FwdList* current = head;
   FwdList* prev = nullptr;
-  for (int i = 1, i < pos, i++)
+  for (size_t i = 1, i < pos, i++)
   {
     if (current == nullptr)
     {
@@ -25,7 +25,7 @@ FwdList* inDuplicates(FwdList* head, int pos, int c)
     throw std::out_of_range("Current is out of list\n");
   }
 
-  for (int i = 0, i < c, i++)
+  for (size_t i = 0, i < c, i++)
   {
     FwdList* = nNode = new FwdList{ current->value, current };
     if (prev)
@@ -47,4 +47,7 @@ FwdList* inDuplicates(FwdList* head, int pos, int c)
 }
 
 int main()
-{}
+{
+  FwdList* head = nullptr;
+  FwdList* tail = nullptr;
+}
