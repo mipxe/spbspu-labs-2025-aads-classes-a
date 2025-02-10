@@ -17,7 +17,7 @@ void rmList(BiList* tail)
   }
 }
 
-BiList* transform(const int* l, const size_t n)
+BiList* transform(const int* l, size_t n)
 {
   if (n == 0)
   {
