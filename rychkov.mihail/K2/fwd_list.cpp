@@ -1,26 +1,27 @@
 #include "fwd_list.hpp"
 
-rychkov::FwdList* rychkov::convert(const int* arr, size_t size)
+rychkov::forward_list rychkov::convert(const int* arr, size_t size)
 {
   if (size == 0)
   {
-    return nullptr;
+    return {nullptr};
   }
 
-  FwdList* head = new FwdList{arr[0]};
-  ForwardIterator temp = head;
+  forward_list result = {new FwdList{arr[0]}};
+  ForwardIterator temp = result.head;
   for (size_t i = 1; i < size; i++)
   {
     try
     {
-      temp = head->insert_after(temp, arr[i]);
+      temp = result.insert_after(temp, arr[i]);
     }
     catch (...)
     {
-      destroy(head);
+      destroy(result.head);
+      throw;
     }
   }
-  return head;
+  return result;
 }
 void rychkov::destroy(FwdList* head)
 {
@@ -33,7 +34,8 @@ void rychkov::destroy(FwdList* head)
 }
 rychkov::FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups)
 {
-  rychkov::ForwardIterator i = head->begin(), end = head->end();
+  forward_list list{head};
+  ForwardIterator i = list.begin(), end = list.end();
   for (size_t j = 0; (i != end) && (j < id); ++i, j++)
   {}
   if (i == end)
@@ -47,13 +49,13 @@ rychkov::FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups)
   {
     try
     {
-      i = head->insert_after(i, value);
+      i = list.insert_after(i, value);
     }
     catch (...)
     {
       for (; j > 0; j--)
       {
-        head->erase_after(result);
+        list.erase_after(result);
       }
       throw;
     }
@@ -61,13 +63,41 @@ rychkov::FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups)
   return result;
 }
 
-rychkov::ForwardIterator rychkov::FwdList::insert_after(ForwardIterator prev, value_type value)
+rychkov::ForwardIterator& rychkov::ForwardIterator::operator++()
+{
+  node_ = node_->next;
+  return *this;
+}
+rychkov::ForwardIterator rychkov::ForwardIterator::operator++(int)
+{
+  ForwardIterator temp(*this);
+  node_ = node_->next;
+  return temp;
+}
+int& rychkov::ForwardIterator::operator*() const
+{
+  return node_->value;
+}
+int* rychkov::ForwardIterator::operator->() const
+{
+  return &(node_->value);
+}
+bool rychkov::ForwardIterator::operator==(const ForwardIterator& rhs) const noexcept
+{
+  return node_ == rhs.node_;
+}
+bool rychkov::ForwardIterator::operator!=(const ForwardIterator& rhs) const noexcept
+{
+  return node_ != rhs.node_;
+}
+
+rychkov::ForwardIterator rychkov::forward_list::insert_after(ForwardIterator prev, value_type value)
 {
   FwdList* newNode = new FwdList{value, prev.node_->next};
   prev.node_->next = newNode;
   return {newNode};
 }
-rychkov::ForwardIterator rychkov::FwdList::erase_after(ForwardIterator prev)
+rychkov::ForwardIterator rychkov::forward_list::erase_after(ForwardIterator prev)
 {
   if ((prev.node_ == nullptr) || (prev.node_->next == nullptr))
   {
@@ -78,29 +108,11 @@ rychkov::ForwardIterator rychkov::FwdList::erase_after(ForwardIterator prev)
   delete toDelete;
   return prev.node_->next;
 }
-rychkov::ForwardIterator& rychkov::ForwardIterator::operator++()
+rychkov::ForwardIterator rychkov::forward_list::begin()
 {
-  node_ = node_->next;
-  return *this;
+  return {head};
 }
-int& rychkov::ForwardIterator::operator*()
-{
-  return node_->value;
-}
-bool rychkov::ForwardIterator::operator==(const ForwardIterator& rhs)
-{
-  return node_ == rhs.node_;
-}
-bool rychkov::ForwardIterator::operator!=(const ForwardIterator& rhs)
-{
-  return node_ != rhs.node_;
-}
-
-rychkov::ForwardIterator rychkov::FwdList::begin()
-{
-  return {this};
-}
-rychkov::ForwardIterator rychkov::FwdList::end()
+rychkov::ForwardIterator rychkov::forward_list::end()
 {
   return {nullptr};
 }

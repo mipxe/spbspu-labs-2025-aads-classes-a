@@ -4,32 +4,41 @@
 int main()
 {
   int startArr[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-  rychkov::FwdList* head = rychkov::convert(startArr, sizeof(startArr) / sizeof(int));
+  rychkov::forward_list list;
+  try
+  {
+    list = rychkov::convert(startArr, sizeof(startArr) / sizeof(int));
+  }
+  catch (...)
+  {
+    return 2;
+  }
 
   size_t id = 0, dups = 0;
   while (std::cin >> id >> dups)
   {
     try
     {
-      rychkov::FwdList* found = rychkov::duplicateNode(head, id - 1, dups);
+      rychkov::FwdList* found = rychkov::duplicateNode(list.head, id - 1, dups);
       if (!found)
       {
-        rychkov::destroy(head);
+        rychkov::destroy(list.head);
         return 1;
       }
     }
     catch (...)
     {
-      rychkov::destroy(head);
+      rychkov::destroy(list.head);
       return 2;
     }
   }
 
-  std::cout << head->value;
-  for (int& i : *(head->next))
+  char delim = '\0';
+  for (int& i : list)
   {
-    std::cout << ' ' << i;
+    std::cout << delim << i;
+    delim = ' ';
   }
   std::cout << '\n';
-  rychkov::destroy(head);
+  rychkov::destroy(list.head);
 }

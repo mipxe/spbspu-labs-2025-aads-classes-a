@@ -5,8 +5,14 @@
 
 namespace rychkov
 {
-  struct FwdList;
+  struct FwdList
+  {
+    int value;
+    FwdList* next = nullptr;
+  };
   FwdList* duplicateNode(FwdList* head, size_t id, size_t dups);
+
+  struct forward_list;
   class ForwardIterator
   {
   public:
@@ -16,29 +22,29 @@ namespace rychkov
     {}
 
     ForwardIterator& operator++();
-    int& operator*();
-    bool operator==(const ForwardIterator& rhs);
-    bool operator!=(const ForwardIterator& rhs);
+    ForwardIterator operator++(int);
+    int& operator*() const;
+    int* operator->() const;
+    bool operator==(const ForwardIterator& rhs) const noexcept;
+    bool operator!=(const ForwardIterator& rhs) const noexcept;
   private:
     FwdList* node_;
-    friend struct FwdList;
+    friend struct rychkov::forward_list;
     friend FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups);
   };
 
-  struct FwdList
+  struct forward_list
   {
     using value_type = int;
-
-    value_type value;
-    FwdList* next = nullptr;
+    FwdList* head = nullptr;
 
     ForwardIterator begin();
     ForwardIterator end();
     ForwardIterator insert_after(ForwardIterator prev, value_type value);
     ForwardIterator erase_after(ForwardIterator prev);
   };
-  FwdList* convert(const int* arr, size_t size);
-  void destroy(FwdList* tail);
+  forward_list convert(const int* arr, size_t size);
+  void destroy(FwdList* head);
 
 }
 
