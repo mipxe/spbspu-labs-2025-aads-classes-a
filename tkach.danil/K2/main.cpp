@@ -91,14 +91,23 @@ int main()
     return 1;
   }
   int index = 0, count = 0, size = 10;
-  while (std:: cin >> index >> count)
+  while (std::cin >> index >> count)
   {
     if (index > size || index <= 0 || count < 0)
     {
       deleteList(head);
       return 1;
     }
-    insertDuplicates(head, index - 1, count);
+    try
+    {
+      insertDuplicates(head, index - 1, count);
+    }
+    catch (const std::bad_alloc&)
+    {
+      deleteList(head);
+      std::cerr << "Not enough memory\n";
+      return 1;
+    }
     size += count;
   }
   printList(std::cout, head);
