@@ -16,6 +16,8 @@ void deleteList(FwdList * head)
   }
 }
 
+FwdList * duplicate(FwdList * head, int num, int count) {}
+
 int main()
 {
   FwdList * head = nullptr;
@@ -34,5 +36,21 @@ int main()
     }
     current->next = subhead;
     current = subhead;
+  }
+
+  int num = 0;
+  int count = 0;
+  while (std::cin >> num >> count)
+  {
+    try
+    {
+      duplicate(head, num, count);
+    }
+    catch(const std::bad_alloc &)
+    {
+      deleteList(head);
+      std::cerr << "Out of memory\n";
+      return 1;
+    }
   }
 }
