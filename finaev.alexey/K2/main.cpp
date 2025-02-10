@@ -16,7 +16,7 @@ void deleteList(FwdList* head)
   }
 }
 
-FwdList* addNewElems(FwdList* head, size_t i, size_t count)
+void addNewElems(FwdList* head, size_t i, size_t count)
 {
   FwdList* ptr = head;
   if (ptr != nullptr)
@@ -36,7 +36,6 @@ FwdList* addNewElems(FwdList* head, size_t i, size_t count)
       ptr = new_el;
     }
   }
-  return ptr;
 }
 
 void printList(std::ostream& out, const FwdList* head)
@@ -85,10 +84,9 @@ int main()
     {
       break;
     }
-    FwdList* ptr = nullptr;
     try
     {
-      ptr = addNewElems(head, a, b);
+      addNewElems(head, a, b);
     }
     catch(std::bad_alloc&)
     {
