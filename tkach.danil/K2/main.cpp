@@ -38,7 +38,7 @@ namespace
       }
       catch (const std::bad_alloc&)
       {
-        for(size_t i = 0; i < true_count; ++i)
+        for (size_t i = 0; i < true_count; ++i)
         {
           FwdList* next_curr = curr->next;
           delete curr;
