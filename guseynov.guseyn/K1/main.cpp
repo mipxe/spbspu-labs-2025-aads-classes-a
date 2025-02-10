@@ -23,13 +23,11 @@ int main()
     {
       arr[i++] = number;
     }
-    if (i == 0)
-    {
-      delete[] arr;
-      return 1;
-    }
     BiList * head = toBiList(arr, i);
-    print(std::cout, head);
+    if (head != nullptr)
+    {
+      print(std::cout, head);
+    }
   }
   catch(std::bad_alloc &)
   {
@@ -62,6 +60,10 @@ void print(std::ostream & out, BiList * head)
 
 BiList * toBiList(int * arr, size_t size)
 {
+  if (size == 0)
+  {
+    return nullptr;
+  }
   BiList * head = new BiList{arr[0], nullptr, nullptr};
   BiList * subhead = head;
   for (size_t i = 1; i < size; ++i)
