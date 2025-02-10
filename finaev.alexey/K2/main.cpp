@@ -18,6 +18,10 @@ void deleteList(FwdList* head)
 
 FwdList* addNewElems(FwdList* head, size_t i, size_t count)
 {
+  if (i < 1)
+  {
+    throw std::logic_error("out of range\n");
+  }
   FwdList* ptr = head;
   if (ptr != nullptr)
   {
@@ -74,7 +78,7 @@ int main()
     size_t a = 0;
     size_t b = 0;
     std::cin >> a;
-    if (a > 10 || a < 1)
+    if (a > 10)
     {
       deleteList(head);
       std::cerr << "out of range\n";
@@ -93,6 +97,11 @@ int main()
     {
       deleteList(head);
       std::cerr << "bad alloc!\n";
+      return 1;
+    }
+    catch(std::logic_error&)
+    {
+      deleteList(head);
       return 1;
     }
   }
