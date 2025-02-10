@@ -7,7 +7,6 @@ struct FwdList {
 
 FwdList* Duplicate(FwdList * list, size_t numberElement, size_t numberDuplicates)
 {
-
 }
 
 int main()
