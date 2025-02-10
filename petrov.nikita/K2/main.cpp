@@ -39,7 +39,7 @@ int main()
     {
       dupl_number = 0;
       std::cin >> pos >> dupl_number;
-      if (pos > list_length)
+      if (pos > list_length || pos <= 0)
       {
         throw std::out_of_range("ERROR: Incorrect position of element");
       }
