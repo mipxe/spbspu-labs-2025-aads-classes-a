@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstddef>
+#include <stdexcept>
 
 struct FwdList
 {
@@ -8,15 +10,14 @@ struct FwdList
 
 void freeList(FwdList * head)
 {
-    FwdList * subhead = head;
-    while (subhead)
-    {
-      FwdList * next = subhead->next;
-      delete subhead;
-      subhead = next;
-    }
+  FwdList * subhead = head;
+  while (subhead)
+  {
+    FwdList * next = subhead->next;
+    delete subhead;
+    subhead = next;
+  }
 }
-
 size_t getLength(FwdList * head)
 {
   size_t length = 0;
@@ -28,9 +29,13 @@ size_t getLength(FwdList * head)
   }
   return length;
 }
-
 FwdList * duplicate(FwdList * head, size_t index, size_t count)
 {
+  if (index < 1)
+  {
+    freeList(head);
+    throw std::invalid_argument("index must be positive");
+  }
   FwdList * subhead = head;
   size_t currentIndex = 1;
   while (subhead && currentIndex != index)
@@ -53,7 +58,6 @@ FwdList * duplicate(FwdList * head, size_t index, size_t count)
     freeList(head);
     throw;
   }
-
   return subhead;
 }
 
@@ -107,9 +111,9 @@ int main()
       {
         duplicate(head, index, count);
       }
-      catch (const std::bad_alloc &)
+      catch (const std::exception & e)
       {
-        std::cerr << "Memory error\n";
+        std::cerr << e.what() << "\n";
         return 1;
       }
     }
