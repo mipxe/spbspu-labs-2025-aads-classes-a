@@ -7,47 +7,111 @@ struct FwdList
 };
 
 FwdList * duplicateElementInsideList(FwdList * head, size_t pos, size_t dupl_number);
+void clearList(FwdList * head);
+void outputListElements(std::ostream & out, FwdList * head);
 
 int main()
 {
   FwdList * head = nullptr;
-  size_t i = 0;
-  head = new FwdList;
-  FwdList * ptr_list = head;
-  ptr_list->value = i++;
-  while (i != 10)
+  int element = 0;
+  try
   {
-    ptr_list->next = new FwdList;
-    ptr_list->value = i;
-    i++;
+    head = new FwdList{ element++, nullptr };
+    FwdList * ptr_list = head;
+    while (element != 10)
+    {
+      ptr_list->next = new FwdList{ element++, nullptr };
+      ptr_list = ptr_list->next;
+    }
   }
+  catch(const std::bad_alloc & e)
+  {
+    clearList(head);
+    std::cerr << "ERROR: Out of memory" << "\n";
+    return 1;
+  }
+  size_t list_length = 10;
   size_t dupl_number = 0;
   size_t pos = 0;
-  size_t i = 0;
-  do
+  try
   {
-    dupl_number = 0;
-    std::cin >> pos >> dupl_number;
-    if (dupl_number == 0)
+    do
     {
-      continue;
+      dupl_number = 0;
+      std::cin >> pos >> dupl_number;
+      if (pos > list_length)
+      {
+        throw std::out_of_range("ERROR: Incorrect position of element");
+      }
+      else if (dupl_number == 0)
+      {
+        continue;
+      }
+      list_length += dupl_number;
+      duplicateElementInsideList(head, pos, dupl_number);
     }
-    duplicateElementInsideList(head, pos, dupl_number);
+    while (!std::cin.eof() && std::cin);
   }
-  while (i != 10 && !std::cin.eof());
-  std::cout << head->value;
-  head = head->next;
-  while (head != nullptr)
+  catch(const std::out_of_range & e)
   {
-    std::cout << " " << head->value;
-    head = head->next;
+    clearList(head);
+    std::cerr << e.what() << '\n';
+    return 2;
   }
+  catch(const std::bad_alloc & e)
+  {
+    clearList(head);
+    std::cerr << "ERROR: Out of memory" << "\n";
+    return 1;
+  }
+  outputListElements(std::cout, head);
+  std::cout << "\n";
+  clearList(head);
 }
 
 FwdList * duplicateElementInsideList(FwdList * head, size_t pos, size_t dupl_number)
 {
   for (size_t i = 0; i < pos - 1; i++)
   {
+    head = head->next;
+  }
+  FwdList * duplicable_element = head;
+  FwdList * after_dupl_element = head->next;
+  try
+  {
+    for (size_t i = 0; i < dupl_number; i++)
+    {
+      head->next = new FwdList{ duplicable_element->value, nullptr };
+      head = head->next;
+    }
+  }
+  catch(const std::bad_alloc & e)
+  {
+    head->next = after_dupl_element;
+    throw;
+  }
+  head->next = after_dupl_element;
+  return duplicable_element;
+}
+
+void clearList(FwdList * head)
+{
+  FwdList * newhead = nullptr;
+  while (head != nullptr)
+  {
+    newhead = head->next;
+    delete head;
+    head = newhead;
+  }
+}
+
+void outputListElements(std::ostream & out, FwdList * head)
+{
+  out << head->value;
+  head = head->next;
+  while (head != nullptr)
+  {
+    out << " " << head->value;
     head = head->next;
   }
 }
