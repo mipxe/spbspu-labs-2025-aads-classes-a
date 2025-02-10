@@ -1,6 +1,6 @@
 #include <iostream>
 
-struct FwdList 
+struct FwdList
 {
   int value;
   FwdList * next;
