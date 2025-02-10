@@ -41,6 +41,10 @@ FwdList * createFwdList()
 
 FwdList * insertDuplicates(FwdList * head, size_t index, size_t count)
 {
+  if (index < 1)
+  {
+    throw std::out_of_range("Position is out of range");
+  }
   FwdList * current = head;
   for (size_t i = 1; i < index && current != nullptr; ++i)
   {
@@ -95,6 +99,7 @@ int main()
     catch (const std::out_of_range & e)
     {
       deleteFwdList(head);
+      std::cerr << "Position is out of range";
       return 1;
     }
   }
