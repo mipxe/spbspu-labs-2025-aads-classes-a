@@ -27,10 +27,6 @@ FwdList* addNewElems(FwdList* head, size_t i, size_t count)
   {
     for (size_t j = 1; (ptr != nullptr) && (j < i) ; ++j)
     {
-      while (ptr->value == ptr->next->value)
-      {
-        ptr = ptr->next;
-      }
       ptr = ptr->next;
     }
     for (size_t j = 0; j < count; ++j)
