@@ -11,7 +11,7 @@ namespace
 
   void deleteList(FwdList* head)
   {
-    while(head != nullptr)
+    while (head != nullptr)
     {
       FwdList* next_head = head->next;
       delete head;
@@ -52,15 +52,18 @@ namespace
     return curr;
   }
 
-  void printList(FwdList* head)
+  void printList(std::ostream& out, const FwdList* head)
   {
-    FwdList* current = head;
-    std::cout << current->value;
-    current = current->next;
-    while (current != nullptr)
+    if (head == nullptr)
     {
-      std::cout << " " << current->value;
-      current = current->next;
+      return;
+    }
+    out << head->value;
+    head = head->next;
+    while (head != nullptr)
+    {
+      out << " " << head->value;
+      head = head->next;
     }
   }
 
@@ -88,7 +91,7 @@ int main()
     return 1;
   }
   int index = 0, count = 0, size = 10;
-  while(std:: cin >> index >> count)
+  while (std:: cin >> index >> count)
   {
     if (index > size || index <= 0 || count < 0)
     {
@@ -98,7 +101,7 @@ int main()
     insertDuplicates(head, index - 1, count);
     size += count;
   }
-  printList(head);
+  printList(std::cout, head);
   std::cout << "\n";
   deleteList(head);
   return 0;
