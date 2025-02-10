@@ -18,19 +18,20 @@ void deleteList(FwdList * head)
 
 FwdList * duplicate(FwdList * head, size_t index, size_t count)
 {
-  int num = 0;
   FwdList * current = head;
-  for (size_t i = 1; i != index; i++)
+  for (size_t i = 1; i < index; i++)
   {
+    if (current == nullptr)
+    {
+      throw std::out_of_range("Position exceeds the list size");
+    }
     current = current->next;
-    ++num;
   }
   for (size_t i = 0; i < count; i++)
   {
-    FwdList * subhead = current->next;
-    FwdList * node = new FwdList {num, nullptr};
-    node->next = subhead->next;
-    subhead->next = node;
+    FwdList * node = new FwdList {current->value, nullptr};
+    node->next = current->next;
+    current->next = node;
   }
   return current;
 }
@@ -52,22 +53,43 @@ int main()
       std::cerr << "Out of memory\n";
       return 1;
     }
+    if (head == nullptr)
+    {
+      head = subhead;
+      current = subhead;
+    }
     current->next = subhead;
     current = subhead;
   }
+  
 
   size_t index = 0, count = 0;
-  while (std::cin >> index >> count)
+  while (std::cin >> index >> count && !std::cin.eof())
   {
     try
     {
       duplicate(head, index, count);
     }
-    catch(const std::bad_alloc &)
+    catch (const std::bad_alloc &)
     {
       deleteList(head);
       std::cerr << "Out of memory\n";
       return 1;
     }
+    catch (const std::out_of_range & e)
+    {
+      deleteList(head);
+      std::cerr << e.what() << "\n";
+      return 1;
+    }
   }
+
+  FwdList * temp = head;
+  std::cout << temp->value;
+  for (temp = temp->next; temp != nullptr; temp = temp->next)
+  {
+    std::cout << " " << temp->value;
+  }
+  std::cout << "\n";
+  deleteList(head);
 }
