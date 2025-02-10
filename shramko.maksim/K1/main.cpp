@@ -89,7 +89,7 @@ int main()
     return 1;
   }
 
-  std::cout << tail->value;;
+  std::cout << tail->value;
   BiList* subTail = tail->prev;
 
   for (size_t i = 0; i < n - 1; i++)
@@ -101,4 +101,5 @@ int main()
 
   rmList(tail);
   delete[] l;
+  return 0;
 }
