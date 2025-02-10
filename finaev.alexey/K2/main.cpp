@@ -1,16 +1,27 @@
 #include <iostream>
+#include <stdexcept>
 
 struct FwdList {
   int value;
   FwdList* next;
 };
 
+void deleteList(FwdList* head)
+{
+  while (head->next != nullptr)
+  {
+    FwdList* subHead = head->next;
+    delete head;
+    head = subHead;
+  }
+}
+
 void addNewElems(FwdList* head, size_t i, size_t count)
 {
   FwdList* ptr = head;
   if (ptr != nullptr)
   {
-    for (size_t j = 1; j < i ; ++j)
+    for (size_t j = 1; (ptr != nullptr) && (j < i) ; ++j)
     {
       while (ptr->value == ptr->next->value)
       {
@@ -20,7 +31,16 @@ void addNewElems(FwdList* head, size_t i, size_t count)
     }
     for (size_t j = 0; j < count; ++j)
     {
-      FwdList* new_el = new FwdList{ ptr->value, ptr->next };
+      FwdList* new_el = nullptr;
+      try
+      {
+        new_el = new FwdList{ ptr->value, ptr->next };
+      }
+      catch(std::bad_alloc&)
+      {
+        deleteList(head);
+        throw;
+      }
       ptr->next = new_el;
       ptr = new_el;
     }
@@ -35,16 +55,6 @@ void printList(std::ostream& out, const FwdList* head)
   {
     out << " " << ptr->value;
     ptr = ptr->next;
-  }
-}
-
-void deleteList(FwdList* head)
-{
-  while (head->next != nullptr)
-  {
-    FwdList* subHead = head->next;
-    delete head;
-    head = subHead;
   }
 }
 
@@ -82,7 +92,15 @@ int main()
     {
       break;
     }
-    addNewElems(head, a, b);
+    try
+    {
+      addNewElems(head, a, b);
+    }
+    catch(std::bad_alloc&)
+    {
+      std::cerr << "bad alloc!\n";
+      return 1;
+    }
   }
   printList(std::cout, head);
   deleteList(head);
