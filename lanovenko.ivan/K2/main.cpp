@@ -80,7 +80,7 @@ int main()
   {
     try
     {
-      FwdList* inserted = Insert(buf, array[i], array[i + 1]);
+      Insert(buf, array[i], array[i + 1]);
     }
     catch (const std::bad_alloc& e)
     {
