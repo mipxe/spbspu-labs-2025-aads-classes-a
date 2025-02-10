@@ -23,6 +23,11 @@ int main()
     {
       arr[i++] = number;
     }
+    if (i == 0)
+    {
+      delete[] arr;
+      return 1;
+    }
     BiList * head = toBiList(arr, i);
     print(std::cout, head);
   }
