@@ -58,6 +58,9 @@ int main()
       deleteList(head);
       std::cerr << "Not enough memory\n";
       return 1;
+    }
+    lastHead->next = newHead;
+    lastHead = newHead;
   }
 
   int input = 0;
