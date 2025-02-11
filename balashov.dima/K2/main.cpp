@@ -7,13 +7,13 @@ struct FwdList {
 
 void deleteList(FwdList* head)
 {
-    FwdList* temp = head;
-    while (temp)
-    {
-      FwdList* nextHead = temp->next;
-      delete temp;
-      temp = nextHead;
-    }
+  FwdList* temp = head;
+  while (temp)
+  {
+    FwdList* nextHead = temp->next;
+    delete temp;
+    temp = nextHead;
+  }
 }
 
 FwdList* duplicate(FwdList * head, size_t numberElement, size_t numberDuplicates)
@@ -42,28 +42,50 @@ FwdList* duplicate(FwdList * head, size_t numberElement, size_t numberDuplicates
 
 int main()
 {
-
+  FwdList* head = nullptr;
+  FwdList* lastHead= nullptr;
   int maxCount = 10;
 
-  FwdList *list = new FwdList{ 0, nullptr };
-  FwdList* headNow = list;
-
-  for (int i = 0; i < maxCount; i++)
+  for (int i = 0; i < 10; i++)
   {
-    FwdList* new_list = new FwdList{ i, nullptr };
-    headNow->next = new_list;
-    headNow = new_list;
-  }
-
-  int input;
-  int realCount = 0;
-  for (size_t i = 0; i < maxCount; i++)
-  {
-    std::cin >> input;
-    if (std::cin.fail() && !std::cin.eof())
+    FwdList* newHead = nullptr;
+    try
     {
-      break;
+      newHead = new FwdList{ i, nullptr };
     }
-    realCount++;
+    catch (...)
+    {
+      deleteList(head);
+      std::cerr << "Not enough memory\n";
+      return 1;
   }
+
+  int input = 0;
+  int count = 0;
+  int index = 0;
+  while (std::cin >> index >> count)
+  {
+    try
+    {
+      duplicate(head, index, count);
+    }
+    catch (...)
+    {
+      deleteList(head);
+      std::cerr << "Not enough memory\n";
+      return 1;
+    }
+    maxCount += count;
+  }
+
+  FwdList* headNow = head;
+  std::cout << headNow->value;
+  headNow = headNow->next;
+  while (headNow != nullptr)
+  {
+    headNow = headNow->next;
+    std::cout << " " << headNow->value;
+  }
+  std::cout << "\n";
+  deleteList(head);
 }
