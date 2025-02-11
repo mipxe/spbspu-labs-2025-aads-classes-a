@@ -5,8 +5,39 @@ struct FwdList {
   FwdList* next;
 };
 
-FwdList* Duplicate(FwdList * list, size_t numberElement, size_t numberDuplicates)
+void deleteList(FwdList* head)
 {
+    FwdList* temp = head;
+    while (temp)
+    {
+      FwdList* nextHead = temp->next;
+      delete temp;
+      temp = nextHead;
+    }
+}
+
+FwdList* duplicate(FwdList * head, size_t numberElement, size_t numberDuplicates)
+{
+  if (numberElement < 1)
+  {
+    throw;
+  }
+  FwdList* nowHead = head;
+  for (size_t i = 1; i < numberElement && nowHead != nullptr; i++)
+  {
+    nowHead = nowHead->next;
+  }
+  if (nowHead == nullptr)
+  {
+    throw;
+  }
+  for (size_t i = 0; i < numberDuplicates; i++)
+  {
+    FwdList* endHead = new FwdList{ nowHead->value, nullptr };
+    endHead->next = nowHead->next;
+    nowHead->next = endHead;
+  }
+  return nowHead;
 }
 
 int main()
@@ -31,7 +62,8 @@ int main()
     std::cin >> input;
     if (std::cin.fail() && !std::cin.eof())
     {
-        break;
+      break;
     }
+    realCount++;
   }
 }
