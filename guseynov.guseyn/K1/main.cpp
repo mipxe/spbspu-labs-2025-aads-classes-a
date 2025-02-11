@@ -35,6 +35,7 @@ int main()
     delete[] arr;
     return 1;
   }
+  std::cout << "\n";
   delete[] arr;
 }
 
@@ -50,7 +51,7 @@ void print(std::ostream & out, BiList * head, size_t count)
     out << subhead->value << " ";
     subhead = subhead->prev;
   }
-  out << subhead->value << "\n";
+  out << subhead->value;
 }
 
 BiList * toBiList(const int * arr, size_t size)
