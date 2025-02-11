@@ -6,8 +6,8 @@ struct BiList
   BiList * prev, * next;
 };
 
-BiList * toBiList(int * arr, size_t size);
-void print(std::ostream & out, BiList * head);
+BiList * toBiList(const int * arr, size_t size);
+void print(std::ostream & out, BiList * head, size_t count);
 void clearBiList(BiList * head);
 
 int main()
@@ -26,7 +26,8 @@ int main()
     BiList * head = toBiList(arr, i);
     if (head != nullptr)
     {
-      print(std::cout, head);
+      print(std::cout, head, i);
+      clearBiList(head);
     }
   }
   catch(std::bad_alloc &)
@@ -34,31 +35,25 @@ int main()
     delete[] arr;
     return 1;
   }
-  std::cout << "\n";
   delete[] arr;
 }
 
-void print(std::ostream & out, BiList * head)
+void print(std::ostream & out, BiList * head, size_t count)
 {
   BiList * subhead = head;
   while(subhead->next)
   {
     subhead = subhead->next;
   }
-  while(subhead)
+    for (size_t i = 1; i < count; i++)
   {
-    out << subhead->value;
-    BiList * prev = subhead->prev;
-    delete subhead;
-    subhead = prev;
-    if (subhead != nullptr)
-    {
-      out << " ";
-    }
+    out << subhead->value << " ";
+    subhead = subhead->prev;
   }
+  out << subhead->value << "\n";
 }
 
-BiList * toBiList(int * arr, size_t size)
+BiList * toBiList(const int * arr, size_t size)
 {
   if (size == 0)
   {
