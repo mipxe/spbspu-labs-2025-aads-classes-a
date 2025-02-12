@@ -74,6 +74,7 @@ int main()
 
   if (n == 0)
   {
+    std::cout << '\n';
     delete[] l;
     return 0;
   }
