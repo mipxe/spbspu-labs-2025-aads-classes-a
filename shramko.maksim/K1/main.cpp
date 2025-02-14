@@ -17,7 +17,7 @@ void rmList(BiList* tail)
   }
 }
 
-BiList* transform(const int* l, const size_t n)
+BiList* transform(const int* l, size_t n)
 {
   if (n == 0)
   {
@@ -50,8 +50,8 @@ BiList* transform(const int* l, const size_t n)
 int main()
 {
   int* l = new int[10];
-  std::cin >> l[0];
   size_t n = 0;
+  std::cin >> l[0];
 
   while (!std::cin.eof())
   {
@@ -71,18 +71,26 @@ int main()
   }
 
   BiList* tail = nullptr;
+
+  if (n == 0)
+  {
+    std::cout << '\n';
+    delete[] l;
+    return 0;
+  }
+
   try
   {
     tail = transform(l, n);
   }
   catch (const std::bad_alloc& e)
   {
-    delete[] l;
     std::cerr << "Mem trsfm err!\n";
+    delete[] l;
     return 1;
   }
 
-  std::cout << tail->value;;
+  std::cout << tail->value;
   BiList* subTail = tail->prev;
 
   for (size_t i = 0; i < n - 1; i++)
@@ -94,4 +102,5 @@ int main()
 
   rmList(tail);
   delete[] l;
+  return 0;
 }
