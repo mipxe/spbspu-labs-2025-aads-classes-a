@@ -8,42 +8,33 @@ struct FwdList {
 
 FwdList* inDuplicates(FwdList* head, int pos, size_t c)
 {
-  FwdList* current = head;
-  FwdList* prev = nullptr;
-  for (size_t i = 1, i < pos, i++)
+  if (pos < 1)
   {
-    if (current == nullptr)
-    {
-      break;
-    }
-    prev = current;
-    current = currrent->next;
+    throw std::out_of_range("range err!\n");
   }
 
+  FwdList* pointer = head;
+
+  if (pointer != nullptr)
+  {
+    for (size_t i = 1, i < pos, i++)
+    {
+      pointer = pointer->next;
+    }
+  }
   if (current == nullptr)
   {
-    throw std::out_of_range("Current is out of list\n");
+    throw std::logic_error("Current is out of list!\n");
   }
 
   for (size_t i = 0, i < c, i++)
   {
-    FwdList* = nNode = new FwdList{ current->value, current };
-    if (prev)
-    {
-      prev->next = nNode;
-    }
-    if (head == current)
-    {
-      head = nNode;
-    }
+    FwdList* = nNode = new FwdList{ pointer->value, pointer->next };
+    pointer->next = nNode;
+    pointer = nNode;
   }
 
-  if (prev)
-  {
-    prev->next = current;
-  }
-
-  return current;
+  return pointer;
 }
 
 int main()
