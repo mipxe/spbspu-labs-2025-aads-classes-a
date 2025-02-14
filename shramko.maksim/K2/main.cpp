@@ -37,6 +37,16 @@ FwdList* inDuplicates(FwdList* head, int pos, size_t c)
   return pointer;
 }
 
+void rmList(FwdList* head)
+{
+  while (head != nullptr)
+  {
+    FwdList* temp = head->next;
+    delete head;
+    head = temp;
+  }
+}
+
 int main()
 {
   FwdList* head = nullptr;
