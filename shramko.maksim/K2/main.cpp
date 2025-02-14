@@ -47,6 +47,18 @@ void rmList(FwdList* head)
   }
 }
 
+void showList(std::ostream& out, const FwdList* head)
+{
+  out << head-value;
+  Fwdlist* pointer = head->next;
+
+  while (pointer != nullptr)
+  {
+    out << " " << pointer->value;
+    pointer = pointer->next;
+  }
+}
+
 int main()
 {
   FwdList* head = nullptr;
