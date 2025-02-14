@@ -61,6 +61,49 @@ void showList(std::ostream& out, const FwdList* head)
 
 int main()
 {
-  FwdList* head = nullptr;
-  FwdList* tail = nullptr;
+  FwdList* head = new FwdList{ 0, nullptr };
+  FwdList* tail = head;
+
+  for (size_t i = 1; i < 10; i++)
+  {
+    FwdList* enterPart = nullptr
+
+    try
+    {
+      enterPart = new FwdList{ i, nullptr };
+    }
+    catch (const std::bad_alloc& e)
+    {
+      rmList(head);
+      return 1;
+    }
+
+    tail->next = enterPart;
+    tail = enterPart;
+  }
+
+  while (!std::cin.eof())
+  {
+    size_t fir = 0, sec = 0;
+
+    std::cin >> fir >> sec;
+    if (std::cin.fail())
+    {
+      break;
+    }
+
+    try
+    {
+      inDuplicates(head, fir, sec);
+    }
+    catch (std::logic_error& e)
+    {
+      rmList(head);
+      return 1;
+    }
+  }
+
+  showList(std::cout, head);
+  std::cout << "\n";
+  rmList(head);
 }
