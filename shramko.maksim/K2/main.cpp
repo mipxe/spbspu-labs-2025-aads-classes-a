@@ -17,19 +17,19 @@ FwdList* inDuplicates(FwdList* head, int pos, size_t c)
 
   if (pointer != nullptr)
   {
-    for (size_t i = 1, i < pos, i++)
+    for (int i = 1; i < pos; i++)
     {
       pointer = pointer->next;
     }
   }
-  if (current == nullptr)
+  if (pointer == nullptr)
   {
     throw std::logic_error("Current is out of list!\n");
   }
 
-  for (size_t i = 0, i < c, i++)
+  for (size_t i = 0; i < c; i++)
   {
-    FwdList* = nNode = new FwdList{ pointer->value, pointer->next };
+    FwdList* nNode = new FwdList{ pointer->value, pointer->next };
     pointer->next = nNode;
     pointer = nNode;
   }
@@ -49,8 +49,8 @@ void rmList(FwdList* head)
 
 void showList(std::ostream& out, const FwdList* head)
 {
-  out << head-value;
-  Fwdlist* pointer = head->next;
+  out << head->value;
+  FwdList* pointer = head->next;
 
   while (pointer != nullptr)
   {
@@ -64,9 +64,9 @@ int main()
   FwdList* head = new FwdList{ 0, nullptr };
   FwdList* tail = head;
 
-  for (size_t i = 1; i < 10; i++)
+  for (int i = 1; i < 10; i++)
   {
-    FwdList* enterPart = nullptr
+    FwdList* enterPart = nullptr;
 
     try
     {
