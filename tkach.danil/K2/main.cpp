@@ -21,34 +21,39 @@ namespace
 
   FwdList* insertDuplicates(FwdList* const head, const size_t index, const size_t count)
   {
+    if (count == 0)
+    {
+      return nullptr;
+    }
     FwdList* curr = head;
-    for (size_t i = 0; i < index; ++i)
+    for (size_t i = 0; i < index && curr != nullptr; ++i)
     {
       curr = curr->next;
     }
-    FwdList* new_list = curr;
-    size_t true_count = 0;
-    for (size_t i = 0; i < count; ++i)
+    if (curr == nullptr)
+    {
+      throw std::out_of_range("Index is bigger than size");
+    }
+    FwdList* duplicate_head = new FwdList{curr->value, nullptr};
+    FwdList* duplicate_tail = duplicate_head;
+    for (size_t i = 0; i < count - 1; ++i)
     {
       FwdList* duplicate = nullptr;
       try
       {
-        duplicate = new FwdList{new_list->value, new_list->next};
-        true_count++;
+        duplicate = new FwdList{duplicate_tail->value, nullptr};
       }
       catch (const std::bad_alloc&)
       {
-        for (size_t i = 0; i < true_count; ++i)
-        {
-          FwdList* next_curr = curr->next;
-          delete curr;
-          curr = next_curr;
-        }
+        deleteList(duplicate_head);
         throw;
       }
-      new_list->next = duplicate;
-      new_list = duplicate;
+      duplicate_tail->next = duplicate;
+      duplicate_tail = duplicate;
     }
+    FwdList* temp = curr->next;
+    curr->next = duplicate_head;
+    duplicate_tail->next = temp;
     return curr;
   }
 
@@ -90,10 +95,10 @@ int main()
     std::cerr << "Not enough memory\n";
     return 1;
   }
-  int index = 0, count = 0, size = 10;
+  int index = 0, count = 0;
   while (std::cin >> index >> count)
   {
-    if (index > size || index <= 0 || count < 0)
+    if (index <= 0 || count < 0)
     {
       deleteList(head);
       return 1;
@@ -102,13 +107,12 @@ int main()
     {
       insertDuplicates(head, index - 1, count);
     }
-    catch (const std::bad_alloc&)
+    catch (const std::exception& e)
     {
       deleteList(head);
-      std::cerr << "Not enough memory\n";
+      std::cerr << e.what() << "\n";
       return 1;
     }
-    size += count;
   }
   printList(std::cout, head);
   std::cout << "\n";
