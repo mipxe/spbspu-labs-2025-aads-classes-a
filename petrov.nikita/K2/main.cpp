@@ -8,7 +8,7 @@ struct FwdList
 
 FwdList * duplicateElementInsideList(FwdList * head, size_t pos, size_t dupl_number);
 void clearList(FwdList * head);
-void outputListElements(std::ostream & out, FwdList * head);
+void outputListElements(std::ostream & out, const FwdList * head);
 
 int main()
 {
@@ -77,18 +77,10 @@ FwdList * duplicateElementInsideList(FwdList * head, size_t pos, size_t dupl_num
   }
   FwdList * duplicable_element = head;
   FwdList * after_dupl_element = head->next;
-  try
+  for (size_t i = 0; i < dupl_number; i++)
   {
-    for (size_t i = 0; i < dupl_number; i++)
-    {
-      head->next = new FwdList{ duplicable_element->value, nullptr };
-      head = head->next;
-    }
-  }
-  catch(const std::bad_alloc & e)
-  {
-    head->next = after_dupl_element;
-    throw;
+    head->next = new FwdList{ duplicable_element->value, nullptr };
+    head = head->next;
   }
   head->next = after_dupl_element;
   return duplicable_element;
@@ -105,7 +97,7 @@ void clearList(FwdList * head)
   }
 }
 
-void outputListElements(std::ostream & out, FwdList * head)
+void outputListElements(std::ostream & out, const FwdList * head)
 {
   out << head->value;
   head = head->next;
