@@ -7,7 +7,7 @@ struct BiList
 };
 
 BiList * toBiList(const int * arr, size_t size);
-void print(std::ostream & out, BiList * head, const size_t count);
+void print(std::ostream & out, const BiList * head, size_t count);
 void clearBiList(BiList * head);
 
 int main()
@@ -39,9 +39,9 @@ int main()
   delete[] arr;
 }
 
-void print(std::ostream & out, BiList * head, const size_t count)
+void print(std::ostream & out, const BiList * head, size_t count)
 {
-  BiList * subhead = head;
+  BiList * subhead = head->next;
   while(subhead->next)
   {
     subhead = subhead->next;
