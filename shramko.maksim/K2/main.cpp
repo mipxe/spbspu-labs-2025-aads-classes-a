@@ -10,7 +10,7 @@ FwdList* inDuplicates(FwdList* head, int pos, size_t c)
 {
   if (pos < 1)
   {
-    throw std::out_of_range("range err!\n");
+    throw std::out_of_range("range err!");
   }
 
   FwdList* pointer = head;
@@ -24,7 +24,7 @@ FwdList* inDuplicates(FwdList* head, int pos, size_t c)
   }
   if (pointer == nullptr)
   {
-    throw std::logic_error("Current is out of list!\n");
+    throw std::logic_error("Current is out of list!");
   }
 
   for (size_t i = 0; i < c; i++)
