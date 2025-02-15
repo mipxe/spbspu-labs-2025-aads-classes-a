@@ -41,7 +41,7 @@ int main()
 
 void print(std::ostream & out, const BiList * head, size_t count)
 {
-  BiList * subhead = head->next;
+  const BiList * subhead = head;
   while(subhead->next)
   {
     subhead = subhead->next;
