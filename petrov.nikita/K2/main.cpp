@@ -79,10 +79,9 @@ FwdList * duplicateElementInsideList(FwdList * head, size_t pos, size_t dupl_num
   FwdList * after_dupl_element = head->next;
   for (size_t i = 0; i < dupl_number; i++)
   {
-    head->next = new FwdList{ duplicable_element->value, nullptr };
+    head->next = new FwdList{ duplicable_element->value, after_dupl_element };
     head = head->next;
   }
-  head->next = after_dupl_element;
   return duplicable_element;
 }
 
