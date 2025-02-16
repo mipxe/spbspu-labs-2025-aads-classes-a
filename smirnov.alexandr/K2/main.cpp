@@ -39,7 +39,7 @@ FwdList * createFwdList()
   return head;
 }
 
-FwdList * insertDuplicates(FwdList * head, const size_t index, const size_t count)
+FwdList * insertDuplicates(FwdList * head, size_t index, size_t count)
 {
   if (index < 1)
   {
@@ -72,7 +72,6 @@ void printFwdList(const FwdList * head)
     std::cout << " " << head->value;
     head = head->next;
   }
-  std::cout << "\n";
 }
 
 int main()
@@ -104,5 +103,6 @@ int main()
     }
   }
   printFwdList(head);
+  std::cout << "\n";
   deleteFwdList(head);
 }
