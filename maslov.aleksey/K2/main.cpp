@@ -7,9 +7,8 @@ struct FwdList
   int value;
   FwdList * next;
 };
-void printList(std::ostream & out, FwdList * head);
+void printList(std::ostream & out, const FwdList * head);
 void freeList(FwdList * head);
-size_t getLength(FwdList * head);
 FwdList * duplicateElements(FwdList * head, size_t index, size_t count);
 
 int main()
@@ -35,29 +34,17 @@ int main()
     return 1;
   }
   size_t index = 0, count = 0;
-  while (std::cin >> index && !std::cin.eof())
+  while (std::cin >> index >> count && !std::cin.eof())
   {
-    if (index > getLength(head))
+    try
     {
-      std::cerr << "the element number exceeds the number of element in the list\n";
+      duplicateElements(head, index, count);
+    }
+    catch (const std::exception & e)
+    {
       freeList(head);
+      std::cerr << e.what() << "\n";
       return 1;
-    }
-    if (std::cin >> count)
-    {
-      try
-      {
-        duplicateElements(head, index, count);
-      }
-      catch (const std::exception & e)
-      {
-        std::cerr << e.what() << "\n";
-        return 1;
-      }
-    }
-    else
-    {
-      break;
     }
   }
   printList(std::cout, head);
@@ -65,7 +52,7 @@ int main()
   freeList(head);
 }
 
-void printList(std::ostream & out, FwdList * head)
+void printList(std::ostream & out, const FwdList * head)
 {
   out << head->value;
   head = head->next;
@@ -84,21 +71,10 @@ void freeList(FwdList * head)
     head = next;
   }
 }
-size_t getLength(FwdList * head)
-{
-  size_t length = 0;
-  while (head)
-  {
-    length++;
-    head = head->next;
-  }
-  return length;
-}
 FwdList * duplicateElements(FwdList * head, size_t index, size_t count)
 {
   if (index < 1)
   {
-    freeList(head);
     throw std::invalid_argument("index must be positive");
   }
   FwdList * subhead = head;
@@ -108,20 +84,16 @@ FwdList * duplicateElements(FwdList * head, size_t index, size_t count)
     subhead = subhead->next;
     currentIndex++;
   }
-  FwdList * node = subhead;
-  try
+  if (subhead == nullptr)
   {
-    for (size_t i = 0; i < count; ++i)
-    {
-      FwdList * newElement = new FwdList{subhead->value, node->next};
-      node->next = newElement;
-      node = newElement;
-    }
+    throw std::out_of_range("out of range");
   }
-  catch (const std::bad_alloc &)
+  FwdList * node = subhead;
+  for (size_t i = 0; i < count; ++i)
   {
-    freeList(head);
-    throw;
+    FwdList * newElement = new FwdList{subhead->value, node->next};
+    node->next = newElement;
+    node = newElement;
   }
   return subhead;
 }
