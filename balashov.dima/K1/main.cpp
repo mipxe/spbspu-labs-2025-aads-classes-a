@@ -26,7 +26,7 @@ List* convertArrayToList(int* array, int countElementOfArray)
 
   List* nowHead = head;
 
-  for (size_t i = 1; i < countElementOfArray; ++i)
+  for (int i = 1; i < countElementOfArray; ++i)
   {
     List* newNewHead = nullptr;
     try
@@ -61,7 +61,7 @@ int main()
 
   int input;
   int realCount = 0;
-  for (size_t i = 0; i < maxCount; i++)
+  for (int i = 0; i < maxCount; i++)
   {
     std::cin >> input;
     if (std::cin.fail() && !std::cin.eof())
@@ -82,7 +82,7 @@ int main()
     delete[] array;
   }
 
-  for (size_t i = 0; i < realCount; i++)
+  for (int i = 0; i < realCount; i++)
   {
     std::cout << newCoolList->value << " ";
     newCoolList = newCoolList->before;
