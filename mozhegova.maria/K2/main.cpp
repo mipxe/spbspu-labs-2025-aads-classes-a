@@ -44,26 +44,22 @@ int main()
 {
   FwdList * head = nullptr;
   FwdList * current = nullptr;
-  for (int i = 0; i < 10; i++)
+  try
   {
-    FwdList * subhead = nullptr;
-    try
+    head = new FwdList {0, nullptr};
+    current = head;
+    for (int i = 1; i < 10; i++)
     {
-      subhead = new FwdList {i, nullptr};
-    }
-    catch (const std::bad_alloc &)
-    {
-      deleteList(head);
-      std::cerr << "Out of memory\n";
-      return 1;
-    }
-    if (head == nullptr)
-    {
-      head = subhead;
+      FwdList * subhead = new FwdList {i, nullptr};
+      current->next = subhead;
       current = subhead;
     }
-    current->next = subhead;
-    current = subhead;
+  }
+  catch (const std::bad_alloc &)
+  {
+    deleteList(head);
+    std::cerr << "Out of memory\n";
+    return 1;
   }
 
   size_t index = 0, count = 0;
@@ -73,16 +69,10 @@ int main()
     {
       duplicate(head, index, count);
     }
-    catch (const std::bad_alloc &)
+    catch (const std::exception & e)
     {
       deleteList(head);
-      std::cerr << "Out of memory\n";
-      return 1;
-    }
-    catch (const std::out_of_range &)
-    {
-      deleteList(head);
-      std::cerr << "Out of range\n";
+      std::cerr << e.what() << "\n";
       return 1;
     }
   }
