@@ -18,8 +18,6 @@ namespace rychkov
   public:
     ForwardIterator(): node_(nullptr)
     {}
-    ForwardIterator(FwdList* node): node_(node)
-    {}
 
     ForwardIterator& operator++();
     ForwardIterator operator++(int);
@@ -29,6 +27,8 @@ namespace rychkov
     bool operator!=(const ForwardIterator& rhs) const noexcept;
   private:
     FwdList* node_;
+    ForwardIterator(FwdList* node): node_(node)
+    {}
     friend struct rychkov::forward_list;
     friend FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups);
   };

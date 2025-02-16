@@ -1,5 +1,8 @@
 #include "fwd_list.hpp"
 
+#include <memory>
+#include <stdexcept>
+
 rychkov::forward_list rychkov::convert(const int* arr, size_t size)
 {
   if (size == 0)
@@ -8,7 +11,7 @@ rychkov::forward_list rychkov::convert(const int* arr, size_t size)
   }
 
   forward_list result = {new FwdList{arr[0]}};
-  ForwardIterator temp = result.head;
+  ForwardIterator temp = result.begin();
   for (size_t i = 1; i < size; i++)
   {
     try
@@ -40,7 +43,7 @@ rychkov::FwdList* rychkov::duplicateNode(FwdList* head, size_t id, size_t dups)
   {}
   if (i == end)
   {
-    return nullptr;
+    throw std::out_of_range("invalid list node id");
   }
 
   FwdList* result = i.node_;
@@ -80,7 +83,7 @@ int& rychkov::ForwardIterator::operator*() const
 }
 int* rychkov::ForwardIterator::operator->() const
 {
-  return &(node_->value);
+  return std::addressof(node_->value);
 }
 bool rychkov::ForwardIterator::operator==(const ForwardIterator& rhs) const noexcept
 {

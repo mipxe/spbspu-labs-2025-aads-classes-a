@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "fwd_list.hpp"
 
 int main()
@@ -19,12 +20,12 @@ int main()
   {
     try
     {
-      rychkov::FwdList* found = rychkov::duplicateNode(list.head, id - 1, dups);
-      if (!found)
-      {
-        rychkov::destroy(list.head);
-        return 1;
-      }
+      rychkov::duplicateNode(list.head, id - 1, dups);
+    }
+    catch (const std::out_of_range&)
+    {
+      rychkov::destroy(list.head);
+      return 1;
     }
     catch (...)
     {
@@ -33,7 +34,7 @@ int main()
     }
   }
 
-  char delim[2] = {'\0', '\0'};
+  char delim[] = "\0";
   for (int& i : list)
   {
 
