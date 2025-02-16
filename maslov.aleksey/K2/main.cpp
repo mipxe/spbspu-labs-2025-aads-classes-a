@@ -51,7 +51,6 @@ int main()
   std::cout << "\n";
   freeList(head);
 }
-
 void printList(std::ostream & out, const FwdList * head)
 {
   out << head->value;
