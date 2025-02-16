@@ -84,15 +84,10 @@ int main()
     {
       addNewElems(head, a, b);
     }
-    catch(std::bad_alloc&)
+    catch(...)
     {
       deleteList(head);
-      std::cerr << "bad alloc!\n";
-      return 1;
-    }
-    catch(std::logic_error&)
-    {
-      deleteList(head);
+      std::cerr << "uncorrect creation\n";
       return 1;
     }
   }
