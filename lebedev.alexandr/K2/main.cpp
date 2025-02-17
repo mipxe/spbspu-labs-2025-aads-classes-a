@@ -8,12 +8,11 @@ struct FwdList
 
 void deleteList(FwdList* head)
 {
-  FwdList* temp = head;
-  while (temp)
+  while (head)
   {
-    FwdList* subhead = temp->next;
-    delete temp;
-    temp = subhead;
+    FwdList* subhead = head;
+    head = head->next;
+    delete subhead;
   }
 }
 
@@ -47,18 +46,18 @@ FwdList* duplicate(FwdList* head, size_t index, size_t count)
 int main()
 {
   FwdList* head = nullptr;
-  size_t count = 0;
-  head = new FwdList;
-  FwdList* p = head;
-  p->value = count++;
+  FwdList* current = nullptr;
 
   try
   {
+    int count = 0;
+    head = new FwdList{ count++, nullptr };
+    current = head;
     while (count != 10)
     {
-      p->next = new FwdList;
-      p = p->next;
-      p->value = count++;
+      current->next = new FwdList;
+      current = current->next;
+      current->value = count++;
     }
   }
   catch (const std::bad_alloc& e)
