@@ -31,7 +31,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
   {
     return nullptr;
   }
-  List< List< int > * > * head = new List< List< int > * >;
+  List< List< int > * > * head = new List< List< int > * > ();
   List< List< int > * > * tail = head;
   try
   {
