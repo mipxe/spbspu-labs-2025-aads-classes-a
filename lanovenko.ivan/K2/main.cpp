@@ -79,45 +79,36 @@ int main()
     delete[] array;
     return 1;
   }
-  if (array[0] > 0 && array[0] < 11)
+  for (size_t i = 0; i < capacity; i += 2)
   {
-    for (size_t i = 0; i < capacity; i += 2)
+    try
     {
-      try
+      if (array[0] > 0 && array[0] < 11)
       {
-        if (array[0] > 0 || array[0] > 10)
-        {
-          Insert(buf, array[i], array[i + 1]);
-        }
-        else
-        {
-          std::cerr << "Bad Index\n";
-          break;
-          return 1;
-        }
+        Insert(buf, array[i], array[i + 1]);
       }
-      catch (const std::bad_alloc& e)
+      else
       {
+        std::cerr << "Bad Index\n";
         delete[] array;
-        deleteList(buf);
         return 1;
       }
     }
-    FwdList* temporary = buf;
-    std::cout << temporary->value;
-    for (temporary = temporary->next; temporary != nullptr; temporary = temporary->next)
+    catch (const std::bad_alloc& e)
     {
-      std::cout << " " << temporary->value;
+      delete[] array;
+      deleteList(buf);
+      return 1;
     }
-    std::cout << '\n';
-    delete[] array;
-    deleteList(buf);
   }
-  else
+  FwdList* temporary = buf;
+  std::cout << temporary->value;
+  for (temporary = temporary->next; temporary != nullptr; temporary = temporary->next)
   {
-    delete[] array;
-    std::cerr << "Bad index\n";
-    return 1;
+    std::cout << " " << temporary->value;
   }
+  std::cout << '\n';
+  delete[] array;
+  deleteList(buf);
 }
 
