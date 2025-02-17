@@ -37,7 +37,6 @@ void deleteList(FwdList* head)
 FwdList* createList()
 {
   FwdList* head = nullptr;
-  FwdList* tail = nullptr;
   FwdList* subhead = nullptr;
   try
   {
