@@ -58,12 +58,12 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
         deleteList(arr, i);
         throw;
       }
-      if (head == nullptr) 
+      if (head == nullptr)
       {
-        head = new_element; 
-        tail = head; 
-      } 
-      else 
+        head = new_element;
+        tail = head;
+      }
+      else
       {
         tail->next = new_element;
         tail = tail->next;
