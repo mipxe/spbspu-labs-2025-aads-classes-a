@@ -8,12 +8,92 @@ struct FwdList
 
 void printList(FwdList* head)
 {
-  while (head != nullptr)
+  while (head)
   {
-    std::cout << head->value;
+    std::cout << head->value << " ";
     head = head->next;
+  }
+  std::cout << '\n';
+}
+
+void deleteList(FwdList* head)
+{
+  while (head)
+  {
+    FwdList* subhead = head->next;
+    delete head;
+    head = subhead;
   }
 }
 
+FwdList* duplicate(FwdList* head, size_t index, size_t count)
+{
+  if (index < 1)
+  {
+    throw std::out_of_range("Index out of range!");
+  }
+
+  FwdList* temp = head;
+  for (size_t i = 1; i < index && temp != nullptr; i++)
+  {
+    temp = temp->next;
+  }
+
+  if (temp == nullptr)
+  {
+    throw std::out_of_range("");
+  }
+
+  for (size_t i = 0; i < count; i++)
+  {
+    FwdList* node = new FwdList{ temp->value, nullptr };
+    node->next = temp->next;
+    temp->next = node;
+  }
+  return temp;
+}
+
 int main()
-{}
+{
+  FwdList* head = nullptr;
+  size_t count = 0;
+  head = new FwdList;
+  FwdList* p = head;
+  p->value = count++;
+
+  try
+  {
+    while (count != 10)
+    {
+      p->next = new FwdList;
+      p = p->next;
+      p->value = count++;
+    }
+  }
+  catch (const std::bad_alloc& e)
+  {
+    deleteList(head);
+    std::cerr << "Memory allocation error!\n";
+    return 2;
+  }
+
+  size_t a = 0, b = 0;
+  std::cin >> a >> b;
+  while (!std::cin.eof() && !std::cin.fail())
+  {
+    try
+    {
+      duplicate(head, a, b);
+    }
+    catch (const std::exception& e)
+    {
+      deleteList(head);
+      std::cerr << e.what() << '\n';
+      return 2;
+    }
+  }
+
+  printList(head);
+  deleteList(head);
+  return 0;
+}
