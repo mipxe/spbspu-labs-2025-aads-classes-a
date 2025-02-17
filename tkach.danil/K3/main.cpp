@@ -43,13 +43,17 @@ namespace
 
   List< List< int > * > * convert(const int * const * d, const size_t m, const size_t * n)
   {
+    if (m == 0)
+    {
+      return nullptr;
+    }
     List< List< int > * > * head = nullptr;
     size_t first = 0;
     while (n[first] == 0)
     {
       first++;
     }
-    List< int > * first_list = new List <int>{d[first][0]};
+    List< int > * first_list = new List <int>{d[first][0], nullptr};
     try
     {
       List< int > * first_list_tail = first_list;
@@ -126,7 +130,7 @@ int main()
 {
   int arrays_size = 0;
   std::cin >> arrays_size;
-  if (arrays_size <= 0)
+  if (arrays_size < 0)
   {
     std::cerr << "No arrays\n";
     return 1;
@@ -137,6 +141,13 @@ int main()
   for (;created < size_t(arrays_size);)
   {
     std::cin >> sizes[created];
+    if (!std::cin)
+    {
+      delete[] sizes;
+      deleteMtx(arrays, created);
+      std::cerr << "Input error\n";
+      return 1;
+    }
     try
     {
       arrays[created] = new int[sizes[created]];
@@ -153,13 +164,6 @@ int main()
     {
       std:: cin >> arrays[created - 1][j];
     }
-  }
-  if (!std::cin)
-  {
-    delete[] sizes;
-    deleteMtx(arrays, created);
-    std::cerr << "Input error\n";
-    return 1;
   }
   List< List< int > * > * head = nullptr;
   try
@@ -185,8 +189,7 @@ int main()
   }
   else
   {
-    std::cout << count(head, isOdd) << "\n";
-    std::cout << count(head, isEven) << "\n";
+    std::cout << count(head, isOdd) << " " << count(head, isEven) << "\n";
   }
   deleteMtx(arrays, created);
   delete[] sizes;
