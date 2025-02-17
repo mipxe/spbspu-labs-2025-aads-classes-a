@@ -12,9 +12,23 @@ void deleteList(List< T >* head)
 {
   while (head != nullptr)
   {
-    List< T >* subHead = head->next;
-    delete head;
-    head = subHead;
+    List< T >* subHead = head;
+    head = head->next;
+    delete subHead;
+  }
+}
+
+template< class T >
+void deleteList(List< List< T > * > * head)
+{
+  List< List< int > * > * current = head;
+  while (current != nullptr)
+  {
+    List< int > * temp = current->data;
+    deleteList(temp);
+    List< List< int > * > * tempList = current;
+    current = current->next;
+    delete tempList;
   }
 }
 
@@ -79,6 +93,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
   catch(const std::bad_alloc&)
   {
     deleteList(arr, m);
+    throw;
   }
   List<List< int >*>* tail = head;
   for (size_t i = 1; i < m; ++i)
@@ -105,62 +120,38 @@ template< class T >
 size_t countOdd(const List< List< T > * > * head)
 {
   size_t resOdd = 0;
-  if (head != nullptr)
+  const List<List<T>*>* tail = head;
+  while (tail != nullptr) 
   {
-    List< T > * temp = head->data;
-    while(temp != nullptr)
+    List<T>* temp = tail->data;
+    while (temp != nullptr) 
     {
-      if ((temp->data % 2) != 0)
+      if ((temp->data % 2) != 0) 
       {
         resOdd += 1;
       }
       temp = temp->next;
-    }
-  }
-  List< List< T > * > * tail = head->next;
-  while (tail != nullptr)
-  {
-    List< T > * tailTemp = tail->data;
-    while(tailTemp != nullptr)
-    {
-      if ((tailTemp->data % 2) != 0)
-      {
-        resOdd += 1;
-      }
-      tailTemp = tailTemp->next;
     }
     tail = tail->next;
   }
   return resOdd;
 }
 
-template< class T >
-size_t countEven(const List< List< T > * > * head)
+template<class T>
+size_t countEven(const List<List<T>*>* head) 
 {
   size_t resEven = 0;
-  if (head != nullptr)
+  const List<List<T>*>* tail = head;
+  while (tail != nullptr) 
   {
-    List< T > * temp = head->data;
-    while(temp != nullptr)
+    List<T>* temp = tail->data;
+    while (temp != nullptr) 
     {
-      if ((temp->data % 2) == 0)
+      if ((temp->data % 2) == 0) 
       {
         resEven += 1;
       }
       temp = temp->next;
-    }
-  }
-  List< List< T > * > * tail = head->next;
-  while (tail != nullptr)
-  {
-    List< T > * tailTemp = tail->data;
-    while(tailTemp != nullptr)
-    {
-      if ((tailTemp->data % 2) == 0)
-      {
-        resEven += 1;
-      }
-      tailTemp = tailTemp->next;
     }
     tail = tail->next;
   }
@@ -238,7 +229,7 @@ int main()
       std::cin >> temp;
       if (!std::cin.good())
       {
-        deleteArr(arr, i);
+        deleteArr(arr, i + 1);
         delete[] size;
         std::cerr << "uncorrect input\n";
         return 1;
@@ -256,6 +247,7 @@ int main()
     std::cerr << "uncorrect convert\n";
     deleteArr(arr, capacity);
     delete[] size;
+    deleteList(head);
     return 1;
   }
   std::string condition = "";
