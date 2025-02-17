@@ -37,6 +37,7 @@ namespace
     {
       List< List< T >* > * next_head = head->next;
       deleteList(head->data);
+      delete head;
       head = next_head;
     }
   }
