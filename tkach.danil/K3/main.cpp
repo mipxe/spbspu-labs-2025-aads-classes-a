@@ -72,6 +72,7 @@ namespace
       }
       catch (const std::bad_alloc&)
       {
+        deleteList(innhead);
         deleteListOfLists(head);
         throw;
       }
