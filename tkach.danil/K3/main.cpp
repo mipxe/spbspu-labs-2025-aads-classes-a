@@ -48,30 +48,10 @@ namespace
     {
       return nullptr;
     }
-    List< List< int > * > * head = nullptr;
-    size_t first = 0;
-    while (n[first] == 0)
-    {
-      first++;
-    }
-    List< int > * first_list = new List <int>{d[first][0], nullptr};
-    try
-    {
-      List< int > * first_list_tail = first_list;
-      for (size_t i = 1; i < n[first]; ++i)
-      {
-        first_list_tail->next = new List< int >{d[first][i], nullptr};
-        first_list_tail = first_list_tail->next;
-      }
-      head = new List< List< int > * >{first_list, nullptr};
-    }
-    catch (const std::bad_alloc&)
-    {
-      deleteList(first_list);
-      throw;
-    }
+    List< int > * fake_list = new List< int >{0, nullptr};
+    List< List< int > * > * head = new List< List< int > * >{fake_list, nullptr};
     List< List< int > * > * tail = head;
-    for (size_t i = first + 1; i < m; ++i)
+    for (size_t i = 0; i < m; ++i)
     {
       if (n[i] == 0)
       {
@@ -96,6 +76,8 @@ namespace
         throw;
       }
     }
+    delete fake_list;
+    head = head->next;
     return head;
   }
 
