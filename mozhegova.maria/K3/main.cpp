@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 template< class T >
 struct List {
@@ -26,7 +27,7 @@ void deleteList(List< List< int > * > * head)
 
 List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n)
 {
-  List< List< int > * > * head = new List< List< int > * > ();
+  List< List< int > * > * head = new List< List< int > * >;
   List< List< int > * > * tail = head;
   try
   {
@@ -40,8 +41,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
         current->next = newNode;
         current = newNode;
       }
-      tail->data = subhead;
-      tail->next = nullptr;
+      tail->next = new List< List< int > * > {subhead, nullptr};
       tail = tail->next;
     }
   }
@@ -123,6 +123,34 @@ int main()
     return 1;
   }
 
-  List< List< int > * > * head = convert(arr, M, n);
-
+  List< List< int > * > * head = nullptr;
+  try
+  {
+    head = convert(arr, M, n);
+  }
+  catch(const std::bad_alloc &)
+  {
+    delete[] n;
+    deleteArr(arr, i);
+    std::cerr << "Out of memory\n";
+    return 1;
+  }
+  delete[] n;
+  deleteArr(arr, i);
+  
+  std::string cond;
+  std::cin >> cond;
+  if (cond == "odd")
+  {
+    std::cout << count(head, isOdd) << "\n";
+  }
+  else if (cond == "even")
+  {
+    std::cout << count(head, isEven) << "\n";
+  }
+  else
+  {
+    std::cout <<  count(head, isOdd) << " " << count(head, isEven) << "\n";
+  }
+  deleteList(head);
 }
