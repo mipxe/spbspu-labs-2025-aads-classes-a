@@ -27,6 +27,10 @@ void deleteList(List< List< int > * > * head)
 
 List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n)
 {
+  if (m == 0)
+  {
+    return nullptr;
+  }
   List< List< int > * > * head = new List< List< int > * >;
   List< List< int > * > * tail = head;
   try
@@ -85,7 +89,7 @@ size_t count(const List< List< T > * > * head, C condition)
 
 void deleteArr(int ** arr, size_t count)
 {
-  for (size_t i = 0; i < count; i++)
+  for (size_t i = 0; i < count; ++i)
   {
     delete[] arr[i];
   }
@@ -95,7 +99,11 @@ void deleteArr(int ** arr, size_t count)
 int main()
 {
   size_t M = 0;
-  std::cin >> M;
+  if (!(std::cin >> M))
+  {
+    std::cerr << "incorrect input\n";
+    return 1;
+  }
   int ** arr = nullptr;
   size_t i = 0;
   size_t * n = nullptr;
@@ -103,15 +111,27 @@ int main()
   {
     arr = new int * [M];
     n = new size_t[M];
-    for (; i < M; i++)
+    for (; i < M; ++i)
     {
       size_t N = 0;
-      std::cin >> N;
+      if (!(std::cin >> N))
+      {
+        delete[] n;
+        deleteArr(arr, i);
+        std::cerr << "incorrect input\n";
+        return 1;
+      }
       arr[i] = new int[N];
       n[i] = N;
-      for (size_t j = 0; j < N; j++)
+      for (size_t j = 0; j < N; ++j)
       {
-        std::cin >> arr[i][j];
+        if (!(std::cin >> arr[i][j]))
+        {
+          delete[] n;
+          deleteArr(arr, i + 1);
+          std::cerr << "incorrect input\n";
+          return 1;
+        }
       }
     }
   }
@@ -150,7 +170,7 @@ int main()
   }
   else
   {
-    std::cout <<  count(head, isOdd) << " " << count(head, isEven) << "\n";
+    std::cout << count(head, isOdd) << " " << count(head, isEven) << "\n";
   }
   deleteList(head);
 }
