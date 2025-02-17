@@ -91,6 +91,7 @@ int main()
       std::cerr << e.what() << '\n';
       return 2;
     }
+    std::cin >> a >> b;
   }
 
   printList(head);
