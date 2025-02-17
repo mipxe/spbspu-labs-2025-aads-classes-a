@@ -43,19 +43,23 @@ int main()
 {
   FwdList* head = nullptr;
   FwdList* tail = nullptr;
-  for (int i = 0; i < 10; ++i)
+  try
   {
-    FwdList* newNode = new FwdList{i, nullptr};
-    if (head == nullptr)
+    FwdList* newNode = new FwdList{0, nullptr};
+    head = newNode;
+    tail = newNode;
+    for (int i = 1; i < 10; ++i)
     {
-      head = newNode;
-      tail = newNode;
-    }
-    else
-    {
+      newNode = new FwdList{i, nullptr};
       tail->next = newNode;
       tail = newNode;
     }
+  }
+  catch (const std::bad_alloc&)
+  {
+    std::cerr << "ERROR: out of memory\n";
+    deleteList(head);
+    return 1;
   }
   int num1 = 0;
   int num2 = 0;
@@ -77,14 +81,12 @@ int main()
     }
   }
   FwdList* current = head;
+  std::cout << current->value;
+  current = current->next;
   while (current)
   {
-    std::cout << current->value;
+    std::cout << " " << current->value;
     current = current->next;
-    if (current)
-    {
-      std::cout << " ";
-    }
   }
   std::cout << "\n";
   deleteList(head);
