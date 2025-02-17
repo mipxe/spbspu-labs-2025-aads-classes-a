@@ -121,12 +121,12 @@ size_t countOdd(const List< List< T > * > * head)
 {
   size_t resOdd = 0;
   const List<List<T>*>* tail = head;
-  while (tail != nullptr) 
+  while (tail != nullptr)
   {
     List<T>* temp = tail->data;
-    while (temp != nullptr) 
+    while (temp != nullptr)
     {
-      if ((temp->data % 2) != 0) 
+      if ((temp->data % 2) != 0)
       {
         resOdd += 1;
       }
@@ -138,16 +138,16 @@ size_t countOdd(const List< List< T > * > * head)
 }
 
 template<class T>
-size_t countEven(const List<List<T>*>* head) 
+size_t countEven(const List<List<T>*>* head)
 {
   size_t resEven = 0;
   const List<List<T>*>* tail = head;
-  while (tail != nullptr) 
+  while (tail != nullptr)
   {
     List<T>* temp = tail->data;
-    while (temp != nullptr) 
+    while (temp != nullptr)
     {
-      if ((temp->data % 2) == 0) 
+      if ((temp->data % 2) == 0)
       {
         resEven += 1;
       }
