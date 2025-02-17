@@ -8,11 +8,12 @@ struct FwdList
 
 void deleteList(FwdList* head)
 {
-  while (head)
+  FwdList* temp = head;
+  while (temp)
   {
-    FwdList* subhead = head->next;
-    delete head;
-    head = subhead;
+    FwdList* subhead = temp->next;
+    delete temp;
+    temp = subhead;
   }
 }
 
