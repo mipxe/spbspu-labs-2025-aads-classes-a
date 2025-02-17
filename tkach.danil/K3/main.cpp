@@ -129,8 +129,7 @@ namespace
 int main()
 {
   int arrays_size = 0;
-  std::cin >> arrays_size;
-  if (arrays_size < 0)
+  if ((!(std::cin >> arrays_size)) || arrays_size < 0)
   {
     std::cerr << "No arrays\n";
     return 1;
@@ -140,8 +139,7 @@ int main()
   size_t created = 0;
   for (;created < size_t(arrays_size);)
   {
-    std::cin >> sizes[created];
-    if (!std::cin)
+    if (!(std::cin >> sizes[created]))
     {
       delete[] sizes;
       deleteMtx(arrays, created);
@@ -191,6 +189,7 @@ int main()
   {
     std::cout << count(head, isOdd) << " " << count(head, isEven) << "\n";
   }
+  deleteListOfLists(head);
   deleteMtx(arrays, created);
   delete[] sizes;
   return 0;
