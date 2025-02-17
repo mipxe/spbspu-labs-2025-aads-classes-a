@@ -170,11 +170,11 @@ size_t countEven(const List< List< T > * > * head)
 template< class T, class C >
 size_t count(const List< List< T > * > * head, C condition)
 {
-  if (condition == "even")
+  if (condition == 2)
   {
     return countEven(head);
   }
-  else if (condition == "odd")
+  else if (condition == 1)
   {
     return countOdd(head);
   }
@@ -265,13 +265,17 @@ int main()
   }
   std::string condition = "";
   std::cin >> condition;
-  if (condition == "even" or condition == "odd")
+  if (condition == "even")
   {
-    std::cout << count(head, condition);
+    std::cout << count(head, 2);
+  }
+  else if (condition == "odd")
+  {
+    std::cout << count(head, 1);
   }
   else
   {
-    std::cout << count(head, "odd") << " " << count(head, "even");
+    std::cout << count(head, 1) << " " << count(head, 2);
   }
   std::cout << "\n";
   deleteArr(arr, capacity);
