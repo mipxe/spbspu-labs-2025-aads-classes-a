@@ -10,4 +10,11 @@ template< class T, class C >
 size_t count(const List< List< T > * > * head, C condition);
 
 int main()
-{}
+{
+
+int countArr = 0;
+int count = 0;
+
+
+
+}
