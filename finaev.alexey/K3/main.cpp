@@ -190,11 +190,6 @@ int main()
     std::cerr << "uncorrect input\n";
     return 1;
   }
-  if (capacity == 0)
-  {
-    std::cerr << "empty\n";
-    return 1;
-  }
   int ** arr = nullptr;
   try
   {
@@ -272,6 +267,10 @@ int main()
   else if (condition == "odd")
   {
     std::cout << count(head, 1);
+  }
+  else if (capacity == 0)
+  {
+    std::cout << count(head, 0) << " " << count(head, 0);
   }
   else
   {
