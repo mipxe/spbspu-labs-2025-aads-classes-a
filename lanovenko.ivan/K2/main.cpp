@@ -91,6 +91,7 @@ int main()
       {
         std::cerr << "Bad Index\n";
         delete[] array;
+        deleteList(buf);
         return 1;
       }
     }
