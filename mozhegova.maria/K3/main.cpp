@@ -137,7 +137,7 @@ int main()
   }
   delete[] n;
   deleteArr(arr, i);
-  
+
   std::string cond;
   std::cin >> cond;
   if (cond == "odd")
