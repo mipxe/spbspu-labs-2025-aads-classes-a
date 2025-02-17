@@ -135,8 +135,20 @@ int main()
     std::cerr << "No arrays\n";
     return 1;
   }
-  int** arrays = new int*[arrays_size];
-  size_t* sizes = new size_t[arrays_size];
+  int** arrays = nullptr;
+  size_t* sizes = nullptr;
+  try
+  {
+    arrays = new int*[arrays_size];
+    sizes = new size_t[arrays_size];
+  }
+  catch (const std::bad_alloc&)
+  {
+    delete[] arrays;
+    delete[] sizes;
+    std::cerr << "Not enough memory\n";
+    return 1;
+  }
   size_t created = 0;
   for (;created < size_t(arrays_size);)
   {
