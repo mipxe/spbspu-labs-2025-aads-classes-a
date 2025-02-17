@@ -48,8 +48,7 @@ namespace
     {
       return nullptr;
     }
-    List< int > * fake_list = new List< int >{0, nullptr};
-    List< List< int > * > * head = new List< List< int > * >{fake_list, nullptr};
+    List< List< int > * > * head = new List< List< int > * >{nullptr, nullptr};
     List< List< int > * > * tail = head;
     for (size_t i = 0; i < m; ++i)
     {
@@ -77,8 +76,9 @@ namespace
         throw;
       }
     }
-    delete fake_list;
-    head = head->next;
+    List< List< int > * > * temp = head->next;
+    delete head;
+    head = temp;
     return head;
   }
 
