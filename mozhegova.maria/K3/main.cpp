@@ -45,7 +45,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
       tail = tail->next;
     }
   }
-  catch(...)
+  catch (...)
   {
     deleteList(head);
     throw;
@@ -53,8 +53,35 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
   return head;
 }
 
+bool isEven(int num)
+{
+  return num % 2 == 0;
+}
+
+bool isOdd(int num)
+{
+  return num % 2 != 0;
+}
+
 template< class T, class C >
-size_t count(const List< List< T > * > * head, C condition);
+size_t count(const List< List< T > * > * head, C condition)
+{
+  size_t k = 0;
+  while (head)
+  {
+    List< int > * current = head->data;
+    while (current)
+    {
+      if (condition(current->data))
+      {
+        k++;
+      }
+      current = current->next;
+    }
+    head = head->next;
+  }
+  return k;
+}
 
 void deleteArr(int ** arr, size_t count)
 {
@@ -88,13 +115,14 @@ int main()
       }
     }
   }
-  catch(...)
+  catch (const std::exception & e)
   {
     delete[] n;
     deleteArr(arr, i);
-    std::cerr << "Out of memory\n";
+    std::cerr << e.what() << "\n";
     return 1;
   }
 
+  List< List< int > * > * head = convert(arr, M, n);
 
 }
