@@ -18,6 +18,10 @@ void deleteList(FwdList* head)
 
 FwdList* duplicate(FwdList* head, size_t index, size_t count)
 {
+  if (!head)
+  {
+    throw std::invalid_argument("Head is empty");
+  }
   if (index < 1)
   {
     throw std::out_of_range("Index out of range!");
@@ -55,9 +59,8 @@ int main()
     current = head;
     while (count != 10)
     {
-      current->next = new FwdList;
+      current->next = new FwdList{ count++, nullptr };
       current = current->next;
-      current->value = count++;
     }
   }
   catch (const std::bad_alloc& e)
@@ -66,10 +69,9 @@ int main()
     std::cerr << "Memory allocation error!\n";
     return 2;
   }
-//kek
+
   size_t a = 0, b = 0;
-  std::cin >> a >> b;
-  while (!std::cin.eof() && !std::cin.fail())
+  while (std::cin >> a >> b && !std::cin.eof())
   {
     try
     {
@@ -81,7 +83,6 @@ int main()
       std::cerr << e.what() << '\n';
       return 2;
     }
-    std::cin >> a >> b;
   }
 
   FwdList * temp = head;
