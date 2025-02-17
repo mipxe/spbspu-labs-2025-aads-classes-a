@@ -6,16 +6,6 @@ struct FwdList
   FwdList* next;
 };
 
-void printList(FwdList* head)
-{
-  while (head)
-  {
-    std::cout << head->value << " ";
-    head = head->next;
-  }
-  std::cout << '\n';
-}
-
 void deleteList(FwdList* head)
 {
   while (head)
