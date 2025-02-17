@@ -175,11 +175,11 @@ int main()
   }
   std::string s = "";
   std::cin >> s;
-  if (s == "Odd")
+  if (s == "odd")
   {
     std::cout << count(head, isOdd) << "\n";
   }
-  else if (s == "Even")
+  else if (s == "even")
   {
     std::cout << count(head, isEven) << "\n";
   }
