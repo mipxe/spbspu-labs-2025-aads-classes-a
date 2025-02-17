@@ -1,6 +1,5 @@
 #include <iostream>
 
-
 struct FwdList
 {
   int value;
@@ -37,19 +36,30 @@ void deleteList(FwdList* head)
 
 FwdList* createList()
 {
-  FwdList* head = new FwdList{ 0,nullptr };
-  FwdList* subhead = head;
-  for (int i = 1; i < 10; i++)
+  FwdList* head = nullptr;
+  FwdList* tail = nullptr;
+  FwdList* subhead = nullptr;
+  try
   {
-    head->next = new FwdList{ i, nullptr };
-    head = head->next;
+    head = new FwdList{ 0,nullptr };
+    subhead = head;
+    for (int i = 1; i < 10; i++)
+    {
+      head->next = new FwdList{ i, nullptr };
+      head = head->next;
+    }
+  }
+  catch (const std::bad_alloc& e)
+  {
+    deleteList(head);
+    throw;
   }
   return subhead;
 }
 
 int main()
 {
-  int* array = new int[10000]{2};
+  int* array = new int[10000] {};
   std::size_t capacity = 0;
   int a = 0;
   while (std::cin >> a && !std::cin.eof())
@@ -60,12 +70,6 @@ int main()
   {
     capacity--;
   }
-  if (array[0] == 0 || array[0] == 11)
-  {
-    delete[] array;
-    std::cerr << "Bad Index\n";
-    return 1;
-  }
   FwdList* buf = nullptr;
   try
   {
@@ -74,30 +78,47 @@ int main()
   catch (const std::bad_alloc& e)
   {
     delete[] array;
-    deleteList(buf);
     return 1;
   }
-  for (size_t i = 0; i < capacity; i+=2)
+  if (array[0] > 0 && array[0] < 11)
   {
-    try
+    for (size_t i = 0; i < capacity; i += 2)
     {
-      Insert(buf, array[i], array[i + 1]);
+      try
+      {
+        if (array[0] > 0 || array[0] > 10)
+        {
+          Insert(buf, array[i], array[i + 1]);
+        }
+        else
+        {
+          std::cerr << "Bad Index\n";
+          break;
+          return 1;
+        }
+      }
+      catch (const std::bad_alloc& e)
+      {
+        delete[] array;
+        deleteList(buf);
+        return 1;
+      }
     }
-    catch (const std::bad_alloc& e)
+    FwdList* temporary = buf;
+    std::cout << temporary->value;
+    for (temporary = temporary->next; temporary != nullptr; temporary = temporary->next)
     {
-      delete[] array;
-      deleteList(buf);
-      return 1;
+      std::cout << " " << temporary->value;
     }
+    std::cout << '\n';
+    delete[] array;
+    deleteList(buf);
   }
-  FwdList* temporary = buf;
-  std::cout << temporary->value;
-  for (temporary = temporary->next; temporary != nullptr; temporary = temporary->next)
+  else
   {
-    std::cout << " " << temporary->value;
+    delete[] array;
+    std::cerr << "Bad index\n";
+    return 1;
   }
-  std::cout << '\n';
-  delete[] array;
-  deleteList(buf);
 }
 
