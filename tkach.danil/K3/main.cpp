@@ -91,7 +91,7 @@ namespace
         throw;
       }
     }
-    return head; 
+    return head;
   }
 
   template< class T, class C >
@@ -153,7 +153,6 @@ int main()
     {
       std:: cin >> arrays[created - 1][j];
     }
-    
   }
   if (!std::cin)
   {
@@ -176,7 +175,6 @@ int main()
   }
   std::string s = "";
   std::cin >> s;
-  std::cout << "\n";
   if (s == "Odd")
   {
     std::cout << count(head, isOdd) << "\n";
