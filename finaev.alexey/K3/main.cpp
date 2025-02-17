@@ -55,6 +55,10 @@ void deleteArr(T** arr, size_t size)
 
 List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n)
 {
+  if (m == 0)
+  {
+    return nullptr;
+  }
   List<int>** arr = new List<int>*[m];
   for (size_t i = 0; i < m; ++i)
   {
@@ -70,6 +74,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
       catch (const std::bad_alloc&)
       {
         deleteList(arr, i);
+        deleteList(head);
         throw;
       }
       if (head == nullptr)
@@ -93,6 +98,7 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
   catch(const std::bad_alloc&)
   {
     deleteList(arr, m);
+    deleteList(head);
     throw;
   }
   List<List< int >*>* tail = head;
@@ -259,10 +265,6 @@ int main()
   else if (condition == "odd")
   {
     std::cout << count(head, 1);
-  }
-  else if (capacity == 0)
-  {
-    std::cout << count(head, 0) << " " << count(head, 0);
   }
   else
   {
