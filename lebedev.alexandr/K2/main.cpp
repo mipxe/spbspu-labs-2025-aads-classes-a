@@ -66,7 +66,7 @@ int main()
     std::cerr << "Memory allocation error!\n";
     return 2;
   }
-
+//kek
   size_t a = 0, b = 0;
   std::cin >> a >> b;
   while (!std::cin.eof() && !std::cin.fail())
