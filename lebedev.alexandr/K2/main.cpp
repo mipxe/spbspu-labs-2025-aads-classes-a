@@ -94,7 +94,13 @@ int main()
     std::cin >> a >> b;
   }
 
-  printList(head);
+  FwdList * temp = head;
+  std::cout << temp->value;
+  for (temp = temp->next; temp != nullptr; temp = temp->next)
+  {
+    std::cout << " " << temp->value;
+  }
+  std::cout << "\n";
   deleteList(head);
   return 0;
 }
