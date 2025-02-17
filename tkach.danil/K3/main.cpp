@@ -160,7 +160,13 @@ int main()
     created++;
     for (size_t j = 0; j < sizes[created - 1]; ++j)
     {
-      std:: cin >> arrays[created - 1][j];
+      if (!(std:: cin >> arrays[created - 1][j]))
+      {
+        delete[] sizes;
+        deleteMtx(arrays, created);
+        std::cerr << "Input error\n";
+        return 1;
+      }
     }
   }
   List< List< int > * > * head = nullptr;
