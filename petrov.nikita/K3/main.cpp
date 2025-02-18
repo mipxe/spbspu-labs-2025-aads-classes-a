@@ -2,7 +2,7 @@
 #include <string>
 
 template< class T >
-struct List 
+struct List
 {
   T data;
   List< T > * next;
@@ -39,7 +39,6 @@ size_t count(List< List< T > * > * head, C condition)
 void clearAllMassives(int ** ptr_massives, size_t * ptr_numbers_of_elements, size_t number_of_massives);
 List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n);
 void clearAllLists(List< List< int > * > * head);
-void outputListOfLists(std::ostream & out, List< List< int > * > * head);
 
 int main()
 {
@@ -99,7 +98,7 @@ int main()
     std::cout << count(head, static_cast< std::string >("even"));
     std::cout << "\n";
   }
-  else 
+  else
   {
     std::cout << count(head, condition) << "\n";
   }
@@ -162,20 +161,5 @@ void clearAllLists(List< List< int > * > * head)
     }
     delete head;
     head = subhead;
-  }
-}
-
-void outputListOfLists(std::ostream & out, List< List< int > * > * head)
-{
-  while (head)
-  {
-    List< int > * subhead = head->data;
-    while (subhead)
-    {
-      out << subhead->data << " ";
-      subhead = subhead->next;
-    }
-    out << "\n";
-    head = head->next;
   }
 }
