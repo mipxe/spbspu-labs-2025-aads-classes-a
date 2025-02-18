@@ -87,9 +87,7 @@ int main()
   }
   clearAllMassives(ptr_massives, ptr_numbers_of_elements, created);
   std::string condition;
-  std::noskipws(std::cin);
   std::cin >> condition;
-  std::skipws(std::cin);
   if (condition.compare("odd") && condition.compare("even"))
   {
     std::cout << count(head, static_cast< std::string >("odd"));
