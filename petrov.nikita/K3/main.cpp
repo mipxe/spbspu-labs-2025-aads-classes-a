@@ -70,7 +70,6 @@ int main()
       }
       created++;
       ptr_numbers_of_elements[i] = number_of_elements;
-      std::clog << "Number of elements: " << number_of_elements << "\n";
     }
     head = convert(ptr_massives, number_of_massives, ptr_numbers_of_elements);
   }
@@ -125,12 +124,10 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
     {
       (i != m - 1) ? subhead->next = new List< List< int > * >{ nullptr, nullptr } : subhead = subhead;
       subhead->data = new List< int >{ d[i][0], nullptr };
-      std::clog << "Element: " << subhead->data->data << "\n";
       List< int > * subsubhead = subhead->data;
       for (size_t j = 1; j < n[i]; j++)
       {
         subsubhead->next = new List< int >{ d[i][j], nullptr };
-        std::clog << "Element: " << subsubhead->next->data << "\n";
         subsubhead = subsubhead->next;
       }
       subhead = subhead->next;
