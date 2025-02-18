@@ -59,10 +59,7 @@ int main()
     ptr_numbers_of_elements = new size_t [number_of_massives];
     for (size_t i = 0; i < number_of_massives; i++)
     {
-      if (!(std::cin >> number_of_elements) || std::cin.eof())
-      {
-        throw std::logic_error("ERROR: Invalid argument");
-      }
+      std::cin >> number_of_elements;
       ptr_massives[i] = new int [number_of_elements];
       for (size_t j = 0; j < number_of_elements; j++)
       {
@@ -70,6 +67,10 @@ int main()
       }
       created++;
       ptr_numbers_of_elements[i] = number_of_elements;
+      if (!std::cin || std::cin.eof())
+      {
+        throw std::logic_error("ERROR: Invalid argument");
+      }
     }
     head = convert(ptr_massives, number_of_massives, ptr_numbers_of_elements);
   }
