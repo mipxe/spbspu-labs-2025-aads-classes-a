@@ -3,127 +3,92 @@
 
 template< class T >
 struct List {
-  T data;
-  List< T > * next;
+	T data;
+	List< T >* next;
 };
 
 template< class T >
 void deleteList(List< T >* head)
 {
+	while (head != nullptr)
+	{
+		List< T >* temp = head;
+		head = head->next;
+		delete temp;
+	}
+}
+
+template< class T >
+void deleteList(List< List< T > *>* head)
+{
   while (head != nullptr)
   {
-    List< T >* subHead = head;
-    head = head->next;
-    delete subHead;
-  }
-}
-
-template< class T >
-void deleteList(List< List< T > * > * head)
-{
-  List< List< int > * > * current = head;
-  while (current != nullptr)
-  {
-    List< int > * temp = current->data;
+    List< T >* temp = head->data;
     deleteList(temp);
-    List< List< int > * > * tempList = current;
-    current = current->next;
-    delete tempList;
+    List< List< T >*>*  tempHead = head;
+    head = head->next;
+    delete tempHead;
   }
 }
-
-template< class T >
-void deleteList(List< T >** arr, size_t size)
-{
-  for (size_t i = 0; i < size; ++i)
-  {
-    deleteList(arr[i]);
-  }
-  delete[] arr;
-}
-
 
 template< class T >
 void deleteArr(T** arr, size_t size)
 {
-  for (size_t i = 0; i < size; ++i)
-  {
-    delete[] arr[i];
-  }
-  delete[] arr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		delete[] arr[i];
+	}
+	delete[] arr;
 }
 
-List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n)
+List<int>* convert(const int* arr, size_t n)
 {
-  if (m == 0)
-  {
-    return nullptr;
-  }
-  List<int>** arr = new List<int>*[m];
-  for (size_t i = 0; i < m; ++i)
-  {
-    List< int >* head = nullptr;
-    List< int >* tail = head;
-    for (size_t j = 0; j < n[i]; ++j)
-    {
-      List< int >* new_element = nullptr;
-      try
-      {
-        new_element = new List< int > { d[i][j], nullptr };
-      }
-      catch (const std::bad_alloc&)
-      {
-        deleteList(arr, i);
-        deleteList(head);
-        throw;
-      }
-      if (head == nullptr)
-      {
-        head = new_element;
-        tail = head;
-      }
-      else
-      {
-        tail->next = new_element;
-        tail = tail->next;
-      }
-    }
-    arr[i] = head;
-  }
-  List<List< int >*>* head = nullptr;
-  try
-  {
-    head = new List< List <int> *> {arr[0], nullptr};
-  }
-  catch(const std::bad_alloc&)
-  {
-    deleteList(arr, m);
-    deleteList(head);
-    throw;
-  }
-  List<List< int >*>* tail = head;
-  for (size_t i = 1; i < m; ++i)
-  {
-    List<List< int >*>* new_element = nullptr;
-    try
-    {
-      new_element = new List<List< int >*> { arr[i], nullptr };
-    }
-    catch (const std::bad_alloc&)
-    {
-      deleteList(arr, m);
-      deleteList(head);
-      throw;
-    }
-    tail->next = new_element;
-    tail = tail->next;
-  }
-  delete[] arr;
-  return head;
+	List<int>* head = new List<int>{ arr[0], nullptr };
+	List<int>* tail = head;
+	for (size_t i = 1; i < n; ++i)
+	{
+		List<int>* newEl = nullptr;
+		try
+		{
+			newEl = new List<int>{ arr[i], nullptr };
+		}
+		catch (std::bad_alloc&)
+		{
+			deleteList(head);
+		}
+		tail->next = newEl;
+		tail = newEl;
+	}
+	return head;
+}
+
+List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
+{
+	if (m == 0)
+	{
+		return nullptr;
+	}
+  List< List< int >* >* head = new List< List< int > * > { convert(d[0], n[0]), nullptr };
+  List< List< int >* >* tail = head;
+	for (size_t i = 1; i < m; ++i)
+	{
+    List< List< int >* >* newEl = nullptr;
+		try
+		{
+			newEl = new List< List< int > * > { convert(d[i], n[i]), nullptr };
+		}
+		catch (std::bad_alloc&)
+		{
+			deleteList(head);
+		}
+		tail->next = newEl;
+		tail = newEl;
+	}
+	return head;
 }
 
 template< class T >
-size_t countOdd(const List< List< T > * > * head)
+size_t countOdd(const List< List< T >* >* head)
 {
   size_t resOdd = 0;
   const List<List<T>*>* tail = head;
@@ -165,7 +130,7 @@ size_t countEven(const List<List<T>*>* head)
 }
 
 template< class T, class C >
-size_t count(const List< List< T > * > * head, C condition)
+size_t count(const List< List< T >* >* head, C condition)
 {
   if (condition == 2)
   {
@@ -173,7 +138,7 @@ size_t count(const List< List< T > * > * head, C condition)
   }
   else if (condition == 1)
   {
-    return countOdd(head);
+   return countOdd(head);
   }
   return 0;
 }
@@ -187,12 +152,12 @@ int main()
     std::cerr << "uncorrect input\n";
     return 1;
   }
-  int ** arr = nullptr;
+  int** arr = nullptr;
   try
   {
-    arr = new int*[capacity];
+    arr = new int* [capacity];
   }
-  catch(const std::bad_alloc&)
+  catch (const std::bad_alloc&)
   {
     std::cerr << "bad alloc!\n";
     return 1;
@@ -202,7 +167,7 @@ int main()
   {
     size = new size_t[capacity];
   }
-  catch(const std::bad_alloc&)
+  catch (const std::bad_alloc&)
   {
     std::cerr << "bad alloc\n";
     deleteArr(arr, capacity);
@@ -222,7 +187,7 @@ int main()
     {
       arr[i] = new int[size[i]];
     }
-    catch(const std::bad_alloc&)
+    catch (const std::bad_alloc&)
     {
       deleteArr(arr, i);
       delete[] size;
@@ -239,8 +204,8 @@ int main()
         delete[] size;
         std::cerr << "uncorrect input\n";
         return 1;
-      }
-      arr[i][j] = temp;
+        }
+        arr[i][j] = temp;
     }
   }
   List< List< int >* >* head = nullptr;
@@ -248,12 +213,11 @@ int main()
   {
     head = convert(arr, capacity, size);
   }
-  catch(const std::bad_alloc&)
+  catch (const std::bad_alloc&)
   {
     std::cerr << "uncorrect convert\n";
     deleteArr(arr, capacity);
     delete[] size;
-    deleteList(head);
     return 1;
   }
   std::string condition = "";
