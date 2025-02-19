@@ -55,6 +55,7 @@ List<int>* convert(const int* arr, size_t n)
     catch (std::bad_alloc&)
     {
       deleteList(head);
+      throw;
     }
     tail->next = newEl;
     tail = newEl;
@@ -80,6 +81,7 @@ List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
     catch (std::bad_alloc&)
     {
       deleteList(head);
+      throw;
     }
     tail->next = newEl;
     tail = newEl;
