@@ -135,11 +135,10 @@ size_t count(const List< List< T >* >* head, C condition)
   {
     return countEven(head);
   }
-  else if (!condition)
+  else
   {
     return countOdd(head);
   }
-  return 0;
 }
 
 int main()
