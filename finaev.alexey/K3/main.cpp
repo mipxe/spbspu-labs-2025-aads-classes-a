@@ -17,13 +17,13 @@ void deleteList(List< int >* head)
   }
 }
 
-void deleteList(List< List< int > *>* head)
+void deleteList(List< List< int >* >* head)
 {
   while (head != nullptr)
   {
     List< int >* temp = head->data;
     deleteList(temp);
-    List< List< int >*>*  tempHead = head;
+    List< List< int >* >*  tempHead = head;
     head = head->next;
     delete tempHead;
   }
@@ -40,11 +40,11 @@ void deleteArr(int** arr, size_t size)
 
 List<int>* convert(const int* arr, size_t n)
 {
-  List<int>* head = new List<int>{ arr[0], nullptr };
-  List<int>* tail = head;
+  List< int >* head = new List<int>{ arr[0], nullptr };
+  List< int >* tail = head;
   for (size_t i = 1; i < n; ++i)
   {
-    List<int>* newEl = nullptr;
+    List< int >* newEl = nullptr;
     try
     {
       newEl = new List<int>{ arr[i], nullptr };
@@ -66,14 +66,14 @@ List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
   {
     return nullptr;
   }
-  List< List< int >* >* head = new List< List< int > * > { convert(d[0], n[0]), nullptr };
+  List< List< int >* >* head = new List< List< int >* > { convert(d[0], n[0]), nullptr };
   List< List< int >* >* tail = head;
   for (size_t i = 1; i < m; ++i)
   {
     List< List< int >* >* newEl = nullptr;
     try
     {
-      newEl = new List< List< int > * > { convert(d[i], n[i]), nullptr };
+      newEl = new List< List< int >* > { convert(d[i], n[i]), nullptr };
     }
     catch (std::bad_alloc&)
     {
@@ -90,10 +90,10 @@ template< class T >
 size_t countOdd(const List< List< T >* >* head)
 {
   size_t resOdd = 0;
-  const List<List<T>*>* tail = head;
+  const List< List< T >* > * tail = head;
   while (tail != nullptr)
   {
-    List<T>* temp = tail->data;
+    List< T >* temp = tail->data;
     while (temp != nullptr)
     {
       if ((temp->data % 2) != 0)
@@ -111,7 +111,7 @@ template<class T>
 size_t countEven(const List<List<T>*>* head)
 {
   size_t resEven = 0;
-  const List<List<T>*>* tail = head;
+  const List< List< T >* >* tail = head;
   while (tail != nullptr)
   {
     List<T>* temp = tail->data;
