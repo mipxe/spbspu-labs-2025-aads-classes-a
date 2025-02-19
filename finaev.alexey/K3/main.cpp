@@ -7,32 +7,29 @@ struct List {
   List< T >* next;
 };
 
-template< class T >
-void deleteList(List< T >* head)
+void deleteList(List< int >* head)
 {
   while (head != nullptr)
   {
-    List< T >* temp = head;
+    List< int >* temp = head;
     head = head->next;
     delete temp;
   }
 }
 
-template< class T >
-void deleteList(List< List< T > *>* head)
+void deleteList(List< List< int > *>* head)
 {
   while (head != nullptr)
   {
-    List< T >* temp = head->data;
+    List< int >* temp = head->data;
     deleteList(temp);
-    List< List< T >*>*  tempHead = head;
+    List< List< int >*>*  tempHead = head;
     head = head->next;
     delete tempHead;
   }
 }
 
-template< class T >
-void deleteArr(T** arr, size_t size)
+void deleteArr(int** arr, size_t size)
 {
   for (size_t i = 0; i < size; ++i)
   {
@@ -134,11 +131,11 @@ size_t countEven(const List<List<T>*>* head)
 template< class T, class C >
 size_t count(const List< List< T >* >* head, C condition)
 {
-  if (condition == 2)
+  if (condition)
   {
     return countEven(head);
   }
-  else if (condition == 1)
+  else if (!condition)
   {
     return countOdd(head);
   }
@@ -226,15 +223,15 @@ int main()
   std::cin >> condition;
   if (condition == "even")
   {
-    std::cout << count(head, 2);
+    std::cout << count(head, 1);
   }
   else if (condition == "odd")
   {
-    std::cout << count(head, 1);
+    std::cout << count(head, 0);
   }
   else
   {
-    std::cout << count(head, 1) << " " << count(head, 2);
+    std::cout << count(head, 0) << " " << count(head, 1);
   }
   std::cout << "\n";
   deleteArr(arr, capacity);
