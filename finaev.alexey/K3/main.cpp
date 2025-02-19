@@ -3,19 +3,19 @@
 
 template< class T >
 struct List {
-	T data;
-	List< T >* next;
+  T data;
+  List< T >* next;
 };
 
 template< class T >
 void deleteList(List< T >* head)
 {
-	while (head != nullptr)
-	{
-		List< T >* temp = head;
-		head = head->next;
-		delete temp;
-	}
+  while (head != nullptr)
+  {
+    List< T >* temp = head;
+    head = head->next;
+    delete temp;
+  }
 }
 
 template< class T >
@@ -34,57 +34,57 @@ void deleteList(List< List< T > *>* head)
 template< class T >
 void deleteArr(T** arr, size_t size)
 {
-	for (size_t i = 0; i < size; ++i)
-	{
-		delete[] arr[i];
-	}
-	delete[] arr;
+  for (size_t i = 0; i < size; ++i)
+  {
+    delete[] arr[i];
+  }
+  delete[] arr;
 }
 
 List<int>* convert(const int* arr, size_t n)
 {
-	List<int>* head = new List<int>{ arr[0], nullptr };
-	List<int>* tail = head;
-	for (size_t i = 1; i < n; ++i)
-	{
-		List<int>* newEl = nullptr;
-		try
-		{
-			newEl = new List<int>{ arr[i], nullptr };
-		}
-		catch (std::bad_alloc&)
-		{
-			deleteList(head);
-		}
-		tail->next = newEl;
-		tail = newEl;
-	}
-	return head;
+  List<int>* head = new List<int>{ arr[0], nullptr };
+  List<int>* tail = head;
+  for (size_t i = 1; i < n; ++i)
+  {
+    List<int>* newEl = nullptr;
+    try
+    {
+      newEl = new List<int>{ arr[i], nullptr };
+    }
+    catch (std::bad_alloc&)
+    {
+      deleteList(head);
+    }
+    tail->next = newEl;
+    tail = newEl;
+  }
+  return head;
 }
 
 List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
 {
-	if (m == 0)
-	{
-		return nullptr;
-	}
+  if (m == 0)
+  {
+    return nullptr;
+  }
   List< List< int >* >* head = new List< List< int > * > { convert(d[0], n[0]), nullptr };
   List< List< int >* >* tail = head;
-	for (size_t i = 1; i < m; ++i)
-	{
+  for (size_t i = 1; i < m; ++i)
+  {
     List< List< int >* >* newEl = nullptr;
-		try
-		{
-			newEl = new List< List< int > * > { convert(d[i], n[i]), nullptr };
-		}
-		catch (std::bad_alloc&)
-		{
-			deleteList(head);
-		}
-		tail->next = newEl;
-		tail = newEl;
-	}
-	return head;
+    try
+    {
+      newEl = new List< List< int > * > { convert(d[i], n[i]), nullptr };
+    }
+    catch (std::bad_alloc&)
+    {
+      deleteList(head);
+    }
+    tail->next = newEl;
+    tail = newEl;
+  }
+  return head;
 }
 
 template< class T >
@@ -138,7 +138,7 @@ size_t count(const List< List< T >* >* head, C condition)
   }
   else if (condition == 1)
   {
-   return countOdd(head);
+    return countOdd(head);
   }
   return 0;
 }
@@ -204,8 +204,8 @@ int main()
         delete[] size;
         std::cerr << "uncorrect input\n";
         return 1;
-        }
-        arr[i][j] = temp;
+      }
+      arr[i][j] = temp;
     }
   }
   List< List< int >* >* head = nullptr;
