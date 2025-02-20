@@ -225,5 +225,6 @@ int main()
   std::cin >> str;
   std::cout << count(buf, str);
   deleteMatrix(matrix, arrayQuantity);
+  delete[] sizes;
   deleteListOfLists(buf);
 }
