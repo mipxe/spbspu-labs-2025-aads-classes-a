@@ -188,6 +188,7 @@ int main()
   {
     if (!(std::cin >> sizes[i]))
     {
+      delete[] sizes;
       delete[] matrix;
       std::cerr << "Inptut fail\n";
       return 1;
@@ -204,6 +205,7 @@ int main()
     {
       if (!(std::cin >> matrix[i][j]))
       {
+        delete[] sizes;
         deleteMatrix(matrix, arrayQuantity);
         return 1;
       }
@@ -216,14 +218,12 @@ int main()
   }
   catch (const std::bad_alloc& e)
   {
-    delete[] sizes;
     deleteMatrix(matrix, arrayQuantity);
     return 1;
   }
   std::string str = "";
   std::cin >> str;
   std::cout << count(buf, str);
-  delete[] sizes;
   deleteMatrix(matrix, arrayQuantity);
   deleteListOfLists(buf);
 }
