@@ -13,6 +13,27 @@ struct ListOfLists
   ListOfLists* next;
 };
 
+void deleteListOfLists(List* head)
+{
+  while (head != nullptr)
+  {
+    List* temporary = head;
+    head = head->next;
+    delete temporary;
+  }
+}
+
+void deleteListOfLists(ListOfLists* head)
+{
+  while (head != nullptr)
+  {
+    ListOfLists* temporary = head;
+    deleteListOfLists(temporary->data);
+    head = head->next;
+    delete temporary;
+  }
+}
+
 List* convert(const size_t* array, size_t n)
 {
   List* head = nullptr;
@@ -55,27 +76,6 @@ ListOfLists* convert(const size_t* const* array, size_t m, size_t* n)
   return head;
 }
 
-void deleteListOfLists(List* head)
-{
-  while (head != nullptr)
-  {
-    List* temporary = head;
-    head = head->next;
-    delete temporary;
-  }
-}
-
-void deleteListOfLists(ListOfLists* head)
-{
-  while (head != nullptr)
-  {
-    ListOfLists* temporary = head;
-    deleteListOfLists(temporary->data);
-    head = head->next;
-    delete temporary;
-  }
-}
-
 size_t oddCount(List* head)
 {
   List* temporary = head;
@@ -90,7 +90,6 @@ size_t oddCount(List* head)
   }
   return res;
 }
-
 
 size_t evenCount(List* head)
 {
