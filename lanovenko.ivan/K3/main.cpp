@@ -36,6 +36,10 @@ void deleteListOfLists(ListOfLists* head)
 
 List* convert(const size_t* array, size_t n)
 {
+  if (n == 0)
+  {
+    return nullptr;
+  }
   List* head = nullptr;
   try
   {
@@ -57,6 +61,10 @@ List* convert(const size_t* array, size_t n)
 
 ListOfLists* convert(const size_t* const* array, size_t m, size_t* n)
 {
+  if (m == 0)
+  {
+    return nullptr;
+  }
   ListOfLists* head = nullptr;
   try
   {
@@ -90,6 +98,7 @@ size_t oddCount(List* head)
   }
   return res;
 }
+
 
 size_t evenCount(List* head)
 {
@@ -159,13 +168,22 @@ void deleteMatrix(size_t** arr, size_t arrayQuantity)
 int main()
 {
   size_t arrayQuantity = 0;
+  size_t** matrix = nullptr;
+  size_t* sizes = nullptr;
   if (!(std::cin >> arrayQuantity))
   {
     std::cerr << "Input fail!\n";
     return 1;
   }
-  size_t** matrix = new size_t* [arrayQuantity];
-  size_t* sizes = new size_t[arrayQuantity];
+  try
+  {
+    matrix = new size_t * [arrayQuantity];
+    sizes = new size_t[arrayQuantity];
+  }
+  catch (const std::bad_alloc& e)
+  {
+    return 1;
+  }
   for (size_t i = 0; i < arrayQuantity; i++)
   {
     if (!(std::cin >> sizes[i]))
@@ -174,7 +192,14 @@ int main()
       std::cerr << "Inptut fail\n";
       return 1;
     }
-    matrix[i] = new size_t[sizes[i]];
+    try
+    {
+      matrix[i] = new size_t[sizes[i]];
+    }
+    catch (const std::bad_alloc& e)
+    {
+      deleteMatrix(matrix, sizes[i]);
+    }
     for (size_t j = 0; j < sizes[i]; j++)
     {
       if (!(std::cin >> matrix[i][j]))
@@ -191,12 +216,14 @@ int main()
   }
   catch (const std::bad_alloc& e)
   {
+    delete[] sizes;
     deleteMatrix(matrix, arrayQuantity);
     return 1;
   }
   std::string str = "";
   std::cin >> str;
   std::cout << count(buf, str);
+  delete[] sizes;
   deleteMatrix(matrix, arrayQuantity);
   deleteListOfLists(buf);
 }
