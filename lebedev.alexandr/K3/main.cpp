@@ -1,5 +1,12 @@
 #include <iostream>
 
+template< class T >
+struct List
+{
+  T data;
+  List< T > * next;
+};
+
 void deleteArray(int** t, size_t created)
 {
   for (size_t i = 0; i < created; i++)
@@ -33,8 +40,15 @@ int main()
     return 2;
   }
 
-  while (created < m && std::cin >> n)
+  while (created < m)
   {
+    if (!(std::cin >> n))
+    {
+      std::cerr << "Incorrect input!\n";
+      deleteArray(ptr, created);
+      delete[] sizes;
+      return 1;
+    }
     try
     {
       ptr[created] = new int[n];
@@ -61,28 +75,6 @@ int main()
     created++;
   }
 
-  if (created == 0)
-  {
-    std::cerr << "Incorrect input!\n";
-    deleteArray(ptr, created);
-    delete[] sizes;
-    return 1;
-  }
-
-  for (size_t i = 0; i < m; i++)
-  {
-    std::cout << sizes[i] << ' ';
-  }
-  std::cout << '\n';
-
-  for (size_t i = 0; i < m; i++)
-  {
-    for (size_t j = 0; j < sizes[i]; j++)
-    {
-      std::cout << ptr[i][j] << ' ';
-    }
-    std::cout << '\n';
-  }
   deleteArray(ptr, m);
   delete[] sizes;
   return 0;
