@@ -1,57 +1,51 @@
 #include <iostream>
 #include <string>
 
-struct List
-{
-  size_t data;
-  List* next;
+template< class T >
+struct List {
+  T data;
+  List< T >* next;
 };
 
-struct ListOfLists
-{
-  List* data;
-  ListOfLists* next;
-};
-
-void deleteListOfLists(List* head)
+void deleteListOfLists(List< int > * head)
 {
   while (head != nullptr)
   {
-    List* temporary = head;
+    List<int>* temporary = head;
     head = head->next;
     delete temporary;
   }
 }
 
-void deleteListOfLists(ListOfLists* head)
+void deleteListOfLists(List<List < int > * > * head)
 {
   while (head != nullptr)
   {
-    ListOfLists* temporary = head;
+    List<List < int > * > * temporary = head;
     deleteListOfLists(temporary->data);
     head = head->next;
     delete temporary;
   }
 }
 
-List* convert(const size_t* array, size_t n)
+List< int > * convert(const int* array, size_t n)
 {
   if (n == 0)
   {
     return nullptr;
   }
-  List* head = nullptr;
+  List< int > * head = nullptr;
   try
   {
-    head = new List{ array[0], nullptr };
-    List* tail = head;
+    head = new List<int>{ array[0], nullptr };
+    List<int>* tail = head;
     for (size_t i = 1; i < n; i++)
     {
-      tail->next = new List{ array[i], nullptr };
+      tail->next = new List<int>{ array[i], nullptr };
       tail = tail->next;
     }
   }
-  catch (const std::bad_alloc& e)
+  catch (...)
   {
     deleteListOfLists(head);
     throw;
@@ -59,24 +53,24 @@ List* convert(const size_t* array, size_t n)
   return head;
 }
 
-ListOfLists* convert(const size_t* const* array, size_t m, size_t* n)
+List< List < int > * > * convert(const int* const* array, size_t m, size_t* n)
 {
   if (m == 0)
   {
     return nullptr;
   }
-  ListOfLists* head = nullptr;
+  List < List < int > * > *head = nullptr;
   try
   {
-    head = new ListOfLists{ convert(array[0], n[0]), nullptr };
-    ListOfLists* tail = head;
+    head = new List < List < int > * >{ convert(array[0], n[0]), nullptr };
+    List <List < int >* >* tail = head;
     for (size_t i = 1; i < m; i++)
     {
-      tail->next = new ListOfLists{ convert(array[i], n[i]), nullptr };
+      tail->next = new List < List < int > * >{ convert(array[i], n[i]), nullptr };
       tail = tail->next;
     }
   }
-  catch (const std::bad_alloc& e)
+  catch (...)
   {
     deleteListOfLists(head);
     throw;
@@ -84,62 +78,38 @@ ListOfLists* convert(const size_t* const* array, size_t m, size_t* n)
   return head;
 }
 
-size_t oddCount(List* head)
+bool isEven(int a)
 {
-  List* temporary = head;
+  return (a % 2 == 0);
+}
+
+bool isOdd(int a)
+{
+  return (a % 2 != 0);
+}
+
+template< class T, class C >
+size_t count(const List< List< T > * > * head, C condition)
+{
   size_t res = 0;
+  const List< List< T >* >* temporary = head;
   while (temporary != nullptr)
   {
-    if (temporary->data % 2 != 0)
+    List<T>* temporaryTwo = temporary->data;
+    while (temporaryTwo != nullptr)
     {
-      res++;
+      if (condition(temporaryTwo->data))
+      {
+        res++;
+      }
+      temporaryTwo = temporaryTwo->next;
     }
     temporary = temporary->next;
   }
   return res;
 }
 
-
-size_t evenCount(List* head)
-{
-  List* temporary = head;
-  size_t res = 0;
-  while (temporary != nullptr)
-  {
-    if (temporary->data % 2 == 0)
-    {
-      res++;
-    }
-    temporary = temporary->next;
-  }
-  return res;
-}
-
-size_t oddCount(ListOfLists* head)
-{
-  ListOfLists* tail = head;
-  size_t res = 0;
-  while (tail != nullptr)
-  {
-    res += oddCount(tail->data);
-    tail = tail->next;
-  }
-  return res;
-}
-
-size_t evenCount(ListOfLists* head)
-{
-  ListOfLists* tail = head;
-  std::size_t res = 0;
-  while (tail != nullptr)
-  {
-    res += evenCount(tail->data);
-    tail = tail->next;
-  }
-  return res;
-}
-
-void deleteMatrix(size_t** arr, size_t arrayQuantity)
+void deleteMatrix(int** arr, size_t arrayQuantity)
 {
   for (size_t i = 0; i < arrayQuantity; i++)
   {
@@ -151,7 +121,7 @@ void deleteMatrix(size_t** arr, size_t arrayQuantity)
 int main()
 {
   size_t arrayQuantity = 0;
-  size_t** matrix = nullptr;
+  int** matrix = nullptr;
   size_t* sizes = nullptr;
   if (!(std::cin >> arrayQuantity))
   {
@@ -160,10 +130,10 @@ int main()
   }
   try
   {
-    matrix = new size_t * [arrayQuantity];
+    matrix = new int* [arrayQuantity];
     sizes = new size_t[arrayQuantity];
   }
-  catch (const std::bad_alloc& e)
+  catch (...)
   {
     return 1;
   }
@@ -178,9 +148,9 @@ int main()
     }
     try
     {
-      matrix[i] = new size_t[sizes[i]];
+      matrix[i] = new int[sizes[i]];
     }
-    catch (const std::bad_alloc& e)
+    catch (...)
     {
       deleteMatrix(matrix, sizes[i]);
     }
@@ -194,12 +164,12 @@ int main()
       }
     }
   }
-  ListOfLists* buf = nullptr;
+  List<List < int > * > * buf = nullptr;
   try
   {
     buf = convert(matrix, arrayQuantity, sizes);
   }
-  catch (const std::bad_alloc& e)
+  catch (...)
   {
     deleteMatrix(matrix, arrayQuantity);
     return 1;
@@ -208,15 +178,15 @@ int main()
   std::cin >> str;
   if (str.find("odd") != std::string::npos)
   {
-    std::cout << oddCount(buf) << '\n';
+    std::cout << count(buf, isOdd) << '\n';
   }
   else if (str.find("even") != std::string::npos)
   {
-    std::cout << evenCount(buf) << '\n';
+    std::cout << count(buf, isEven) << '\n';
   }
   else
   {
-    std::cout << oddCount(buf) << " " << evenCount(buf) << '\n';
+    std::cout << count(buf, isOdd) << ' ' << count(buf, isEven);
   }
   deleteMatrix(matrix, arrayQuantity);
   delete[] sizes;
