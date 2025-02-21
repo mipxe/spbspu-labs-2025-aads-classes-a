@@ -45,7 +45,7 @@ List< int > * convert(const int* array, size_t n)
       tail = tail->next;
     }
   }
-  catch (...)
+  catch (const std::bad_alloc& e)
   {
     deleteListOfLists(head);
     throw;
@@ -70,7 +70,7 @@ List< List < int > * > * convert(const int* const* array, size_t m, size_t* n)
       tail = tail->next;
     }
   }
-  catch (...)
+  catch (const std::bad_alloc& e)
   {
     deleteListOfLists(head);
     throw;
@@ -133,7 +133,7 @@ int main()
     matrix = new int* [arrayQuantity];
     sizes = new size_t[arrayQuantity];
   }
-  catch (...)
+  catch (const std::bad_alloc& e)
   {
     return 1;
   }
@@ -150,7 +150,7 @@ int main()
     {
       matrix[i] = new int[sizes[i]];
     }
-    catch (...)
+    catch (const std::bad_alloc& e)
     {
       deleteMatrix(matrix, sizes[i]);
     }
@@ -169,7 +169,7 @@ int main()
   {
     buf = convert(matrix, arrayQuantity, sizes);
   }
-  catch (...)
+  catch (const std::bad_alloc& e)
   {
     deleteMatrix(matrix, arrayQuantity);
     return 1;
