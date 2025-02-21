@@ -33,8 +33,7 @@ int main()
     return 2;
   }
 
-  std::cin >> n;
-  while (!std::cin.fail() && created < m)
+  while (created < m && std::cin >> n)
   {
     try
     {
@@ -51,7 +50,13 @@ int main()
 
     for (size_t i = 0; i < n; i++)
     {
-      std::cin >> ptr[created][i];
+      if (!(std::cin >> ptr[created][i]))
+      {
+        std::cerr << "Incorrect input!\n";
+        deleteArray(ptr, created);
+        delete[] sizes;
+        return 1;
+      }
     }
     created++;
   }
@@ -66,6 +71,19 @@ int main()
 
   for (size_t i = 0; i < m; i++)
   {
-    
+    std::cout << sizes[i] << ' ';
   }
+  std::cout << '\n';
+
+  for (size_t i = 0; i < m; i++)
+  {
+    for (size_t j = 0; j < sizes[i]; j++)
+    {
+      std::cout << ptr[i][j] << ' ';
+    }
+    std::cout << '\n';
+  }
+  deleteArray(ptr, m);
+  delete[] sizes;
+  return 0;
 }
