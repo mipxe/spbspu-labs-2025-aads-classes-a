@@ -90,7 +90,7 @@ size_t oddCount(List* head)
   size_t res = 0;
   while (temporary != nullptr)
   {
-    if (temporary->data % 2 == 0)
+    if (temporary->data % 2 != 0)
     {
       res++;
     }
@@ -106,7 +106,7 @@ size_t evenCount(List* head)
   size_t res = 0;
   while (temporary != nullptr)
   {
-    if (temporary->data % 2 != 0)
+    if (temporary->data % 2 == 0)
     {
       res++;
     }
@@ -210,9 +210,9 @@ int main()
   {
     std::cout << oddCount(buf) << '\n';
   }
-  if (str.find("even") != std::string::npos)
+  else if (str.find("even") != std::string::npos)
   {
-    std::cout << evenCount(buf);
+    std::cout << evenCount(buf) << '\n';
   }
   else
   {
