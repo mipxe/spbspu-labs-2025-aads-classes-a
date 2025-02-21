@@ -186,7 +186,7 @@ int main()
   }
   else
   {
-    std::cout << count(buf, isOdd) << ' ' << count(buf, isEven);
+    std::cout << count(buf, isOdd) << " " << count(buf, isEven) << '\n';
   }
   deleteMatrix(matrix, arrayQuantity);
   delete[] sizes;
