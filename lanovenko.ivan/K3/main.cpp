@@ -139,22 +139,6 @@ size_t evenCount(ListOfLists* head)
   return res;
 }
 
-size_t count(ListOfLists* head, const std::string& condition)
-{
-  if (condition.find("odd")!= std::string::npos)
-  {
-    return oddCount(head);
-  }
-  else if (condition.find("even") != std::string::npos)
-  {
-    return evenCount(head);
-  }
-  else
-  {
-    return evenCount(head) + oddCount(head);
-  }
-}
-
 void deleteMatrix(size_t** arr, size_t arrayQuantity)
 {
   for (size_t i = 0; i < arrayQuantity; i++)
@@ -163,7 +147,6 @@ void deleteMatrix(size_t** arr, size_t arrayQuantity)
   }
   delete[] arr;
 }
-
 
 int main()
 {
@@ -223,7 +206,18 @@ int main()
   }
   std::string str = "";
   std::cin >> str;
-  std::cout << count(buf, str);
+  if (str.find("odd") != std::string::npos)
+  {
+    std::cout << oddCount(buf) << '\n';
+  }
+  if (str.find("even") != std::string::npos)
+  {
+    std::cout << evenCount(buf);
+  }
+  else
+  {
+    std::cout << oddCount(buf) << " " << evenCount(buf) << '\n';
+  }
   deleteMatrix(matrix, arrayQuantity);
   delete[] sizes;
   deleteListOfLists(buf);
