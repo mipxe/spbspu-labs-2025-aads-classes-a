@@ -38,16 +38,16 @@ void deleteArr(int** arr, size_t size)
   delete[] arr;
 }
 
-List<int>* convert(const int* arr, size_t n)
+List< int >* convert(const int* arr, size_t n)
 {
-  List< int >* head = new List<int>{ arr[0], nullptr };
+  List< int >* head = new List< int >{ arr[0], nullptr };
   List< int >* tail = head;
   for (size_t i = 1; i < n; ++i)
   {
     List< int >* newEl = nullptr;
     try
     {
-      newEl = new List<int>{ arr[i], nullptr };
+      newEl = new List< int >{ arr[i], nullptr };
     }
     catch (std::bad_alloc&)
     {
@@ -107,8 +107,8 @@ size_t countOdd(const List< List< T >* >* head)
   return resOdd;
 }
 
-template<class T>
-size_t countEven(const List<List<T>*>* head)
+template< class T >
+size_t countEven(const List< List< T >* >* head)
 {
   size_t resEven = 0;
   const List< List< T >* >* tail = head;
