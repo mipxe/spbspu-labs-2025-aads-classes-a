@@ -5,7 +5,7 @@ template < class T >
 struct List {
   T data;
   List< T > * next;
-}
+};
 
 void rmArr(int** arr, size_t size)
 {
@@ -39,7 +39,7 @@ void rmList(List< List< int > * > * head)
 }
 
 template< class T >
-size_t countEven(const List< List< int > * > * head)
+size_t countEven(const List< List< T > * > * head)
 {
   size_t res = 0;
   const List< List< int > * > * tail = head;
@@ -48,7 +48,7 @@ size_t countEven(const List< List< int > * > * head)
     List< T > * temp = tail->data;
     while (temp != nullptr)
     {
-      if ((temp-data % 2) == 0)
+      if ((temp->data % 2) == 0)
       {
         res += 1;
       }
@@ -61,7 +61,7 @@ size_t countEven(const List< List< int > * > * head)
 }
 
 template< class T >
-size_t countOdd(const List< List< int > * > * head)
+size_t countOdd(const List< List< T > * > * head)
 {
   size_t res = 0;
   const List< List< int > * > * tail = head;
@@ -70,7 +70,7 @@ size_t countOdd(const List< List< int > * > * head)
     List< T > * temp = tail->data;
     while (temp != nullptr)
     {
-      if ((temp-data % 2) != 0)
+      if ((temp->data % 2) != 0)
       {
         res += 1;
       }
@@ -83,7 +83,7 @@ size_t countOdd(const List< List< int > * > * head)
 }
 
 template< class T, class C>
-size_t count(const List< List< int > * > * head, C word)
+size_t count(const List< List< T > * > * head, C word)
 {
   if (word)
   {
@@ -122,7 +122,7 @@ List< List < int > * > * convert(const int* const* d, size_t m, const size_t* n)
 {
   List< List < int > * > * head = new List< List < int > * >{ convert(d[0], n[0]), nullptr };
   List< List < int > * > * tail = head;
-  for (size_t i = 1; i < n; i++)
+  for (size_t i = 1; i < m; i++)
   {
     List< List < int > * > * temp = nullptr;
     try
@@ -132,7 +132,7 @@ List< List < int > * > * convert(const int* const* d, size_t m, const size_t* n)
     catch (std::bad_alloc&)
     {
       rmList(head);
-      throw
+      throw;
     }
     tail->next = temp;
     tail = temp;
@@ -155,7 +155,7 @@ int main()
   int** arr = nullptr;
   try
   {
-    arr = new int*[m]
+    arr = new int*[m];
   }
   catch (const std::bad_alloc()&)
   {
@@ -234,7 +234,7 @@ int main()
   {
     std::cout << count(head, 0);
   }
-  elseList< List< int > * > * head
+  else
   {
     std::cout << count(head, 0) << " " << count(head, 1);
   }
