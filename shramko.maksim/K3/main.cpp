@@ -194,7 +194,7 @@ int main()
 
     try
     {
-      arr[i] = new int[i];
+      arr[i] = new int[size[i]];
     }
     catch (const std::bad_alloc&)
     {
@@ -206,7 +206,8 @@ int main()
 
     for (size_t j = 0; j < size[i]; j++)
     {
-      std::cin >> arr[i][j];
+      int temp = 0;
+      std::cin >> temp;
       if (std::cin.fail())
       {
         std::cerr << "Error: main -> cin arr[i][j].\n";
@@ -214,6 +215,7 @@ int main()
         delete[] size;
         return 1;
       }
+      arr[i][j] = temp;
     }
   }
 
