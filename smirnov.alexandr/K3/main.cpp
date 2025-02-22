@@ -9,6 +9,76 @@ struct List
   List< T > * next;
 };
 
+void deleteList(List< List< int > * > * head)
+{
+  while (head)
+  {
+    List< List< int > * > * temp = head;
+    head = head->next;
+    List< int > * subList = temp->data;
+    while (subList)
+    {
+      List< int > * subTemp = subList;
+      subList = subList->next;
+      delete subTemp;
+    }
+    delete temp;
+  }
+}
+
+List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n)
+{
+  if (m == 0)
+  {
+    return nullptr;
+  }
+  List< List< int > * > * head = nullptr;
+  List< List< int > * > * current = nullptr;
+  try
+  {
+    for (size_t i = 0; i < m; ++i)
+    {
+      List< int > * subHead = nullptr;
+      List< int > * subCurrent = nullptr;
+      for (size_t j = 0; j < n[i]; ++j)
+      {
+        List< int > * newNode = new List< int >;
+        newNode->data = d[i][j];
+        newNode->next = nullptr;
+        if (!subHead)
+        {
+          subHead = newNode;
+          subCurrent = subHead;
+        }
+        else
+        {
+          subCurrent->next = newNode;
+          subCurrent = subCurrent->next;
+        }
+      }
+      List< List< int > * > * newList = new List< List< int > * >;
+      newList->data = subHead;
+      newList->next = nullptr;
+      if (!head)
+      {
+        head = newList;
+        current = head;
+      }
+      else
+      {
+        current->next = newList;
+        current = current->next;
+      }
+    }
+  }
+  catch (const std::bad_alloc & e)
+  {
+    deleteList(head);
+    throw;
+  }
+  return head;
+}
+
 void deleteArrays(int ** arrays, size_t numArrays)
 {
   for (size_t i = 0; i < numArrays; ++i)
@@ -65,4 +135,30 @@ int main()
     delete[] sizes;
     return 1;
   }
+  List< List< int > * > * head = nullptr;
+  try
+  {
+    head = convert(arrays, numArrays, sizes);
+  }
+  catch(const std::bad_alloc &)
+  {
+    std::cerr << "Out of memory\n";
+    deleteArrays(arrays, numArrays);
+    delete[] sizes;
+    return 1;
+  }
+  List<List<int> *> * current = head;
+  while (current)
+  {
+    List<int> * subCurrent = current->data;
+    while (subCurrent)
+    {
+      std::cout << subCurrent->data << " ";
+      subCurrent = subCurrent->next;
+    }
+    std::cout << "\n";
+    current = current->next;
+  }
+  deleteArrays(arrays, numArrays);
+  delete[] sizes;
 }
