@@ -124,7 +124,7 @@ int main()
       if (!(std::cin >> array[i][j]))
       {
         std::cerr << "error input: element\n";
-        deleteArray(array, i);
+        deleteArray(array, i + 1);
         delete[] numElements;
         return 1;
       }
