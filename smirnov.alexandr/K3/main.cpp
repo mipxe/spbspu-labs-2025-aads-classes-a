@@ -143,6 +143,8 @@ int main()
       if (!std::cin)
       {
         std::cerr << "Input error\n";
+        deleteArrays(arrays, i);
+        delete sizes;
         return 1;
       }
       arrays[i] = new int[arraySize];
@@ -153,6 +155,8 @@ int main()
         if (!std::cin)
         {
           std::cerr << "Input error\n";
+          deleteArrays(arrays, i + 1);
+          delete[] sizes;
           return 1;
         }
       }
