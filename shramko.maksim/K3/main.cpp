@@ -95,6 +95,52 @@ size_t count(const List< List< int > * > * head, C word)
   }
 }
 
+List< int > * convert(const int* arr, size_t n)
+{
+  List< int > * head = new List< int >{ arr[0], nullptr };
+  List< int > * tail = head;
+  for (size_t i = 1; i < n; i++)
+  {
+    List< int > * temp = nullptr;
+    try
+    {
+      temp = new List< int >{ arr[i], nullptr };
+    }
+    catch (std::bad_alloc&)
+    {
+      rmList(head);
+      throw;
+    }
+    tail->next = temp;
+    tail = temp;
+  }
+
+  return head;
+}
+
+List< List < int > * > * convert(const int* const* d, size_t m, const size_t* n)
+{
+  List< List < int > * > * head = new List< List < int > * >{ convert(d[0], n[0]), nullptr };
+  List< List < int > * > * tail = head;
+  for (size_t i = 1; i < n; i++)
+  {
+    List< List < int > * > * temp = nullptr;
+    try
+    {
+      temp = new List< List < int > * >{ convert(d[i], n[i]), nullptr };
+    }
+    catch (std::bad_alloc&)
+    {
+      rmList(head);
+      throw
+    }
+    tail->next = temp;
+    tail = temp;
+  }
+
+  return head;
+}
+
 int main()
 {
   size_t m = 0;
