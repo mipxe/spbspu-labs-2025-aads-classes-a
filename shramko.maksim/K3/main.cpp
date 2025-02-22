@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 template < class T >
 struct List {
@@ -34,6 +35,63 @@ void rmList(List< List< int > * > * head)
     List< List< int > * > * tempHead = head;
     head = head->next;
     delete tempHead;
+  }
+}
+
+template< class T >
+size_t countEven(const List< List< int > * > * head)
+{
+  size_t res = 0;
+  const List< List< int > * > * tail = head;
+  while (tail != nullptr)
+  {
+    List< T > * temp = tail->data;
+    while (temp != nullptr)
+    {
+      if ((temp-data % 2) == 0)
+      {
+        res += 1;
+      }
+      temp = temp->next;
+    }
+    tail = tail->next;
+  }
+
+  return res;
+}
+
+template< class T >
+size_t countOdd(const List< List< int > * > * head)
+{
+  size_t res = 0;
+  const List< List< int > * > * tail = head;
+  while (tail != nullptr)
+  {
+    List< T > * temp = tail->data;
+    while (temp != nullptr)
+    {
+      if ((temp-data % 2) != 0)
+      {
+        res += 1;
+      }
+      temp = temp->next;
+    }
+    tail = tail->next;
+  }
+
+  return res;
+}
+
+template< class T, class C>
+size_t count(const List< List< int > * > * head, C word)
+{
+  if (word)
+  {
+    return countEven(head);
+  }
+  else
+  {
+    return countOdd(head);
   }
 }
 
@@ -130,7 +188,7 @@ int main()
   {
     std::cout << count(head, 0);
   }
-  else
+  elseList< List< int > * > * head
   {
     std::cout << count(head, 0) << " " << count(head, 1);
   }
