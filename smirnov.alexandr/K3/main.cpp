@@ -79,6 +79,36 @@ List< List< int > * > * convert(const int * const * d, size_t m, const size_t * 
   return head;
 }
 
+template< class T, class C >
+size_t count(const List< List< T > * > * head, C condition)
+{
+  size_t count = 0;
+  while (head)
+  {
+    List< T > * subList = head->data;
+    while (subList)
+    {
+      if (condition(subList->data))
+      {
+        ++count;
+      }
+      subList = subList->next;
+    }
+    head = head->next;
+  }
+  return count;
+}
+
+bool isOdd(int x)
+{
+  return x % 2 != 0;
+}
+
+bool isEven(int x)
+{
+  return x % 2 == 0;
+}
+
 void deleteArrays(int ** arrays, size_t numArrays)
 {
   for (size_t i = 0; i < numArrays; ++i)
@@ -147,18 +177,21 @@ int main()
     delete[] sizes;
     return 1;
   }
-  List<List<int> *> * current = head;
-  while (current)
+  std::string type;
+  std::cin >> type;
+  if (type == "odd")
   {
-    List<int> * subCurrent = current->data;
-    while (subCurrent)
-    {
-      std::cout << subCurrent->data << " ";
-      subCurrent = subCurrent->next;
-    }
-    std::cout << "\n";
-    current = current->next;
+    std::cout << count(head, isOdd) << "\n";
   }
+  else if (type == "even")
+  {
+    std::cout << count(head, isEven) << "\n";
+  }
+  else
+  {
+    std::cout << count(head, isOdd) << " " << count(head, isEven) << "\n";
+  }
+  deleteList(head);
   deleteArrays(arrays, numArrays);
   delete[] sizes;
 }
