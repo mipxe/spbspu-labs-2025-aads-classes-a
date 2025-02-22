@@ -11,7 +11,7 @@ void rmArr(int** arr, size_t size)
 {
   for (size_t i = 0; i < size; i++)
   {
-    delete[] arr;
+    delete[] arr[i];
   }
   delete[] arr;
 }
@@ -120,8 +120,14 @@ List< int > * convert(const int* arr, size_t n)
 
 List< List < int > * > * convert(const int* const* d, size_t m, const size_t* n)
 {
+  if (m == 0)
+  {
+    return nullptr;
+  }
+
   List< List < int > * > * head = new List< List < int > * >{ convert(d[0], n[0]), nullptr };
   List< List < int > * > * tail = head;
+
   for (size_t i = 1; i < m; i++)
   {
     List< List < int > * > * temp = nullptr;
