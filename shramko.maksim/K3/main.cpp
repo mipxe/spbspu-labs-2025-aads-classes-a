@@ -187,7 +187,7 @@ int main()
     if (std::cin.fail())
     {
       std::cerr << "Error: Main -> cin size.\n";
-      rmArr(arr, m);
+      rmArr(arr, i);
       delete[] size;
       return 1;
     }
