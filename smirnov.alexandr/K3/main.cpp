@@ -144,7 +144,7 @@ int main()
       {
         std::cerr << "Input error\n";
         deleteArrays(arrays, i);
-        delete sizes;
+        delete[] sizes;
         return 1;
       }
       arrays[i] = new int[arraySize];
