@@ -11,34 +11,25 @@ struct List
 template< class T, class C >
 size_t count(List< List< T > * > * head, C condition)
 {
-  const std::string ODD = "odd";
-  const std::string EVEN = "even";
-  size_t count_odd = 0;
-  size_t count_even = 0;
+  size_t count = 0;
   while (head)
   {
     List< int > * subhead = head->data;
     while (subhead)
     {
-      (subhead->data % 2 == 1) ? count_odd++ : count_even++;
+      condition(subhead->data) ? count++ : count = count;
       subhead = subhead->next;
     }
     head = head->next;
   }
-  if (!ODD.compare(condition))
-  {
-    return count_odd;
-  }
-  else if (!EVEN.compare(condition))
-  {
-    return count_even;
-  }
-  return 0;
+  return count;
 }
 
 void clearAllMassives(int ** ptr_massives, size_t * ptr_numbers_of_elements, size_t number_of_massives);
 List< List< int > * > * convert(const int * const * d, size_t m, const size_t * n);
 void clearAllLists(List< List< int > * > * head);
+bool isOdd(int element);
+bool isEven(int element);
 
 int main()
 {
@@ -89,17 +80,21 @@ int main()
   clearAllMassives(ptr_massives, ptr_numbers_of_elements, created);
   std::string condition;
   std::cin >> condition;
-  if (condition.compare("odd") && condition.compare("even"))
+  if (!condition.compare("odd"))
   {
-    std::cout << count(head, static_cast< std::string >("odd"));
-    std::cout << " ";
-    std::cout << count(head, static_cast< std::string >("even"));
-    std::cout << "\n";
+    std::cout << count(head, isOdd);
+  }
+  else if (!condition.compare("even"))
+  {
+    std::cout << count(head, isEven);
   }
   else
   {
-    std::cout << count(head, condition) << "\n";
+    std::cout << count(head, isOdd);
+    std::cout << " ";
+    std::cout << count(head, isEven);
   }
+  std::cout << "\n";
   clearAllLists(head);
 }
 
@@ -158,4 +153,14 @@ void clearAllLists(List< List< int > * > * head)
     delete head;
     head = subhead;
   }
+}
+
+bool isOdd(int element)
+{
+  return element % 2 == 1;
+}
+
+bool isEven(int element)
+{
+  return element % 2 == 0;
 }
