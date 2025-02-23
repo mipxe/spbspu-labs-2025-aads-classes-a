@@ -86,59 +86,35 @@ List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
   return head;
 }
 
-template< class T >
-size_t countOdd(const List< List< T >* >* head)
+bool isOdd(int a)
 {
-  size_t resOdd = 0;
-  const List< List< T >* > * tail = head;
-  while (tail != nullptr)
-  {
-    List< T >* temp = tail->data;
-    while (temp != nullptr)
-    {
-      if ((temp->data % 2) != 0)
-      {
-        resOdd += 1;
-      }
-      temp = temp->next;
-    }
-    tail = tail->next;
-  }
-  return resOdd;
+  return (a % 2 != 0);
 }
 
-template< class T >
-size_t countEven(const List< List< T >* >* head)
+bool isEven(int a)
 {
-  size_t resEven = 0;
+  return (a % 2 == 0);
+}
+
+template< class T, class C >
+size_t count(const List< List< T >* >* head, C condition)
+{
+  size_t res = 0;
   const List< List< T >* >* tail = head;
   while (tail != nullptr)
   {
     List<T>* temp = tail->data;
     while (temp != nullptr)
     {
-      if ((temp->data % 2) == 0)
+      if (condition(temp->data))
       {
-        resEven += 1;
+        ++res;
       }
       temp = temp->next;
     }
     tail = tail->next;
   }
-  return resEven;
-}
-
-template< class T, class C >
-size_t count(const List< List< T >* >* head, C condition)
-{
-  if (condition)
-  {
-    return countEven(head);
-  }
-  else
-  {
-    return countOdd(head);
-  }
+  return res;
 }
 
 int main()
@@ -222,15 +198,15 @@ int main()
   std::cin >> condition;
   if (condition == "even")
   {
-    std::cout << count(head, 1);
+    std::cout << count(head, isEven);
   }
   else if (condition == "odd")
   {
-    std::cout << count(head, 0);
+    std::cout << count(head, isOdd);
   }
   else
   {
-    std::cout << count(head, 0) << " " << count(head, 1);
+    std::cout << count(head, isOdd) << " " << count(head, isEven);
   }
   std::cout << "\n";
   deleteArr(arr, capacity);
