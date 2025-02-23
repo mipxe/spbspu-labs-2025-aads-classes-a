@@ -7,6 +7,34 @@ struct List
   List< T > * next;
 };
 
+void deleteList(List< List< int >* >* head)
+{
+  List< List< int >* >* listOfLists = head;
+  while (listOfLists)
+  {
+    List< int >* currentList = listOfLists->data;
+    while (currentList)
+    {
+      List< int >* tempNode = currentList->next;
+      delete currentList;
+      currentList = tempNode;
+    }
+    List< List< int >* >* tempNode = head->next;
+    delete head;
+    head = tempNode;
+  }
+}
+
+List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
+{
+  if (m == 0)
+  {
+    return nullptr;
+  }
+  List< List< int >* >* head = new List< List< int >* >();
+  List< List< int >* >* tail = head;
+}
+
 void deleteArray(int** t, size_t created)
 {
   for (size_t i = 0; i < created; i++)
