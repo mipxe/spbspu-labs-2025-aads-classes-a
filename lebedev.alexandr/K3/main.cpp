@@ -102,8 +102,6 @@ void deleteArray(int** t, size_t created)
 
 int main()
 {
-  int** ptr = nullptr;
-  size_t* sizes = nullptr;
   size_t m = 0, n = 0, created = 0;
   if (!(std::cin >> m))
   {
@@ -111,6 +109,8 @@ int main()
     return 1;
   }
 
+  int** ptr = nullptr;
+  size_t* sizes = nullptr;
   try
   {
     ptr = new int*[m];
@@ -151,7 +151,7 @@ int main()
       if (!(std::cin >> ptr[created][i]))
       {
         std::cerr << "Incorrect input!\n";
-        deleteArray(ptr, created);
+        deleteArray(ptr, created + 1);
         delete[] sizes;
         return 1;
       }
