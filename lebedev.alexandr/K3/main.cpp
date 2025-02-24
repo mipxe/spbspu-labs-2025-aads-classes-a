@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 template< class T >
 struct List
@@ -19,9 +20,9 @@ void deleteList(List< List< int >* >* head)
       delete currentList;
       currentList = tempNode;
     }
-    List< List< int >* >* tempNode = head->next;
-    delete head;
-    head = tempNode;
+    List< List< int >* >* tempNode = listOfLists->next;
+    delete listOfLists;
+    listOfLists = tempNode;
   }
 }
 
@@ -31,8 +32,63 @@ List< List< int >* >* convert(const int* const* d, size_t m, const size_t* n)
   {
     return nullptr;
   }
-  List< List< int >* >* head = new List< List< int >* >();
-  List< List< int >* >* tail = head;
+  List< List< int >* >* head = nullptr;
+  List< List< int >* >* tail = nullptr;
+  try
+  {
+    head = new List< List< int >* >{ nullptr, nullptr };
+    tail = head;
+    for (size_t i = 0; i < m; i++)
+    {
+      List< int >* subhead = new List< int >{ d[i][0], nullptr };
+      List< int >* subtail = subhead;
+      for (size_t j = 1; j < n[i]; j++)
+      {
+        List< int >* temp = new List< int >{ d[i][j], nullptr };
+        subtail->next = temp;
+        subtail = temp;
+      }
+      tail->data = subhead;
+      tail->next = new List< List< int >* >{ nullptr, nullptr };
+      tail = tail->next;
+    }
+  }
+  catch (...)
+  {
+    deleteList(head);
+    throw;
+  }
+  return head;
+}
+
+bool isEven(int a)
+{
+  return (a % 2 == 0);
+}
+
+bool isOdd(int a)
+{
+  return (a % 2 != 0);
+}
+
+template< class T, class C >
+size_t count(const List< List< T >* >* head, C condition)
+{
+  size_t c = 0;
+  while (head)
+  {
+    List< int >* subhead = head->data;
+    while (subhead)
+    {
+      if (condition(subhead->data))
+      {
+        c++;
+      }
+      subhead = subhead->next;
+    }
+    head = head->next;
+  }
+  return c;
 }
 
 void deleteArray(int** t, size_t created)
@@ -103,7 +159,36 @@ int main()
     created++;
   }
 
+  List< List< int >* >* head = nullptr;
+  try
+  {
+    head = convert(ptr, m, sizes);
+  }
+  catch (const std::bad_alloc& e)
+  {
+    deleteArray(ptr, m);
+    delete[] sizes;
+    std::cerr << "Memory allocation error!\n";
+    return 2;
+  }
   deleteArray(ptr, m);
   delete[] sizes;
+
+  std::string condition;
+  std::cin >> condition;
+  if (condition == "odd")
+  {
+    std::cout << count(head, isOdd) << '\n';
+  }
+  else if (condition == "even")
+  {
+    std::cout << count(head, isEven) << '\n';
+  }
+  else
+  {
+    std::cout << count(head, isOdd) << ' ' << count(head, isEven) << '\n';
+  }
+
+  deleteList(head);
   return 0;
 }
