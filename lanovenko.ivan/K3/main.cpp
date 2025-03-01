@@ -135,14 +135,16 @@ int main()
   }
   catch (const std::bad_alloc& e)
   {
+    delete[] matrix;
     return 1;
   }
+  size_t created = 0;
   for (size_t i = 0; i < arrayQuantity; i++)
   {
     if (!(std::cin >> sizes[i]))
     {
       delete[] sizes;
-      delete[] matrix;
+      deleteMatrix(matrix, created);
       std::cerr << "Inptut fail\n";
       return 1;
     }
@@ -152,14 +154,18 @@ int main()
     }
     catch (const std::bad_alloc& e)
     {
-      deleteMatrix(matrix, sizes[i]);
+      delete[] sizes;
+      deleteMatrix(matrix, created);
+      std::cerr << "Out of memmory!\n";
+      return 1;
     }
+    created++;
     for (size_t j = 0; j < sizes[i]; j++)
     {
       if (!(std::cin >> matrix[i][j]))
       {
         delete[] sizes;
-        deleteMatrix(matrix, arrayQuantity);
+        deleteMatrix(matrix, created);
         return 1;
       }
     }
@@ -176,11 +182,11 @@ int main()
   }
   std::string str = "";
   std::cin >> str;
-  if (str.find("odd") != std::string::npos)
+  if (str == "odd")
   {
     std::cout << count(buf, isOdd) << '\n';
   }
-  else if (str.find("even") != std::string::npos)
+  else if (str == "even")
   {
     std::cout << count(buf, isEven) << '\n';
   }
