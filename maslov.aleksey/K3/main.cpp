@@ -108,7 +108,6 @@ int main()
   {
     std::cerr << "memory error\n";
     delete[] array;
-    delete[] numElements;
     return 1;
   }
   for (size_t i = 0; i < numArray; i++)
