@@ -97,8 +97,20 @@ int main()
     std::cerr << "error input: number of arrays\n";
     return 1;
   }
-  int ** array = new int * [numArray];
-  size_t * numElements = new size_t[numArray];
+  int ** array = nullptr;
+  size_t * numElements = nullptr;
+  try
+  {
+    array = new int * [numArray];
+    numElements = new size_t[numArray];
+  }
+  catch (const std::bad_alloc &)
+  {
+    std::cerr << "memory error\n";
+    delete[] array;
+    delete[] numElements;
+    return 1;
+  }
   for (size_t i = 0; i < numArray; i++)
   {
     if (!(std::cin >> numElements[i]))
