@@ -1,125 +1,115 @@
 #include <iostream>
+#include <cstddef>
+#include <stdexcept>
 
 struct FwdList
 {
-  int value;
-  FwdList * next;
+    int value;
+    FwdList* next;
 };
 
-FwdList * toFwdList(const int * arr, size_t size);
-void clearFwdList(FwdList * head);
-void duplicateElements(FwdList * head, int index, const int * arr, int count);
-void print(std::ostream & out, FwdList * head);
+void printList(std::ostream& out, const FwdList* head);
+void deleteList(FwdList* head);
+FwdList* duplicateElements(FwdList* head, size_t index, size_t count);
+size_t determinateLength(FwdList* head);
 
 int main()
 {
-  constexpr size_t size = 10;
-  int index = 0;
-  int count = 0;
-  FwdList * head = nullptr;
-  const int arr[size] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-  try
-  {
-    head = toFwdList(arr, size);
-  }
-  catch(std::bad_alloc &)
-  {
-    return 1;
-  }
-  while (std::cin >> index && !std::cin.eof())
-  {
-    if (index > 10 || index < 1)
+    FwdList* head = nullptr;
+    FwdList* tail = nullptr;
+    try
     {
-      clearFwdList(head);
-      std::cerr << "out of range";
-      return 1;
+        FwdList* newElement = new FwdList{ 0, nullptr };
+        head = newElement;
+        tail = newElement;
+        for (int i = 1; i < 10; ++i)
+        {
+            FwdList* newElement = new FwdList{ i, nullptr };
+            tail->next = newElement;
+            tail = newElement;
+        }
     }
-    if (std::cin >> count)
+    catch (const std::bad_alloc&)
     {
-      try
-      {
-        duplicateElements(head, index, arr, count);
-      }
-      catch (const std::exception & e)
-      {
+        std::cerr << "Memory error\n";
+        deleteList(head);
         return 1;
-      }
     }
-    else
+    size_t index = 0;
+    size_t count = 0;
+    while (std::cin >> index >> count && !std::cin.eof())
     {
-      break;
+        try
+        {
+            duplicateElements(head, index, count);
+        }
+        catch (const std::exception& e)
+        {
+            deleteList(head);
+            std::cerr << e.what() << "\n";
+            return 1;
+        }
     }
-  }
-  print(std::cout, head);
-  std::cout << "\n";
+    printList(std::cout, head);
+    std::cout << "\n";
+    deleteList(head);
 }
 
-FwdList * toFwdList(const int * arr, size_t size)
+void printList(std::ostream& out, const FwdList* head)
 {
-  FwdList * head = new FwdList{arr[0], nullptr};
-  FwdList * subhead = head;
-  for (size_t i = 1; i < size; ++i)
-  {
-    FwdList * record = nullptr;
-    try
+    out << head->value;
+    head = head->next;
+    while (head)
     {
-      record = new FwdList{arr[i], nullptr};
+        out << " " << head->value;
+        head = head->next;
     }
-    catch (const std::bad_alloc &)
-    {
-      clearFwdList(head);
-      throw;
-    }
-    subhead->next = record;
-    subhead = record;
-  }
-  return head;
 }
 
-void clearFwdList(FwdList * head)
+void deleteList(FwdList* head)
 {
-  FwdList * subhead = head;
-  while (subhead != nullptr)
-  {
-    FwdList * next = subhead->next;
-    delete subhead;
-    subhead = next;
-  }
+    while (head)
+    {
+        FwdList* next = head->next;
+        delete head;
+        head = next;
+    }
 }
 
-void duplicateElements(FwdList * head, int index, const int * arr, int count)
+size_t determinateLength(FwdList* head)
 {
-  FwdList * subhead = head;
-  while(subhead->value != arr[index - 1])
-  {
-    subhead = subhead->next;
-  }
-  FwdList * next = subhead->next;
-  for(int i = 0; i < count; i++)
-  {
-    FwdList * record = nullptr;
-    try
+    FwdList* subhead = head;
+    size_t res = 1;
+    while (subhead)
     {
-      record = new FwdList{arr[index - 1], nullptr};
+        subhead = subhead->next;
+        res++;
     }
-    catch (const std::bad_alloc &)
-    {
-      clearFwdList(head);
-      throw;
-    }
-    subhead->next = record;
-    subhead = record;
-  }
-  subhead->next = next;
+    return res;
 }
 
-void print(std::ostream & out, FwdList * head)
+FwdList* duplicateElements(FwdList* head, size_t index, size_t count)
 {
-  FwdList * subhead = head;
-  while (subhead->next)
-  {
-    out << subhead->value << " ";
-    subhead = subhead->next;
-  }
-  out << subhead->value;
+    if (index < 1)
+    {
+        throw std::invalid_argument("index must be positive");
+    }
+    FwdList* subhead = head;
+    size_t length = determinateLength(head);
+    if (index - 1 > length)
+    {
+        throw std::out_of_range("out of range");
+    }
+    for (size_t i = 1; i < index; i++)
+    {
+        subhead = subhead->next;
+    }
+    FwdList* node = subhead;
+    for (size_t i = 0; i < count; ++i)
+    {
+        FwdList* newElement = new FwdList{ subhead->value, node->next };
+        node->next = newElement;
+        node = newElement;
+    }
+    return subhead;
 }
