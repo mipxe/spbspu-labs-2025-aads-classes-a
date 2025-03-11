@@ -79,7 +79,7 @@ void deleteList(FwdList* head)
 size_t determinateLength(FwdList* head)
 {
     FwdList* subhead = head;
-    size_t res = 1;
+    size_t res = 0;
     while (subhead)
     {
         subhead = subhead->next;
@@ -96,11 +96,11 @@ FwdList* duplicateElements(FwdList* head, size_t index, size_t count)
     }
     FwdList* subhead = head;
     size_t length = determinateLength(head);
-    if (index - 1 > length)
+    if (index > length)
     {
         throw std::out_of_range("out of range");
     }
-    for (size_t i = 1; i < index; i++)
+    for (size_t j = 1; j < index; j++)
     {
         subhead = subhead->next;
     }
