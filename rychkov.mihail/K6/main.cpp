@@ -143,7 +143,7 @@ int main()
   {
     try
     {
-      root = insert(root, number, std::less<>());
+      root = insert(root, number, std::less< int >());
     }
     catch (...)
     {
@@ -160,9 +160,16 @@ int main()
   }
 
   std::string input;
-  while (std::cin >> input >> number)
+  while (std::cin >> input)
   {
-    BiTree< int >* node = find(root, number, std::less<>());
+    if (!(std::cin >> number))
+    {
+      destroy(root);
+      std::cout << "<INVALID COMMAND>\n";
+      return 1;
+    }
+
+    BiTree< int >* node = find(root, number, std::less< int >());
     BiTree< int >* temp = nullptr;
     if (input == "left")
     {
@@ -191,9 +198,4 @@ int main()
     std::cout << temp->data << '\n';
   }
   destroy(root);
-  if (!std::cin.eof())
-  {
-    std::cout << "<INVALID COMMAND>\n";
-    return 1;
-  }
 }
