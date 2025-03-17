@@ -13,12 +13,52 @@ struct BiTree
 template< class T >
 BiTree< T >* rotate_right(BiTree< T >* root)
 {
-  return root;
+  if ((root == nullptr) || (root->left == nullptr))
+  {
+    return nullptr;
+  }
+  BiTree< T >* result = root->left;
+  result->parent = root->parent;
+  if (root->parent != nullptr)
+  {
+    if (root->parent->left == root)
+    {
+      root->parent->left = result;
+    }
+    else
+    {
+      root->parent->right = result;
+    }
+  }
+  root->parent = result;
+  root->left = result->right;
+  result->right = root;
+  return result;
 }
 template< class T >
 BiTree< T >* rotate_left(BiTree< T >* root)
 {
-  return root;
+  if ((root == nullptr) || (root->right == nullptr))
+  {
+    return nullptr;
+  }
+  BiTree< T >* result = root->right;
+  result->parent = root->parent;
+  if (root->parent != nullptr)
+  {
+    if (root->parent->left == root)
+    {
+      root->parent->left = result;
+    }
+    else
+    {
+      root->parent->right = result;
+    }
+  }
+  root->parent = result;
+  root->right = result->left;
+  result->left = root;
+  return result;
 }
 template< class T, class C >
 BiTree< T >* find(BiTree< T >* root, const T& value, C compare)
@@ -118,52 +158,42 @@ int main()
     destroy(root);
     return 1;
   }
+
   std::string input;
   while (std::cin >> input >> number)
   {
     BiTree< int >* node = find(root, number, std::less<>());
+    BiTree< int >* temp = nullptr;
     if (input == "left")
     {
-      BiTree< int >* temp = rotate_left(node);
-      if (temp == nullptr)
-      {
-        std::cerr << "<INVALID ROTATE>\n";
-        destroy(root);
-        return 1;
-      }
-      if (node == root)
-      {
-        root = temp;
-      }
-      std::cout << node->data << '\n';
+      temp = rotate_left(node);
     }
     else if (input == "right")
     {
-      BiTree< int >* temp = rotate_right(node);
-      if (temp == nullptr)
-      {
-        std::cerr << "<INVALID ROTATE>\n";
-        destroy(root);
-        return 1;
-      }
-      if (node == root)
-      {
-        root = temp;
-      }
-      std::cout << node->data << '\n';
+      temp = rotate_right(node);
     }
     else
     {
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>\n";
       destroy(root);
       return 1;
     }
-  }
-  if (!std::cin.eof())
-  {
-    std::cerr << "<INVALID COMMAND>\n";
-    destroy(root);
-    return 1;
+
+    if (temp == nullptr)
+    {
+      std::cout << "<INVALID ROTATE>\n";
+      continue;
+    }
+    if (node == root)
+    {
+      root = temp;
+    }
+    std::cout << temp->data << '\n';
   }
   destroy(root);
+  if (!std::cin.eof())
+  {
+    std::cout << "<INVALID COMMAND>\n";
+    return 1;
+  }
 }
