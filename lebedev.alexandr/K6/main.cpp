@@ -20,13 +20,8 @@ void deleteTree(BiTree< int >* root)
   delete root;
 }
 
-BiTree< int >* insertNode(BiTree< int >* root, int value)
+void insertNode(BiTree< int >* root, int value)
 {
-  if (!root)
-  {
-    return new BiTree< int >{ value, nullptr, nullptr, nullptr };
-  }
-
   BiTree< int >* current = root;
   BiTree< int >* parent = nullptr;
 
@@ -52,6 +47,30 @@ BiTree< int >* insertNode(BiTree< int >* root, int value)
   {
     parent->right = current;
   }
+}
+
+BiTree< int >* buildTree(size_t size)
+{
+  if (size <= 0)
+  {
+    return nullptr;
+  }
+
+  int value = 0;
+  if (!(std::cin >> value))
+  {
+    throw std::invalid_argument("");
+  }
+  BiTree< int >* root = new BiTree< int >{ value, nullptr, nullptr, nullptr };
+
+  for (size_t i = 1; i < size; i++)
+  {
+    if ((!std::cin >> value))
+    {
+      throw std::invalid_argument("");
+    }
+    insertNode(root, value);
+  }
 
   return root;
 }
@@ -60,25 +79,21 @@ int main()
   size_t size = 0;
   std::cin >> size;
   BiTree< int >* root = nullptr;
-  BiTree< int >* current = nullptr;
 
   try
   {
-    int value = 0;
-    std::cin >> value;
-    root = new BiTree< int >{ value, nullptr, nullptr, nullptr };
-    current = root;
-    for (size_t i = 1; i < size; i++)
-    {
-      if (!std::cin >> value)
-      {
-        deleteTree(root);
-        std::cerr << "Incorrect input!\n";
-        return 1;
-      }
-
-    }
+    root = buildTree(size);
   }
-  catch(...)
-  {}
+  catch (const std::bad_alloc& e)
+  {
+    deleteTree(root);
+    std::cerr << "Memory allocation error!\n";
+    return 2;
+  }
+  catch (const std::invalid_argument& e)
+  {
+    deleteTree(root);
+    std::cerr << "Incorrect input!\n";
+    return 1;
+  }
 }
