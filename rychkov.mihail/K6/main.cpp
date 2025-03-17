@@ -1,5 +1,6 @@
 #include <iostream>
 #include <functional>
+#include <string>
 
 template< class T >
 struct BiTree
@@ -10,11 +11,35 @@ struct BiTree
   BiTree< T >* parent = nullptr;
 };
 template< class T >
-BiTree< T >* rotate_right(BiTree< T >* root);
+BiTree< T >* rotate_right(BiTree< T >* root)
+{
+  return root;
+}
 template< class T >
-BiTree< T >* rotate_left(BiTree< T >* root);
+BiTree< T >* rotate_left(BiTree< T >* root)
+{
+  return root;
+}
 template< class T, class C >
-BiTree< T >* find(BiTree< T >* root, const T& value, C compare);
+BiTree< T >* find(BiTree< T >* root, const T& value, C compare)
+{
+  while (root != nullptr)
+  {
+    if (compare(value, root->data))
+    {
+      root = root->left;
+    }
+    else if (compare(root->data, value))
+    {
+      root = root->right;
+    }
+    else
+    {
+      return root;
+    }
+  }
+  return nullptr;
+}
 template< class T, class C >
 BiTree< T >* insert(BiTree< T >* root, const T& value, C compare)
 {
@@ -37,7 +62,7 @@ BiTree< T >* insert(BiTree< T >* root, const T& value, C compare)
         root = root->left;
       }
     }
-    else if (compare(root->data, value))
+    else
     {
       if (root->right == nullptr)
       {
@@ -67,7 +92,11 @@ void destroy(BiTree< T >* root)
 int main()
 {
   size_t size = 0;
-  std::cin >> size;
+  if (!(std::cin >> size))
+  {
+    std::cerr << "failed to read size\n";
+    return 1;
+  }
   BiTree< int >* root = nullptr;
   int number = 0;
   for (; (size != 0) && (std::cin >> number); size--)
@@ -86,6 +115,53 @@ int main()
   if (size != 0)
   {
     std::cerr << "failed to read tree\n";
+    destroy(root);
+    return 1;
+  }
+  std::string input;
+  while (std::cin >> input >> number)
+  {
+    BiTree< int >* node = find(root, number, std::less<>());
+    if (input == "left")
+    {
+      BiTree< int >* temp = rotate_left(node);
+      if (temp == nullptr)
+      {
+        std::cerr << "<INVALID ROTATE>\n";
+        destroy(root);
+        return 1;
+      }
+      if (node == root)
+      {
+        root = temp;
+      }
+      std::cout << node->data << '\n';
+    }
+    else if (input == "right")
+    {
+      BiTree< int >* temp = rotate_right(node);
+      if (temp == nullptr)
+      {
+        std::cerr << "<INVALID ROTATE>\n";
+        destroy(root);
+        return 1;
+      }
+      if (node == root)
+      {
+        root = temp;
+      }
+      std::cout << node->data << '\n';
+    }
+    else
+    {
+      std::cerr << "<INVALID COMMAND>\n";
+      destroy(root);
+      return 1;
+    }
+  }
+  if (!std::cin.eof())
+  {
+    std::cerr << "<INVALID COMMAND>\n";
     destroy(root);
     return 1;
   }
