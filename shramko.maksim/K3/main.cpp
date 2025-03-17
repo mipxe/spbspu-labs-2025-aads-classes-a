@@ -43,7 +43,7 @@ bool isOdd(int n)
   return n % 2 != 0;
 }
 
-template< class T, class C>
+template< class T, class C >
 size_t count(const List< List< T > * > * head, C word)
 {
   size_t s = 0;
@@ -73,7 +73,7 @@ List< List< int > * > * convert(const int* const* arr, size_t m, const size_t* n
     List< int > * sTail = nullptr;
     try
     {
-      sTail = new List< int >{ arr[i][0], nullptr };
+      sHead = new List< int >{ arr[i][0], nullptr };
       sTail = sHead;
       for (size_t j = 1; j < n[i]; j++)
       {
@@ -84,7 +84,7 @@ List< List< int > * > * convert(const int* const* arr, size_t m, const size_t* n
       tail->next = new List< List< int > * >{ sHead, nullptr };
       tail = tail->next;
     }
-    catch (const std::bad_alloc&)
+    catch (const std::bad_alloc &)
     {
       rmList(head);
       throw;
