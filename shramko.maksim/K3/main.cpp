@@ -109,7 +109,7 @@ int main()
   try
   {
     arr = new int*[m];
-    size_t* numElem = nullptr;
+    size_t* numElem = new size_t[m];
   }
   catch (const std::bad_alloc &)
   {
