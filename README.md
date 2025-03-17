@@ -32,7 +32,7 @@
 template< class T >
 struct BiTree {
   T data;
-  BiTree< T > * left, * right;
+  BiTree< T > * left, * right, * parent;
 };
 // 1
 template< class T >
