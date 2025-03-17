@@ -90,15 +90,13 @@ List< List< int > * > * convert(const int* const* arr, size_t m, const size_t* n
       throw;
     }
   }
-
   return head;
 }
 
 int main()
 {
   size_t m = 0;
-  std::cin >> m;
-  if (std::cin.fail())
+  if (!(std::cin >> m))
   {
     std::cerr << "Error: Main -> cin m.\n";
     return 1;
@@ -120,8 +118,7 @@ int main()
 
   for (size_t i = 0; i < m; i++)
   {
-    std::cin >> numElem[i];
-    if (std::cin.fail())
+    if (!(std::cin >> numElem[i]))
     {
       std::cerr << "Error: Main -> cin size.\n";
       rmArr(arr, i);
@@ -133,7 +130,7 @@ int main()
     {
       arr[i] = new int[numElem[i]];
     }
-    catch (const std::bad_alloc&)
+    catch (const std::bad_alloc &)
     {
       std::cerr << "Error: main -> arr bad_alloc\n";
       rmArr(arr, i);
@@ -143,20 +140,17 @@ int main()
 
     for (size_t j = 0; j < numElem[i]; j++)
     {
-      int temp = 0;
-      std::cin >> temp;
-      if (std::cin.fail())
+      if (!(std::cin >> arr[i][j]))
       {
         std::cerr << "Error: main -> cin arr[i][j].\n";
         rmArr(arr, i + 1);
         delete[] numElem;
         return 1;
       }
-      arr[i][j] = temp;
     }
   }
 
-  List< List < int > * > * head = nullptr;
+  List< List< int > * > * head = nullptr;
   try
   {
     head = convert(arr, m, numElem);
