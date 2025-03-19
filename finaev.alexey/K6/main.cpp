@@ -191,7 +191,7 @@ int main()
   if (std::cin.fail())
   {
     delete[] nums;
-    std::cout << "INVALID COMMAND\n";
+    std::cerr << "uncorrect argument\n";
     return 1;
   }
   if (i < size)
