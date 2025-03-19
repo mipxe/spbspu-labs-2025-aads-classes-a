@@ -94,10 +94,9 @@ BiTree< T >* rotate_right(BiTree< T >* root)
   }
   BiTree< T >* newHead = root->left;
   root->left = newHead->right;
-  newHead->parent = root;
   newHead->right = root;
-  root->parent = newHead;
   newHead->parent = root->parent;
+  root->parent = newHead;
   if (!newHead->parent)
   {
     return newHead;
@@ -119,8 +118,9 @@ BiTree< T >* rotate_right(BiTree< T >* root)
 
 
 template< class T >
-BiTree< T >* rotate_left(BiTree< T >* root)
+BiTree< T >* rotate_left(BiTree< T >* rotateRoot)
 {
+  BiTree< T >* root = rotateRoot;
   if (!root)
   {
     throw std::logic_error("<INVALID ROTATE>\n");
@@ -131,10 +131,9 @@ BiTree< T >* rotate_left(BiTree< T >* root)
   }
   BiTree< T >* newHead = root->right;
   root->right = newHead->left;
-  newHead->parent = root;
   newHead->left = root;
-  root->parent = newHead;
   newHead->parent = root->parent;
+  root->parent = newHead;
   if (!newHead->parent)
   {
     return newHead;
@@ -221,6 +220,7 @@ int main()
   }
   std::string cmd = "";
   int data = 0;
+  BiTree< int >* res = nullptr;
   while (!std::cin.eof() && std::cin >> cmd)
   {
     std::cin >> data;
@@ -231,31 +231,35 @@ int main()
       deleteTree(head);
       return 1;
     }
+    BiTree< int >* cur = head;
+    BiTree< int >* temp = find(cur, data, std::less< int >());
     if (cmd == "left")
     {
       try
       {
-        BiTree< int >* current = head;
-        BiTree< int >* res = rotate_left(find(current, data, std::less< int >()));
+        res = rotate_left(temp);
         std::cout << res->data << "\n";
       }
-      catch (const std::logic_error& e)
+      catch(const std::logic_error& e)
       {
-        std::cout << e.what();
+        std::cerr << e.what();
       }
     }
     else
     {
       try
       {
-        BiTree< int >* current = head;
-        BiTree< int >* res = rotate_right(find(current, data, std::less< int >()));
+        res = rotate_right(temp);
         std::cout << res->data << "\n";
       }
-      catch (const std::logic_error& e)
+      catch(const std::logic_error& e)
       {
-        std::cout << e.what();
+        std::cerr << e.what();
       }
+    }
+    if (temp == head)
+    {
+      head = res;
     }
   }
   delete[] nums;
