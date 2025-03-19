@@ -1,7 +1,7 @@
 #include <iostream>
 
 template< class T >
-struct BiTree 
+struct BiTree
 {
   T data;
   BiTree< T >* left;
@@ -16,19 +16,82 @@ struct BiTree
 };
 
 template< class T >
-BiTree< T >* convert(int nums[], size_t size)
+void deleteElem(BiTree< T >* tree)
 {
-  BiTree< T >* head = new BiTree< T >(nums[0]);
-  BiTree< T >* current = head;
+  if (!tree->parent)
+  {
+    delete tree;
+  }
+  else
+  {
+    if (tree->parent->left)
+    {
+      if (tree->parent->left->data == tree->data)
+      {
+        tree->parent->left = nullptr;
+        delete tree;
+      }
+      else
+      {
+        tree->parent->right = nullptr;
+        delete tree;
+      }
+    }
+    else
+    {
+      tree->parent->right = nullptr;
+      delete tree;
+    }
+  }
+}
+
+template< class T >
+void deleteFreeTree(BiTree< T >* tree)
+{
+  if (tree->left)
+  {
+    tree = tree->left;
+    deleteFreeTree(tree);
+  }
+  else
+  {
+    if (tree->right)
+    {
+      tree = tree->right;
+      deleteFreeTree(tree);
+    }
+    else
+    {
+      deleteElem(tree);
+    }
+  }
+}
+
+template< class T >
+void deleteTree(BiTree< T >* head, size_t& size)
+{
+  while(size != 0)
+  {
+    BiTree< T >* current = head;
+    deleteFreeTree(current);
+    --size;
+  }
+}
+
+BiTree< int >* convert(int* nums, size_t size)
+{
+  BiTree< int >* head = new BiTree< int >(nums[0]);
+  BiTree< int >* current = head;
   for (size_t i = 1; i < size; ++i)
   {
-    BiTree< T >* elem = nullptr;
+    BiTree< int >* elem = nullptr;
     try
     {
-      elem = new BiTree< T >(nums[i]);
+      elem = new BiTree< int >(nums[i]);
     }
     catch(const std::bad_alloc&)
     {
+      deleteTree(head, i);
       throw;
     }
     while(true)
@@ -65,6 +128,105 @@ BiTree< T >* convert(int nums[], size_t size)
   return head;
 }
 
+template< class T >
+BiTree< T > * rotate_right(BiTree< T > * root)
+{
+  if (!root)
+  {
+    throw std::logic_error("INVALID ROTATE!\n");
+  }
+  if (!root->left)
+  {
+    throw std::logic_error("INVALID ROTATE!\n");
+  }
+  BiTree< T >* newHead = root->left;
+  root->left = newHead->right;
+  root->left->parent = root;
+  newHead->right = root;
+  root->parent = newHead;
+  newHead->parent = root->parent;
+  if (!newHead->parent)
+  {
+    return newHead;
+  }
+  else
+  {
+    if (newHead->parent->left == root)
+    {
+      newHead->parent->left = newHead;
+      return newHead;
+    }
+    else
+    {
+      newHead->parent->right = newHead;
+      return newHead;
+    }
+  }
+}
+
+
+template< class T >
+BiTree< T > * rotate_left(BiTree< T > * root)
+{
+  if (!root)
+  {
+    throw std::logic_error("INVALID ROTATE!\n");
+  }
+  if (!root->right)
+  {
+    throw std::logic_error("INVALID ROTATE!\n");
+  }
+  BiTree< T >* newHead = root->right;
+  root->right = newHead->left;
+  root->right->parent = root;
+  newHead->left = root;
+  root->parent = newHead;
+  newHead->parent = root->parent;
+  if (!newHead->parent)
+  {
+    return newHead;
+  }
+  else
+  {
+    if (newHead->parent->left == root)
+    {
+      newHead->parent->left = newHead;
+      return newHead;
+    }
+    else
+    {
+      newHead->parent->right = newHead;
+      return newHead;
+    }
+  }
+}
+
+template< class T, class Cmp >
+BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
+{
+  if (!root)
+  {
+    return nullptr;
+  }
+  if (root->data == value)
+  {
+    return root;
+  }
+  else
+  {
+    if (cmp(value, root->data))
+    {
+      root = find(root->right, value, cmp);
+      return root;
+    }
+    else
+    {
+      root = find(root->left, value, cmp);
+      return root;
+    }
+  }
+}
+
 int main()
 {
   size_t size = 0;
@@ -79,7 +241,61 @@ int main()
   }
   if (i < size)
   {
+    delete[] nums;
     std::cerr << "incomplete sequence!\n";
     return 1;
   }
+  BiTree< int >* head = nullptr;
+  try
+  {
+    head = convert(nums, size);
+  }
+  catch(const std::bad_alloc&)
+  {
+    std::cerr << "bad alloc!\n";
+    delete[] nums;
+    return 1;
+  }
+  std::string cmd = "";
+  int data = 0;
+  while (!std::cin.eof())
+  {
+    std::cin >> cmd;
+    std::cin >> data;
+    if(std::cin.fail() || cmd != "left" || cmd != "right")
+    {
+      std::cout << "INVALID COMMAND\n";
+      delete[] nums;
+      deleteTree(head, size);
+      return 1;
+    }
+    if (cmd == "left")
+    {
+      try
+      {
+        BiTree< int >* current = head;
+        BiTree< int >* res = rotate_left(find(current, data, std::less< int >()));
+        std::cout << res->data << "\n";
+      }
+      catch(const std::logic_error& e)
+      {
+        std::cout << e.what();
+      }
+    }
+    else
+    {
+      try
+      {
+        BiTree< int >* current = head;
+        BiTree< int >* res = rotate_right(find(current, data, std::less< int >()));
+        std::cout << res->data << "\n";
+      }
+      catch(const std::logic_error& e)
+      {
+        std::cout << e.what();
+      }
+    }
+  }
+  delete[] nums;
+  deleteTree(head, size);
 }
