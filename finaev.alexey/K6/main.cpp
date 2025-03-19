@@ -3,18 +3,17 @@
 template< class T >
 struct BiTree
 {
-    T data;
-    BiTree< T >* left;
-    BiTree< T >* right;
-    BiTree< T >* parent;
-    BiTree< T >(int x) :
-        data(x),
-        left(nullptr),
-        right(nullptr),
-        parent(nullptr)
-    {}
+  T data;
+  BiTree< T >* left;
+  BiTree< T >* right;
+  BiTree< T >* parent;
+  BiTree< T >(int x) :
+    data(x),
+    left(nullptr),
+    right(nullptr),
+    parent(nullptr)
+  {}
 };
-
 
 template< class T >
 void deleteTree(BiTree< T >* tree)
@@ -115,7 +114,6 @@ BiTree< T >* rotate_right(BiTree< T >* root)
     }
   }
 }
-
 
 template< class T >
 BiTree< T >* rotate_left(BiTree< T >* rotateRoot)
