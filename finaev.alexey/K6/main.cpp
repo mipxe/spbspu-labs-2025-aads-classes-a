@@ -29,6 +29,10 @@ void deleteTree(BiTree< T >* tree)
 
 BiTree< int >* convert(int* nums, size_t size)
 {
+  if(!nums)
+  {
+    return nullptr;
+  }
   BiTree< int >* head = new BiTree< int >(nums[0]);
   BiTree< int >* current = head;
   for (size_t i = 1; i < size; ++i)
@@ -82,11 +86,11 @@ BiTree< T >* rotate_right(BiTree< T >* root)
 {
   if (!root)
   {
-    throw std::logic_error("INVALID ROTATE!\n");
+    throw std::logic_error("<INVALID ROTATE>\n");
   }
   if (!root->left)
   {
-    throw std::logic_error("INVALID ROTATE!\n");
+    throw std::logic_error("<INVALID ROTATE>\n");
   }
   BiTree< T >* newHead = root->left;
   root->left = newHead->right;
@@ -119,11 +123,11 @@ BiTree< T >* rotate_left(BiTree< T >* root)
 {
   if (!root)
   {
-    throw std::logic_error("INVALID ROTATE!\n");
+    throw std::logic_error("<INVALID ROTATE>\n");
   }
   if (!root->right)
   {
-    throw std::logic_error("INVALID ROTATE!\n");
+    throw std::logic_error("<INVALID ROTATE>\n");
   }
   BiTree< T >* newHead = root->right;
   root->right = newHead->left;
@@ -180,7 +184,11 @@ int main()
 {
   size_t size = 0;
   std::cin >> size;
-  int* nums = new int[size];
+  int* nums = nullptr;
+  if (size != 0)
+  {
+    nums = new int[size];
+  }
   size_t i = 0;
   while (!std::cin.eof() && i < size)
   {
@@ -218,7 +226,7 @@ int main()
     std::cin >> data;
     if (std::cin.fail() || (cmd != "left" && cmd != "right"))
     {
-      std::cout << "INVALID COMMAND\n";
+      std::cout << "<INVALID COMMAND>\n";
       delete[] nums;
       deleteTree(head);
       return 1;
