@@ -265,7 +265,6 @@ int main()
         std::cerr << e.what();
       }
     }
-    
   }
   delete[] nums;
   deleteTree(head);
