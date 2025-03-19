@@ -246,7 +246,7 @@ int main()
       }
       catch(const std::logic_error& e)
       {
-        std::cerr << e.what();
+        std::cout << e.what();
       }
     }
     else
@@ -262,7 +262,7 @@ int main()
       }
       catch(const std::logic_error& e)
       {
-        std::cerr << e.what();
+        std::cout << e.what();
       }
     }
   }
