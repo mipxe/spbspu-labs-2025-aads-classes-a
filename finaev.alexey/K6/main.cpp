@@ -190,6 +190,7 @@ int main()
   }
   if (std::cin.fail())
   {
+    delete[] nums;
     std::cout << "INVALID COMMAND\n";
     return 1;
   }
