@@ -16,65 +16,13 @@ struct BiTree
 };
 
 template< class T >
-void deleteElem(BiTree< T >* tree)
+void deleteTree(BiTree< T >* tree)
 {
-  if (!tree->parent)
+  if (tree)
   {
+    deleteTree(tree->left);
+    deleteTree(tree->right);
     delete tree;
-  }
-  else
-  {
-    if (tree->parent->left)
-    {
-      if (tree->parent->left->data == tree->data)
-      {
-        tree->parent->left = nullptr;
-        delete tree;
-      }
-      else
-      {
-        tree->parent->right = nullptr;
-        delete tree;
-      }
-    }
-    else
-    {
-      tree->parent->right = nullptr;
-      delete tree;
-    }
-  }
-}
-
-template< class T >
-void deleteFreeTree(BiTree< T >* tree)
-{
-  if (tree->left)
-  {
-    tree = tree->left;
-    deleteFreeTree(tree);
-  }
-  else
-  {
-    if (tree->right)
-    {
-      tree = tree->right;
-      deleteFreeTree(tree);
-    }
-    else
-    {
-      deleteElem(tree);
-    }
-  }
-}
-
-template< class T >
-void deleteTree(BiTree< T >* head, size_t& size)
-{
-  while(size != 0)
-  {
-    BiTree< T >* current = head;
-    deleteFreeTree(current);
-    --size;
   }
 }
 
@@ -91,7 +39,7 @@ BiTree< int >* convert(int* nums, size_t size)
     }
     catch(const std::bad_alloc&)
     {
-      deleteTree(head, i);
+      deleteTree(head);
       throw;
     }
     while(true)
@@ -258,15 +206,14 @@ int main()
   }
   std::string cmd = "";
   int data = 0;
-  while (!std::cin.eof())
+  while (!std::cin.eof() && std::cin >> cmd)
   {
-    std::cin >> cmd;
     std::cin >> data;
-    if(std::cin.fail() || cmd != "left" || cmd != "right")
+    if(std::cin.fail() || (cmd != "left" && cmd != "right"))
     {
       std::cout << "INVALID COMMAND\n";
       delete[] nums;
-      deleteTree(head, size);
+      deleteTree(head);
       return 1;
     }
     if (cmd == "left")
@@ -297,5 +244,5 @@ int main()
     }
   }
   delete[] nums;
-  deleteTree(head, size);
+  deleteTree(head);
 }
