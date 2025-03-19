@@ -239,6 +239,10 @@ int main()
       {
         res = rotate_left(temp);
         std::cout << res->data << "\n";
+        if (temp == head)
+        {
+          head = res;
+        }
       }
       catch(const std::logic_error& e)
       {
@@ -251,16 +255,17 @@ int main()
       {
         res = rotate_right(temp);
         std::cout << res->data << "\n";
+        if (temp == head)
+        {
+          head = res;
+        }
       }
       catch(const std::logic_error& e)
       {
         std::cerr << e.what();
       }
     }
-    if (temp == head)
-    {
-      head = res;
-    }
+    
   }
   delete[] nums;
   deleteTree(head);
