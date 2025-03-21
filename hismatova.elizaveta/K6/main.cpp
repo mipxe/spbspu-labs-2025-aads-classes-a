@@ -126,6 +126,7 @@ int main()
     if (std::cin.fail())
     {
       std::cerr << "ERROR: invalid input\n";
+      delete root;
       return 1;
     }
     try
@@ -135,6 +136,7 @@ int main()
     catch (const std::bad_alloc&)
     {
       std::cerr << "ERROR: out of memory\n";
+      delete root;
       return 1;
     }
   }
@@ -151,6 +153,7 @@ int main()
     if (!(is >> rotation >> value))
     {
       std::cout << "<INVALID COMMAND>\n";
+      delete root;
       return 1;
     }
     BiTree< int >* node = find(root, value, std::less<int>());
@@ -194,6 +197,7 @@ int main()
     else
     {
       std::cout << "<INVALID COMMAND>\n";
+      delete root;
       return 1;
     }
   }
