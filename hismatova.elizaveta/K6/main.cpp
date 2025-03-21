@@ -15,6 +15,11 @@ struct BiTree
     right(nullptr),
     parent(nullptr)
   {}
+  ~BiTree()
+  {
+    delete left;
+    delete right;
+  }
 };
 template< class T >
 BiTree< T >* rotate_right(BiTree< T >* root)
@@ -192,5 +197,6 @@ int main()
       return 1;
     }
   }
+  delete root;
   return 0;
 }
