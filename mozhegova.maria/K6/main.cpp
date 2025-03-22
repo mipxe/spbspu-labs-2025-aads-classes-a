@@ -7,10 +7,36 @@ struct BiTree {
 };
 
 template< class T >
-BiTree< T > * rotate_right(BiTree< T > * root);
+BiTree< T > * rotate_right(BiTree< T > * root)
+{
+  BiTree< int > * newRoot = root->left;
+  BiTree< int > * temp = newRoot->right;
+  root->left = temp;
+  if (temp)
+  {
+    temp->parent = root;
+  }
+  newRoot->right = root;
+  newRoot->parent = root->parent;
+  root->parent = newRoot;
+  return newRoot;
+}
 
 template< class T >
-BiTree< T > * rotate_left(BiTree< T > * root);
+BiTree< T > * rotate_left(BiTree< T > * root)
+{
+  BiTree< int > * newRoot = root->right;
+  BiTree< int > * temp = newRoot->left;
+  root->right = temp;
+  if (temp)
+  {
+    temp->parent = root;
+  }
+  newRoot->left = root;
+  newRoot->parent = root->parent;
+  root->parent = newRoot;
+  return newRoot;
+}
 
 template< class T, class Cmp >
 BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
@@ -28,6 +54,17 @@ BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
     }
   }
   return temp;
+}
+
+template< class T >
+void clear(BiTree< T > * root)
+{
+  while (root)
+  {
+    clear(root->left);
+    clear(root->right);
+    delete root;
+  }
 }
 
 template< class T >
@@ -75,17 +112,7 @@ BiTree< T > * createBiTree(const T * nums, size_t n)
       temp->left = newTree;
     }
   }
-}
-
-template< class T >
-void clear(BiTree< T > * root)
-{
-  while (root)
-  {
-    clear(root->left);
-    clear(root->right);
-    delete root;
-  }
+  return root;
 }
 
 int main()
