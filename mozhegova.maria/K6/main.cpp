@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 template< class T >
 struct BiTree {
@@ -9,6 +10,10 @@ struct BiTree {
 template< class T >
 BiTree< T > * rotate_right(BiTree< T > * root)
 {
+  if (root->left == nullptr)
+  {
+    throw std::logic_error("invalid rotate");
+  }
   BiTree< int > * newRoot = root->left;
   BiTree< int > * temp = newRoot->right;
   root->left = temp;
@@ -25,6 +30,10 @@ BiTree< T > * rotate_right(BiTree< T > * root)
 template< class T >
 BiTree< T > * rotate_left(BiTree< T > * root)
 {
+  if (root->right == nullptr)
+  {
+    throw std::logic_error("invalid rotate");
+  }
   BiTree< int > * newRoot = root->right;
   BiTree< int > * temp = newRoot->left;
   root->right = temp;
@@ -138,6 +147,7 @@ int main()
       return 1;
     }
   }
+
   BiTree< int > * root = nullptr;
   try
   {
@@ -148,4 +158,44 @@ int main()
     delete[] nums;
     std::cerr << "Out of memory\n";
   }
+
+  std::string direct;
+  int num = 0;
+  std::cin >> direct;
+  if ((direct != "left" && direct != "right") || !(std::cin >> num))
+  {
+    delete[] nums;
+    clear(root);
+    std::cout << "INVALID COMMAND\n";
+    return 1;
+  }
+  BiTree< int > * findNode = find(root, num, std::less< int>());
+  if (findNode == nullptr)
+  {
+    delete[] nums;
+    clear(root);
+    std::cout << "INVALID ROTATE\n";
+    return 1;
+  }
+  BiTree< int > * temp = nullptr;
+  try
+  {
+    if (direct == "left")
+    {
+      temp = rotate_left(findNode);
+    }
+    else
+    {
+      temp = rotate_right(findNode);
+    }
+  }
+  catch(const std::logic_error &)
+  {
+    delete[] nums;
+    clear(root);
+    std::cout << "INVALID ROTATE\n";
+    return 1;
+  }
+
+  std::cout << temp << '\n';
 }
