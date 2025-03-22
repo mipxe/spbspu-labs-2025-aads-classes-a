@@ -13,7 +13,22 @@ template< class T >
 BiTree< T > * rotate_left(BiTree< T > * root);
 
 template< class T, class Cmp >
-BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp);
+BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
+{
+  BiTree< int > * temp = root;
+  while (temp && temp->data != value)
+  {
+    if (cmp(value, temp->data))
+    {
+      temp = temp->left;
+    }
+    else
+    {
+      temp = temp->right;
+    }
+  }
+  return temp;
+}
 
 template< class T >
 BiTree< T > * createBiTree(const T * nums, size_t n)
