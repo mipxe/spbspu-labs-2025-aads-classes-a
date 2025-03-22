@@ -161,41 +161,45 @@ int main()
 
   std::string direct;
   int num = 0;
-  std::cin >> direct;
-  if ((direct != "left" && direct != "right") || !(std::cin >> num))
+  while (!std::cin.eof())
   {
-    delete[] nums;
-    clear(root);
-    std::cout << "INVALID COMMAND\n";
-    return 1;
-  }
-  BiTree< int > * findNode = find(root, num, std::less< int>());
-  if (findNode == nullptr)
-  {
-    delete[] nums;
-    clear(root);
-    std::cout << "INVALID ROTATE\n";
-    return 1;
-  }
-  BiTree< int > * temp = nullptr;
-  try
-  {
-    if (direct == "left")
+    std::cin >> direct;
+    if ((direct != "left" && direct != "right") || !(std::cin >> num))
     {
-      temp = rotate_left(findNode);
+      delete[] nums;
+      clear(root);
+      std::cout << "INVALID COMMAND\n";
+      return 1;
     }
-    else
+    BiTree< int > * findNode = find(root, num, std::less< int>());
+    if (findNode == nullptr)
     {
-      temp = rotate_right(findNode);
+      delete[] nums;
+      clear(root);
+      std::cout << "INVALID ROTATE\n";
+      return 1;
     }
+    BiTree< int > * temp = nullptr;
+    try
+    {
+      if (direct == "left")
+      {
+        temp = rotate_left(findNode);
+      }
+      else
+      {
+        temp = rotate_right(findNode);
+      }
+    }
+    catch(const std::logic_error &)
+    {
+      delete[] nums;
+      clear(root);
+      std::cout << "INVALID ROTATE\n";
+      return 1;
+    }
+    std::cout << temp->data << '\n';
   }
-  catch(const std::logic_error &)
-  {
-    delete[] nums;
-    clear(root);
-    std::cout << "INVALID ROTATE\n";
-    return 1;
-  }
-
-  std::cout << temp << '\n';
+  delete[] nums;
+  clear(root);
 }
