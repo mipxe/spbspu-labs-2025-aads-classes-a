@@ -16,42 +16,9 @@ template< class T, class Cmp >
 BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp);
 
 template< class T >
-void clear(BiTree< T > * root);
-
-int main()
+BiTree< T > * createBiTree(const T * nums, size_t n)
 {
-  size_t n = 0;
-  std::cin >> n;
-  int * nums = nullptr;
-  try
-  {
-    nums = new int[n];
-  }
-  catch (const std::bad_alloc &)
-  {
-    std::cerr << "out of memory\n";
-    return 1;
-  }
-  for (size_t i = 0; i < n; i++)
-  {
-    if (!(std::cin >> nums[i]))
-    {
-      delete[] nums;
-      std::cerr << "invalid input\n";
-      return 1;
-    }
-  }
-
-  BiTree< int > * root = nullptr;
-  try
-  {
-    root = new BiTree< int >{nums[0], nullptr, nullptr, nullptr};
-  }
-  catch (const std::bad_alloc &)
-  {
-    std::cerr << "out of memory\n";
-    return 1;
-  }
+  BiTree< int > * root = new BiTree< int >{nums[0], nullptr, nullptr, nullptr};
   for (size_t i = 1; i < n; i++)
   {
     BiTree< int > * temp = root;
@@ -81,10 +48,8 @@ int main()
     }
     catch (const std::bad_alloc &)
     {
-      delete[] nums;
       clear(root);
-      std::cerr << "out of memory\n";
-      return 1;
+      throw;
     }
     if (nums[i] > temp->data)
     {
@@ -94,5 +59,51 @@ int main()
     {
       temp->left = newTree;
     }
+  }
+}
+
+template< class T >
+void clear(BiTree< T > * root)
+{
+  while (root)
+  {
+    clear(root->left);
+    clear(root->right);
+    delete root;
+  }
+}
+
+int main()
+{
+  size_t n = 0;
+  std::cin >> n;
+  int * nums = nullptr;
+  try
+  {
+    nums = new int[n];
+  }
+  catch (const std::bad_alloc &)
+  {
+    std::cerr << "out of memory\n";
+    return 1;
+  }
+  for (size_t i = 0; i < n; i++)
+  {
+    if (!(std::cin >> nums[i]))
+    {
+      delete[] nums;
+      std::cerr << "invalid input\n";
+      return 1;
+    }
+  }
+  BiTree< int > * root = nullptr;
+  try
+  {
+    root = createBiTree(nums, n);
+  }
+  catch (const std::bad_alloc &)
+  {
+    delete[] nums;
+    std::cerr << "Out of memory\n";
   }
 }
