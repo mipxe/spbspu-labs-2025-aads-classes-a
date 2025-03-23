@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 template< class T >
 struct BiTree
@@ -6,6 +7,18 @@ struct BiTree
   T data;
   BiTree< T > * left, * right, * parent;
 };
+
+template< class T >
+BiTree< T >* rotate_right(BiTree< T >* root)
+{}
+
+template< class T >
+BiTree< T >* rotate_left(BiTree< T >* root)
+{}
+
+template< class T, class Cmp >
+BiTree< T >* find(BiTree< T >* root, const T& value, Cmp cmp)
+{}
 
 void deleteTree(BiTree< int >* root)
 {
@@ -95,5 +108,25 @@ int main()
     deleteTree(root);
     std::cerr << "Incorrect input!\n";
     return 1;
+  }
+
+  std::string command;
+  int value = 0;
+  while (!std::cin.eof() && std::cin >> command)
+  {
+    if (!(std::cin >> value))
+    {
+      deleteTree(root);
+      std::cerr << "<INVALID COMMAND>\n";
+      return 1;
+    }
+    if (command == "right")
+    {
+      std::cout << rotate_right(root)->data << '\n';
+    }
+    else if (command == "left")
+    {
+      std::cout << rotate_left(root)->data << '\n';
+    }
   }
 }
