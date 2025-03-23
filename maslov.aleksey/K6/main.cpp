@@ -18,7 +18,23 @@ BiTree< T > * rotateLeft(BiTree< T > * root)
 
 template< class T, class Cmp >
 BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
-{}
+{
+  while (root)
+  {
+    if (cmp(value, root->data))
+    {
+      root = root->left;
+    }
+    else if (cmp(root->data, value))
+    {
+      root = root->right;
+    }
+    else
+    {
+      return root;
+    }
+  }
+}
 
 template< class T, class Cmp >
 BiTree< T > * convert(const T * data, size_t s, Cmp cmp)
