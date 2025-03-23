@@ -2,7 +2,8 @@
 #include <string>
 
 template< class T >
-struct BiTree {
+struct BiTree
+{
   T data;
   BiTree< T > * left, * right, * parent;
 };
@@ -127,7 +128,11 @@ BiTree< T > * createBiTree(const T * nums, size_t n)
 int main()
 {
   size_t n = 0;
-  std::cin >> n;
+  if (!(std::cin >> n))
+  {
+    std::cerr << "invalid input\n";
+    return 1;
+  }
   int * nums = nullptr;
   try
   {
@@ -157,16 +162,16 @@ int main()
   {
     delete[] nums;
     std::cerr << "Out of memory\n";
+    return 1;
   }
+  delete[] nums;
 
   std::string direct;
   int num = 0;
-  while (!std::cin.eof())
+  while (!std::cin.eof() && std::cin >> direct >> num)
   {
-    std::cin >> direct;
-    if ((direct != "left" && direct != "right") || !(std::cin >> num))
+    if ((direct != "left" && direct != "right") || !std::cin.fail())
     {
-      delete[] nums;
       clear(root);
       std::cout << "INVALID COMMAND\n";
       return 1;
@@ -174,7 +179,6 @@ int main()
     BiTree< int > * findNode = find(root, num, std::less< int>());
     if (findNode == nullptr)
     {
-      delete[] nums;
       clear(root);
       std::cout << "INVALID ROTATE\n";
       return 1;
@@ -193,13 +197,11 @@ int main()
     }
     catch(const std::logic_error &)
     {
-      delete[] nums;
       clear(root);
       std::cout << "INVALID ROTATE\n";
       return 1;
     }
     std::cout << temp->data << '\n';
   }
-  delete[] nums;
   clear(root);
 }
