@@ -171,6 +171,10 @@ int main()
       {
         BiTree< int >* rotate_tree = rotate_left(find_tree);
         std::cout << rotate_tree->data << "\n";
+        if (find_tree == root)
+        {
+          root = rotate_tree;
+        }
       }
       catch (const std::logic_error& e)
       {
@@ -184,6 +188,10 @@ int main()
       {
         BiTree< int >* rotate_tree = rotate_right(find_tree);
         std::cout << rotate_tree->data << "\n";
+        if (find_tree == root)
+        {
+          root = rotate_tree;
+        }
       }
       catch (const std::logic_error& e)
       {
