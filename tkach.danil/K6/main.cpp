@@ -10,7 +10,7 @@ namespace
   };
 
   template< class T >
-  BiTree< T >* rotate_right(BiTree< T > * root)
+  BiTree< T >* rotate_right(BiTree< T >* const root)
   {
     if (root == nullptr || root->left == nullptr)
     {
@@ -40,7 +40,7 @@ namespace
   }
 
   template< class T >
-  BiTree< T > * rotate_left(BiTree< T > * root)
+  BiTree< T >* rotate_left(BiTree< T >* const root)
   {
     if (root == nullptr || root->right == nullptr)
     {
@@ -70,7 +70,7 @@ namespace
   }
 
   template< class T, class Cmp >
-  BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
+  BiTree< T >* find(BiTree< T >* root, const T& value, Cmp cmp)
   {
     while (root != nullptr && value != root->data)
     {
@@ -98,7 +98,7 @@ namespace
   }
 
   template< class T, class Cmp >
-  BiTree< T >* insertValue(BiTree< T >* root, T value, Cmp cmp)
+  BiTree< T >* insertValue(BiTree< T >* const root, const T value, Cmp cmp)
   {
     if (root == nullptr)
     {
