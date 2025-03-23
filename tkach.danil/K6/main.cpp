@@ -10,30 +10,80 @@ namespace
   };
 
   template< class T >
-  BiTree< T > * rotate_right(BiTree< T > * root);
+  BiTree< T >* rotate_right(BiTree< T > * root)
+  {
+    if (root == nullptr || root->left == nullptr)
+    {
+      throw std::logic_error("INVALID ROTATE");
+    }
+    BiTree< T >* rotate_tree = root->left;
+    if (root->parent != nullptr)
+    {
+      if (root->parent->left == root)
+      {
+        root->parent->left = rotate_tree;
+      }
+      else
+      {
+        root->parent->right = rotate_tree;
+      }
+    }
+    root->left = rotate_tree->right;
+    if (rotate_tree->right != nullptr)
+    {
+      rotate_tree->right->parent = root;
+    }
+    rotate_tree->right = root;
+    rotate_tree->parent = root->parent;
+    root->parent = rotate_tree;
+    return rotate_tree;
+  }
 
   template< class T >
-  BiTree< T > * rotate_left(BiTree< T > * root);
+  BiTree< T > * rotate_left(BiTree< T > * root)
+  {
+    if (root == nullptr || root->right == nullptr)
+    {
+      throw std::logic_error("INVALID ROTATE");
+    }
+    BiTree< T >* rotate_tree = root->right;
+    if (root->parent != nullptr)
+    {
+      if (root->parent->left == root)
+      {
+        root->parent->left = rotate_tree;
+      }
+      else
+      {
+        root->parent->right = rotate_tree;
+      }
+    }
+    root->right = rotate_tree->left;
+    if (rotate_tree->left != nullptr)
+    {
+      rotate_tree->left->parent = root;
+    }
+    rotate_tree->left = root;
+    rotate_tree->parent = root->parent;
+    root->parent = rotate_tree;
+    return rotate_tree;
+  }
 
   template< class T, class Cmp >
   BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
   {
-    while (root != nullptr)
+    while (value != root->data && root != nullptr)
     {
-      if (value == root->data)
-      {
-        return root;
-      }
       if (cmp(value, root->data))
       {
         root = root->left;
       }
-      else if (!(cmp(value, root->data)))
+      else
       {
         root = root->right;
       }
     }
-    return nullptr;
+    return root;
   }
 
   template< class T >
@@ -110,11 +160,48 @@ int main()
     if (!(std::cin >> num))
     {
       clear(root);
-      std::cerr << "INVALID COMMAND\n";
+      std::cout << "INVALID COMMAND\n";
       return 1;
     }
-    
+    BiTree< int >* find_tree = find(root, num, std::less< int >());
+    if (rotate_command == "left")
+    {
+      try
+      {
+        BiTree< int >* rotate_tree = rotate_left(find_tree);
+        if (rotate_tree != nullptr)
+        {
+          std::cout << rotate_tree->data << "\n";
+        }
+      }
+      catch (const std::logic_error& e)
+      {
+        std::cout << e.what() << "\n";
+        continue;
+      }
+    }
+    else if (rotate_command == "right")
+    {
+      try
+      {
+        BiTree< int >* rotate_tree = rotate_right(find_tree);
+        if (rotate_tree != nullptr)
+        {
+          std::cout << rotate_tree->data << "\n";
+        }
+      }
+      catch (const std::logic_error& e)
+      {
+        std::cout << e.what() << "\n";
+        continue;
+      }
+    }
+    else
+    {
+      clear(root);
+      std::cout << "INVALID COMMAND\n";
+      return 1;
+    }
   }
-
   return 0;
 }
