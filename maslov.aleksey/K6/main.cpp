@@ -206,8 +206,7 @@ int main()
     if (!rotateNode)
     {
       std::cout << "<INVALID ROTATE>\n";
-      deleteTree(root);
-      return 1;
+      continue;
     }
     std::cout << rotateNode->data << "\n";
   }
