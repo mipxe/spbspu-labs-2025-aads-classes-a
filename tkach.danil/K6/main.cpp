@@ -169,10 +169,7 @@ int main()
       try
       {
         BiTree< int >* rotate_tree = rotate_left(find_tree);
-        if (rotate_tree != nullptr)
-        {
-          std::cout << rotate_tree->data << "\n";
-        }
+        std::cout << rotate_tree->data << "\n";
       }
       catch (const std::logic_error& e)
       {
@@ -185,10 +182,7 @@ int main()
       try
       {
         BiTree< int >* rotate_tree = rotate_right(find_tree);
-        if (rotate_tree != nullptr)
-        {
-          std::cout << rotate_tree->data << "\n";
-        }
+        std::cout << rotate_tree->data << "\n";
       }
       catch (const std::logic_error& e)
       {
@@ -203,5 +197,6 @@ int main()
       return 1;
     }
   }
+  clear(root);
   return 0;
 }
