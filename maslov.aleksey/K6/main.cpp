@@ -22,7 +22,48 @@ BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
 
 template< class T, class Cmp >
 BiTree< T > * convert(const T * data, size_t s, Cmp cmp)
-{}
+{
+  if (s == 0)
+  {
+    return nullptr;
+  }
+  BiTree< T > * root = new BiTree< T >{data[0], nullptr, nullptr, nullptr};
+  for (size_t i = 1; i < s; ++i)
+  {
+    BiTree< T > * newNode = nullptr;
+    try
+    {
+      newNode = new BiTree< T >{data[i], nullptr, nullptr, nullptr};
+    }
+    catch (const std::bad_alloc &)
+    {
+      deleteTree(root);
+      throw;
+    }
+    BiTree< T > * parent = root;
+    while (parent)
+    {
+      if (cmp(data[i], parent->data))
+      {
+        parent = parent->left;
+      }
+      else
+      {
+        parent = parent->right;
+      }
+    }
+    newNode->parent = parent;
+    if (cmp(data[i], parent->data))
+    {
+      parent->left = newNode;
+    }
+    else
+    {
+      parent->right = newNode;
+    }
+  }
+  return root;
+}
 
 template< class T >
 void deleteTree(BiTree< T > * root)
