@@ -26,7 +26,14 @@ BiTree< T > * convert(const T * data, size_t s, Cmp cmp)
 
 template< class T >
 void deleteTree(BiTree< T > * root)
-{}
+{
+  if (root)
+  {
+    deleteTree(root->left);
+    deleteTree(root->right);
+    delete root;
+  }
+}
 
 int main()
 {
@@ -97,5 +104,7 @@ int main()
       deleteTree(root);
       return 1;
     }
+    std::cout << rotateNode->data << "\n";
   }
+  deleteTree(root);
 }
