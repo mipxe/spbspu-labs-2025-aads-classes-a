@@ -10,15 +10,82 @@ struct BiTree
 
 template< class T >
 BiTree< T >* rotate_right(BiTree< T >* root)
-{}
+{
+  if (root == nullptr || root->left == nullptr)
+  {
+    throw std::logic_error("<INVALID ROTATE>");
+  }
+  BiTree< T >* newRoot = root->left;
+  BiTree< T >* node = newRoot->right;
+  root->left = node;
+  if (node)
+  {
+    node->parent = root;
+  }
+  newRoot->right = root;
+  newRoot->parent = root->parent;
+  root->parent = newRoot;
+  if (newRoot->parent)
+  {
+    if (newRoot->parent->right == root)
+    {
+      newRoot->parent->right = newRoot;
+    }
+    else
+    {
+      newRoot->parent->left = newRoot;
+    }
+  }
+  return newRoot;
+}
 
 template< class T >
 BiTree< T >* rotate_left(BiTree< T >* root)
-{}
+{
+  if (root == nullptr || root->right == nullptr)
+  {
+    throw std::logic_error("<INVALID ROTATE>");
+  }
+  BiTree< T >* newRoot = root->right;
+  BiTree< T >* node = newRoot->left;
+  root->right = node;
+  if (node)
+  {
+    node->parent = root;
+  }
+  newRoot->left = root;
+  newRoot->parent = root->parent;
+  root->parent = newRoot;
+  if (newRoot->parent)
+  {
+    if (newRoot->parent->right == root)
+    {
+      newRoot->parent->right = newRoot;
+    }
+    else
+    {
+      newRoot->parent->left = newRoot;
+    }
+  }
+  return newRoot;
+}
 
 template< class T, class Cmp >
 BiTree< T >* find(BiTree< T >* root, const T& value, Cmp cmp)
-{}
+{
+  if (root == nullptr || root->data == value)
+  {
+    return root;
+  }
+  if (cmp(value, root->data))
+  {
+    return find(root->left, value, cmp);
+  }
+  else
+  {
+    return find(root->right, value, cmp);
+  }
+}
 
 void deleteTree(BiTree< int >* root)
 {
