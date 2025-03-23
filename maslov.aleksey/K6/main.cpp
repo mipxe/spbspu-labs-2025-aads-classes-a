@@ -186,7 +186,7 @@ int main()
     {
       std::cout << "<INVALID ROTATE>\n";
       deleteTree(root);
-      return 1;
+      return 0;
     }
     BiTree< int > * rotateNode = nullptr;
     if (name == "left")
