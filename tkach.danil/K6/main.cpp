@@ -104,7 +104,7 @@ namespace
     {
       return new BiTree< T >{value, nullptr, nullptr, nullptr};
     }
-    if (cmp(value, root->data))
+    else if (cmp(value, root->data))
     {
       root->left = insertValue(root->left, value, cmp);
       if (root->left->parent == nullptr)
