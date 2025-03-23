@@ -188,12 +188,11 @@ int main()
 
   std::string direct;
   int num = 0;
-  while (!std::cin.eof() && std::cin >> direct >> num)
+  while (!std::cin.eof() && (std::cin >> direct >> num))
   {
     if ((direct != "left" && direct != "right") || std::cin.fail())
     {
-      clear(root);
-      std::cout << "INVALID COMMAND\n";
+      std::cout << "<INVALID COMMAND>\n";
       return 1;
     }
     BiTree< int > * findNode = find(root, num, std::less< int>());
@@ -201,7 +200,7 @@ int main()
     {
       clear(root);
       std::cout << "<INVALID ROTATE>\n";
-      return 1;
+      continue;
     }
     BiTree< int > * temp = nullptr;
     try
@@ -215,11 +214,14 @@ int main()
         temp = rotate_right(findNode);
       }
     }
-    catch(const std::logic_error & e)
+    catch (const std::logic_error & e)
     {
       clear(root);
       std::cout << e.what() << '\n';
-      return 1;
+    }
+    if (findNode == root)
+    {
+      root = temp;
     }
     std::cout << temp->data << '\n';
   }
