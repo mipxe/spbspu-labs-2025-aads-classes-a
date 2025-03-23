@@ -10,11 +10,63 @@ struct BiTree
 
 template< class T >
 BiTree< T > * rotateRight(BiTree< T > * root)
-{}
+{
+  if (!root || !root->left)
+  {
+    return nullptr;
+  }
+  BiTree< T > * rotateNode = root->left;
+  root->right = rotateNode->left;
+  if (rotateNode->left)
+  {
+    rotateNode->left->parent = root;
+  }
+  rotateNode->left = root;
+  rotateNode->parent = root->parent;
+  root->parent = rotateNode;
+  if (rotateNode->parent)
+  {
+    if (rotateNode->parent->left == root)
+    {
+      rotateNode->parent->left = rotateNode;
+    }
+    else
+    {
+      rotateNode->parent->right = rotateNode;
+    }
+  }
+  return rotateNode;
+}
 
 template< class T >
 BiTree< T > * rotateLeft(BiTree< T > * root)
-{}
+{
+  if (!root || !root->right)
+  {
+    return nullptr;
+  }
+  BiTree< T > * rotateNode = root->right;
+  root->left = rotateNode->right;
+  if (rotateNode->right)
+  {
+    rotateNode->right->parent = root;
+  }
+  rotateNode->right = root;
+  rotateNode->parent = root->parent;
+  root->parent = rotateNode;
+  if (rotateNode->parent)
+  {
+    if (rotateNode->parent->left == root)
+    {
+      rotateNode->parent->left = rotateNode;
+    }
+    else
+    {
+      rotateNode->parent->right = rotateNode;
+    }
+  }
+  return rotateNode;
+}
 
 template< class T, class Cmp >
 BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
@@ -34,6 +86,7 @@ BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
       return root;
     }
   }
+  return nullptr;
 }
 
 template< class T, class Cmp >
@@ -98,11 +151,6 @@ int main()
   if (!(std::cin >> count))
   {
     std::cerr << "ERROR: wrong input\n";
-    return 1;
-  }
-  if (count < 0)
-  {
-    std::cerr << "ERROR: count not negative\n";
     return 1;
   }
   int * elements = new int[count];
