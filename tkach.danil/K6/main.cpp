@@ -14,7 +14,7 @@ namespace
   {
     if (root == nullptr || root->left == nullptr)
     {
-      throw std::logic_error("INVALID ROTATE");
+      throw std::logic_error("<INVALID ROTATE>");
     }
     BiTree< T >* rotate_tree = root->left;
     if (root->parent != nullptr)
@@ -44,7 +44,7 @@ namespace
   {
     if (root == nullptr || root->right == nullptr)
     {
-      throw std::logic_error("INVALID ROTATE");
+      throw std::logic_error("<INVALID ROTATE>");
     }
     BiTree< T >* rotate_tree = root->right;
     if (root->parent != nullptr)
@@ -72,7 +72,7 @@ namespace
   template< class T, class Cmp >
   BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
   {
-    while (value != root->data && root != nullptr)
+    while (root != nullptr && value != root->data)
     {
       if (cmp(value, root->data))
       {
@@ -128,9 +128,10 @@ int main()
 {
   size_t size = 0;
   std::cin >> size;
-  if (size == 0)
+  if (!std::cin >> size)
   {
-    return 0;
+    std::cerr << "Wrong input\n";
+    return 1;
   }
   BiTree< int >* root = nullptr;
   int value = 0;
