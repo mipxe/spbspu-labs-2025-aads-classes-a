@@ -11,9 +11,9 @@ struct BiTree
 template< class T >
 BiTree< T > * rotate_right(BiTree< T > * root)
 {
-  if (root->left == nullptr)
+  if (!root || !root->left)
   {
-    throw std::logic_error("invalid rotate");
+    throw std::logic_error("<INVALID ROTATE>");
   }
   BiTree< int > * newRoot = root->left;
   BiTree< int > * temp = newRoot->right;
@@ -25,15 +25,26 @@ BiTree< T > * rotate_right(BiTree< T > * root)
   newRoot->right = root;
   newRoot->parent = root->parent;
   root->parent = newRoot;
+  if (newRoot->parent)
+  {
+    if (newRoot->parent->left == root)
+    {
+      newRoot->parent->left = newRoot;
+    }
+    else
+    {
+      newRoot->parent->right = newRoot;
+    }
+  }
   return newRoot;
 }
 
 template< class T >
 BiTree< T > * rotate_left(BiTree< T > * root)
 {
-  if (root->right == nullptr)
+  if (!root || !root->right)
   {
-    throw std::logic_error("invalid rotate");
+    throw std::logic_error("<INVALID ROTATE>");
   }
   BiTree< int > * newRoot = root->right;
   BiTree< int > * temp = newRoot->left;
@@ -45,6 +56,17 @@ BiTree< T > * rotate_left(BiTree< T > * root)
   newRoot->left = root;
   newRoot->parent = root->parent;
   root->parent = newRoot;
+  if (newRoot->parent)
+  {
+    if (newRoot->parent->left == root)
+    {
+      newRoot->parent->left = newRoot;
+    }
+    else
+    {
+      newRoot->parent->right = newRoot;
+    }
+  }
   return newRoot;
 }
 
@@ -80,46 +102,44 @@ void clear(BiTree< T > * root)
 template< class T >
 BiTree< T > * createBiTree(const T * nums, size_t n)
 {
+  if (n == 0)
+  {
+    return nullptr;
+  }
   BiTree< int > * root = new BiTree< int >{nums[0], nullptr, nullptr, nullptr};
   for (size_t i = 1; i < n; i++)
   {
-    BiTree< int > * temp = root;
-    while (temp->left && temp->right)
+    BiTree< int > * current = root;
+    BiTree< int > * parent = nullptr;
+    while (current)
     {
-      if (nums[i] > temp->data)
+      parent = current;
+      if (nums[i] < current->data)
       {
-        temp = temp->right;
+        current = current->left;
       }
       else
       {
-        temp = temp->left;
+        current = current->right;
       }
-    }
-    while (temp->right && nums[i] > temp->data)
-    {
-      temp = temp->right;
-    }
-    while (temp->left && nums[i] < temp->data)
-    {
-      temp = temp->left;
     }
     BiTree< int > * newTree = nullptr;
     try
     {
-      newTree = new BiTree< int >{nums[i], nullptr, nullptr, temp};
+      newTree = new BiTree< int >{nums[i], nullptr, nullptr, parent};
     }
     catch (const std::bad_alloc &)
     {
       clear(root);
       throw;
     }
-    if (nums[i] > temp->data)
+    if (nums[i] > parent->data)
     {
-      temp->right = newTree;
+      parent->right = newTree;
     }
     else
     {
-      temp->left = newTree;
+      parent->left = newTree;
     }
   }
   return root;
@@ -170,7 +190,7 @@ int main()
   int num = 0;
   while (!std::cin.eof() && std::cin >> direct >> num)
   {
-    if ((direct != "left" && direct != "right") || !std::cin.fail())
+    if ((direct != "left" && direct != "right") || std::cin.fail())
     {
       clear(root);
       std::cout << "INVALID COMMAND\n";
@@ -180,7 +200,7 @@ int main()
     if (findNode == nullptr)
     {
       clear(root);
-      std::cout << "INVALID ROTATE\n";
+      std::cout << "<INVALID ROTATE>\n";
       return 1;
     }
     BiTree< int > * temp = nullptr;
@@ -195,10 +215,10 @@ int main()
         temp = rotate_right(findNode);
       }
     }
-    catch(const std::logic_error &)
+    catch(const std::logic_error & e)
     {
       clear(root);
-      std::cout << "INVALID ROTATE\n";
+      std::cout << e.what() << '\n';
       return 1;
     }
     std::cout << temp->data << '\n';
