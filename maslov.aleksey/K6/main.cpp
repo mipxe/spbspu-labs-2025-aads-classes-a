@@ -16,12 +16,12 @@ BiTree< T > * rotateRight(BiTree< T > * root)
     return nullptr;
   }
   BiTree< T > * rotateNode = root->left;
-  root->right = rotateNode->left;
-  if (rotateNode->left)
+  root->left = rotateNode->right;
+  if (rotateNode->right)
   {
-    rotateNode->left->parent = root;
+    rotateNode->right->parent = root;
   }
-  rotateNode->left = root;
+  rotateNode->right = root;
   rotateNode->parent = root->parent;
   root->parent = rotateNode;
   if (rotateNode->parent)
@@ -46,12 +46,12 @@ BiTree< T > * rotateLeft(BiTree< T > * root)
     return nullptr;
   }
   BiTree< T > * rotateNode = root->right;
-  root->left = rotateNode->right;
-  if (rotateNode->right)
+  root->right = rotateNode->left;
+  if (rotateNode->left)
   {
-    rotateNode->right->parent = root;
+    rotateNode->left->parent = root;
   }
-  rotateNode->right = root;
+  rotateNode->left = root;
   rotateNode->parent = root->parent;
   root->parent = rotateNode;
   if (rotateNode->parent)
@@ -109,16 +109,18 @@ BiTree< T > * convert(const T * data, size_t s, Cmp cmp)
       deleteTree(root);
       throw;
     }
-    BiTree< T > * parent = root;
-    while (parent)
+    BiTree< T > * current = root;
+    BiTree< T > * parent = nullptr;
+    while (current)
     {
-      if (cmp(data[i], parent->data))
+      parent = current;
+      if (cmp(data[i], current->data))
       {
-        parent = parent->left;
+        current = current->left;
       }
       else
       {
-        parent = parent->right;
+        current = current->right;
       }
     }
     newNode->parent = parent;
@@ -207,6 +209,10 @@ int main()
     {
       std::cout << "<INVALID ROTATE>\n";
       continue;
+    }
+    if (node == root)
+    {
+      root = rotateNode;
     }
     std::cout << rotateNode->data << "\n";
   }
