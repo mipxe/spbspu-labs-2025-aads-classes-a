@@ -158,7 +158,11 @@ BiTree< int >* buildTree(size_t size)
 int main()
 {
   size_t size = 0;
-  std::cin >> size;
+  if (!(std::cin >> size))
+  {
+    std::cerr << "Incorrect sequence size" << '\n';
+    return 1;
+  }
   BiTree< int >* root = nullptr;
 
   try
@@ -184,7 +188,7 @@ int main()
     if (command != "left" && command != "right")
     {
       deleteTree(root);
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>\n";
       return 1;
     }
 
@@ -203,7 +207,7 @@ int main()
     }
     catch (const std::logic_error& e)
     {
-      std::cerr << e.what() << '\n';
+      std::cout << e.what() << '\n';
       continue;
     }
     if (node == root)
