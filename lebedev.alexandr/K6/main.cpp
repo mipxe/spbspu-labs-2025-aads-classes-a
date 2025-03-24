@@ -145,7 +145,7 @@ BiTree< int >* buildTree(size_t size)
 
   for (size_t i = 1; i < size; i++)
   {
-    if ((!std::cin >> value))
+    if (!(std::cin >> value))
     {
       throw std::invalid_argument("");
     }
@@ -179,21 +179,39 @@ int main()
 
   std::string command;
   int value = 0;
-  while (!std::cin.eof() && std::cin >> command)
+  while (std::cin >> command >> value)
   {
-    if (!(std::cin >> value))
+    if (command != "left" && command != "right")
     {
       deleteTree(root);
       std::cerr << "<INVALID COMMAND>\n";
       return 1;
     }
-    if (command == "right")
+
+    BiTree< int >* node = find(root, value, std::less< int >());
+    BiTree< int >* temp = nullptr;
+    try
     {
-      std::cout << rotate_right(root)->data << '\n';
+      if (command == "left")
+      {
+        temp = rotate_left(node);
+      }
+      else
+      {
+        temp = rotate_right(node);
+      }
     }
-    else if (command == "left")
+    catch (const std::logic_error& e)
     {
-      std::cout << rotate_left(root)->data << '\n';
+      std::cerr << e.what() << '\n';
+      continue;
     }
+    if (node == root)
+    {
+      root = temp;
+    }
+    std::cout << temp->data << '\n';
   }
+  deleteTree(root);
+  return 0;
 }
