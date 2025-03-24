@@ -147,6 +147,7 @@ BiTree< int >* buildTree(size_t size)
   {
     if (!(std::cin >> value))
     {
+      deleteTree(root);
       throw std::invalid_argument("");
     }
     insertNode(root, value);
@@ -166,7 +167,6 @@ int main()
   }
   catch (const std::bad_alloc& e)
   {
-    deleteTree(root);
     std::cerr << "Memory allocation error!\n";
     return 2;
   }
