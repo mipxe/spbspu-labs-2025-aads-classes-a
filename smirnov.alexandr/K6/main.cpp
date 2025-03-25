@@ -19,6 +19,28 @@ void clearBiTree(BiTree< T > * root)
   }
 }
 
+template< class T, class Cmp >
+BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
+{
+  BiTree< T > * current = root;
+  while (current != nullptr)
+  {
+    if (cmp(value, current->data))
+    {
+      current = current->left;
+    }
+    else if (cmp(current->data, value))
+    {
+      current = current->right;
+    }
+    else
+    {
+      return current;
+    }
+  }
+  return nullptr;
+}
+
 template< class T, class Compare = std::less< T > >
 BiTree< T > * createBiTree(T * arr, size_t size, Compare cmp = Compare())
 {
