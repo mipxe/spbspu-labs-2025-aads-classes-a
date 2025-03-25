@@ -41,6 +41,43 @@ BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
   return nullptr;
 }
 
+template< class T >
+BiTree< T > * rotate_right(BiTree< T > * node)
+{
+  if (node == nullptr || node->left == nullptr)
+  {
+    return nullptr;
+  }
+  BiTree< T > * new_root = node->left;
+  node->left = new_root->right;
+  if (new_root->right != nullptr)
+  {
+    new_root->right->parent = node;
+  }
+  new_root->right = node;
+  new_root->parent = node->parent;
+  node->parent = new_root;
+  return new_root;
+}
+
+template< class T >
+BiTree< T > * rotate_left(BiTree< T > * node) {
+  if (node == nullptr || node->right == nullptr)
+  {
+    return nullptr;
+  }
+  BiTree< T > * new_root = node->right;
+  node->right = new_root->left;
+  if (new_root->left != nullptr)
+  {
+    new_root->left->parent = node;
+  }
+  new_root->left = node;
+  new_root->parent = node->parent;
+  node->parent = new_root;
+  return new_root;
+}
+
 template< class T, class Compare = std::less< T > >
 BiTree< T > * createBiTree(T * arr, size_t size, Compare cmp = Compare())
 {
@@ -129,6 +166,7 @@ int main()
       return 1;
     }
   }
+
   BiTree< int > * root = nullptr;
   try
   {
@@ -140,4 +178,68 @@ int main()
     std::cerr << "Out of memory\n";
     return 1;
   }
+  delete[] arr;
+
+  std::string command;
+  while (std::cin >> command)
+  {
+    int num = 0;
+    if (!(std::cin >> num))
+    {
+      std::cout << "<INVALID COMMAND>\n";
+      clearBiTree(root);
+      return 1;
+    }
+    BiTree< int > * node = find(root, num, std::less< int>());
+    if (node == nullptr)
+    {
+      std::cout << "<INVALID ROTATE>\n";
+      clearBiTree(root);
+      return 1;
+    }
+    BiTree< int > * new_node = nullptr;
+    try
+    {
+      if (command == "left")
+      {
+        new_node = rotate_left(node);
+      }
+      else if (command == "right")
+      {
+        new_node = rotate_right(node);
+      }
+      else
+      {
+        std::cout << "<INVALID COMMAND>\n";
+        clearBiTree(root);
+        return 1;
+      }
+      if (new_node == nullptr)
+      {
+        std::cout << "<INVALID ROTATE>\n";
+        clearBiTree(root);
+        return 1;
+      }
+    }
+    catch (const std::bad_alloc & e)
+    {
+      delete[] arr;
+      clearBiTree(root);
+      std::cerr << "Out of memory\n";
+      return 1;
+    }
+    catch (const std::exception & e)
+    {
+      delete[] arr;
+      clearBiTree(root);
+      std::cerr << e.what() << "\n";
+      return 1;
+    }
+    if (node == root)
+    {
+      root = new_node;
+    }
+    std::cout << new_node->data << "\n";
+  }
+  clearBiTree(root);
 }
