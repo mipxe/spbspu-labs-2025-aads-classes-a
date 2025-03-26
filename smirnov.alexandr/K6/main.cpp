@@ -212,12 +212,16 @@ int main()
       clearBiTree(root);
       return 1;
     }
+    if (root == nullptr)
+    {
+      std::cout << "<INVALID ROTATE>\n";
+      continue;
+    }
     BiTree< int > * node = find(root, num, std::less< int >());
     if (node == nullptr)
     {
       std::cout << "<INVALID ROTATE>\n";
-      clearBiTree(root);
-      return 1;
+      continue;
     }
     BiTree< int > * new_node = nullptr;
     try
