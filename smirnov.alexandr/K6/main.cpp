@@ -214,12 +214,6 @@ int main()
         clearBiTree(root);
         return 1;
       }
-      if (new_node == nullptr)
-      {
-        std::cout << "<INVALID ROTATE>\n";
-        clearBiTree(root);
-        return 1;
-      }
     }
     catch (const std::bad_alloc & e)
     {
