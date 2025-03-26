@@ -46,7 +46,7 @@ BiTree< T > * rotate_right(BiTree< T > * node)
 {
   if (node == nullptr || node->left == nullptr)
   {
-    return nullptr;
+    throw std::runtime_error("<INVALID ROTATE>");
   }
   BiTree< T > * new_root = node->left;
   node->left = new_root->right;
@@ -56,6 +56,17 @@ BiTree< T > * rotate_right(BiTree< T > * node)
   }
   new_root->right = node;
   new_root->parent = node->parent;
+  if (node->parent != nullptr)
+  {
+    if (node->parent->left == node)
+    {
+      node->parent->left = new_root;
+    }
+    else
+    {
+      node->parent->right = new_root;
+    }
+  }
   node->parent = new_root;
   return new_root;
 }
@@ -64,7 +75,7 @@ template< class T >
 BiTree< T > * rotate_left(BiTree< T > * node) {
   if (node == nullptr || node->right == nullptr)
   {
-    return nullptr;
+    throw std::runtime_error("<INVALID ROTATE>") ;
   }
   BiTree< T > * new_root = node->right;
   node->right = new_root->left;
@@ -74,6 +85,17 @@ BiTree< T > * rotate_left(BiTree< T > * node) {
   }
   new_root->left = node;
   new_root->parent = node->parent;
+  if (node->parent != nullptr)
+  {
+    if (node->parent->left == node)
+    {
+      node->parent->left = new_root;
+    }
+    else
+    {
+      node->parent->right = new_root;
+    }
+  }
   node->parent = new_root;
   return new_root;
 }
@@ -134,7 +156,7 @@ BiTree< T > * createBiTree(T * arr, size_t size, Compare cmp = Compare())
   catch (const std::bad_alloc & e)
   {
     clearBiTree(root);
-    throw std::runtime_error("Memory allocation failed");
+    throw;
   }
   return root;
 }
@@ -190,7 +212,7 @@ int main()
       clearBiTree(root);
       return 1;
     }
-    BiTree< int > * node = find(root, num, std::less< int>());
+    BiTree< int > * node = find(root, num, std::less< int >());
     if (node == nullptr)
     {
       std::cout << "<INVALID ROTATE>\n";
@@ -215,19 +237,10 @@ int main()
         return 1;
       }
     }
-    catch (const std::bad_alloc & e)
+    catch (const std::runtime_error & e)
     {
-      delete[] arr;
-      clearBiTree(root);
-      std::cerr << "Out of memory\n";
-      return 1;
-    }
-    catch (const std::exception & e)
-    {
-      delete[] arr;
-      clearBiTree(root);
-      std::cerr << e.what() << "\n";
-      return 1;
+      std::cout << e.what() << '\n';
+      continue;
     }
     if (node == root)
     {
