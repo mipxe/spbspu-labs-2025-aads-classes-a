@@ -165,45 +165,33 @@ int main()
       return 1;
     }
     BiTree< int >* find_tree = find(root, num, std::less< int >());
-    if (rotate_command == "left")
+    BiTree< int >* rotate_tree = nullptr;
+    try
     {
-      try
+      if (rotate_command == "left")
       {
-        BiTree< int >* rotate_tree = rotate_left(find_tree);
-        std::cout << rotate_tree->data << "\n";
-        if (find_tree == root)
-        {
-          root = rotate_tree;
-        }
+        rotate_tree = rotate_left(find_tree);
       }
-      catch (const std::logic_error& e)
+      else if (rotate_command == "right")
       {
-        std::cout << e.what() << "\n";
-        continue;
+        rotate_tree = rotate_right(find_tree);
+      }
+      else
+      {
+        clear(root);
+        std::cout << "INVALID COMMAND\n";
+        return 1;
       }
     }
-    else if (rotate_command == "right")
+    catch (const std::logic_error& e)
     {
-      try
-      {
-        BiTree< int >* rotate_tree = rotate_right(find_tree);
-        std::cout << rotate_tree->data << "\n";
-        if (find_tree == root)
-        {
-          root = rotate_tree;
-        }
-      }
-      catch (const std::logic_error& e)
-      {
-        std::cout << e.what() << "\n";
-        continue;
-      }
+      std::cout << e.what() << "\n";
+      continue;
     }
-    else
+    std::cout << rotate_tree->data << "\n";
+    if (find_tree == root)
     {
-      clear(root);
-      std::cout << "INVALID COMMAND\n";
-      return 1;
+      root = rotate_tree;
     }
   }
   clear(root);
