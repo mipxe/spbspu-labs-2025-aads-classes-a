@@ -11,56 +11,44 @@ struct BiTree
 template< class T >
 BiTree< T > * rotate_right(BiTree< T > * root)
 {
-  auto grandfather = root->parent->parent;
-  auto father = root->parent;
-  auto son = root->right;
-  father->left = son;
-  if (son)
+  if (!root->left)
   {
-    son->parent = father;
-    father = root;
-    father->right = son->parent;
-    son->parent->parent = root;
+    return nullptr;
   }
-  else
-  {
-    auto temp = father;
-    father = root;
-    father->right = temp;
-    temp->parent = root;
-  }
-  root->parent = grandfather;
-  return root->left;
+  auto son = root->left;
+  auto temp = root;
+  root->left = nullptr;
+  root = son;
+  root->right = temp;
+  temp->parent = root;
+  root->parent = nullptr;
+  return root;
 }
 
 template< class T >
 BiTree< T > * rotate_left(BiTree< T > * root)
 {
-  auto grandfather = root->parent->parent;
-  auto father = root->parent;
-  auto son = root->left;
-  father->right = son;
-  if (son)
+  if (!root->right)
   {
-    son->parent = father;
-    father = root;
-    father->left = son->parent;
-    son->parent->parent = root;
+    return nullptr;
   }
-  else
-  {
-    auto temp = father;
-    father = root;
-    father->left = temp;
-    temp->parent = root;
-  }
-  root->parent = grandfather;
-  return root->right;
+  auto son = root->right;
+  auto temp = root;
+  root->right = nullptr;
+  root = son;
+  root->left = temp;
+  temp->parent = root;
+  root->parent = nullptr;
+  return root;
 }
 
 template< class T, class Cmp >
 BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
 {
+  if (!root)
+  {
+    return root;
+  }
   while (root->data != value)
   {
     if (cmp(value, root->data) && root->left)
@@ -84,57 +72,64 @@ template< class T, class Cmp >
 BiTree< T > * convert(const T * array, size_t size, Cmp cmp)
 {
   BiTree< T > * root = new BiTree< T >{ array[0], nullptr, nullptr, nullptr };
-  for (size_t i = 1; i < size; i++)
+  try
   {
-    auto temp = root;
-    while (temp->left || temp->right)
+    for (size_t i = 1; i < size; i++)
     {
-      if (cmp(array[i], temp->data) && temp->left)
+      auto temp = root;
+      while (temp->left || temp->right)
       {
-        temp = temp->left;
+        if (cmp(array[i], temp->data) && temp->left)
+        {
+          temp = temp->left;
+        }
+        else if (!cmp(array[i], temp->data) && temp->right)
+        {
+          temp = temp->right;
+        }
+        else
+        {
+          break;
+        }
       }
-      else if (!cmp(array[i], temp->data) && temp->right)
+      if (cmp(array[i], temp->data))
       {
-        temp = temp->right;
+        temp->left = new BiTree< T >{ array[i], nullptr, nullptr, temp };
       }
       else
       {
-        break;
+        temp->right = new BiTree< T >{ array[i], nullptr, nullptr, temp };
       }
     }
-    if (cmp(array[i], temp->data))
-    {
-      temp->left = new BiTree< T >{ array[i], nullptr, nullptr, temp };
-    }
-    else
-    {
-      temp->right = new BiTree< T >{ array[i], nullptr, nullptr, temp };
-    }
+  }
+  catch(const std::bad_alloc & e)
+  {
+    clearBiTree(root);
+    throw;
   }
   return root;
 }
 
-template< class T, class Cmp >
-void clearBiTree(BiTree< T > * root, Cmp cmp)
+template< class T >
+void clearBiTree(BiTree< T > * root)
 {
-  auto begin = root;
-  while (begin->left)
+  while (root->left)
   {
-    begin = begin->left;
+    root = root->left;
   }
-  while (begin != root)
+  while (root->parent)
   {
-    auto todelete = begin;
-    begin = begin->parent;
+    auto todelete = root;
+    root = root->parent;
     delete todelete;
-    if (begin->right)
-    {
-      auto subbegin = begin->right;
-      while (subbegin->left)
-      {
-      }
-    }
   }
+  while (root->right)
+  {
+    auto todelete = root;
+    root = root->right;
+    delete todelete;
+  }
+  delete root;
 }
 
 int main()
@@ -150,64 +145,98 @@ int main()
     std::cerr << "End of file" << "\n";
     return 2;
   }
-  int * elements_array = new int[sequence_length];
-  size_t i = 0;
-  while(i != sequence_length && std::cin && !std::cin.eof())
+  int * elements_array = nullptr;
+  BiTree< int > * root = nullptr;
+  try
   {
-    std::cin >> elements_array[i++];
+    elements_array = new int[sequence_length];
+    size_t i = 0;
+    while(i != sequence_length && std::cin && !std::cin.eof())
+    {
+      std::cin >> elements_array[i++];
+    }
+    if (!std::cin)
+    {
+      delete[] elements_array;
+      std::cerr << "ERROR: Invalid argument" << "\n";
+      return 1;
+    }
+    else if (std::cin.eof())
+    {
+      delete[] elements_array;
+      std::cerr << "End of file" << "\n";
+      return 2;
+    }
+    root = convert(elements_array, sequence_length, std::less< int >());
   }
-  if (!std::cin)
+  catch(const std::bad_alloc & e)
   {
     delete[] elements_array;
-    std::cerr << "ERROR: Invalid argument" << "\n";
-    return 1;
+    std::cerr << "ERROR: Out of memory" << "\n";
+    return 3;
   }
-  else if (std::cin.eof())
-  {
-    delete[] elements_array;
-    std::cerr << "End of file" << "\n";
-    return 2;
-  }
-  BiTree< int > * root = convert(elements_array, sequence_length, std::less< int >());
   std::string type_of_command;
   int number = 0;
   while (!std::cin.eof())
   {
     std::cin >> type_of_command;
-    if (!(std::cin >> number))
+    std::cin >> number;
+    if (std::cin.eof())
+    {
+      break;
+    }
+    else if (!std::cin)
     {
       std::cerr << "<INVALID COMMAND>";
       std::cerr << "\n";
-      return 3;
+      return 4;
     }
     BiTree< int > * subroot = find(root, number, std::less< int >());
     if (type_of_command == "left" && subroot)
     {
-      std::cout << rotate_left(subroot)->data;
-      std::cout << "\n";
-      while (root->parent)
+      auto new_subroot = rotate_left(subroot);
+      if (new_subroot)
       {
-        root = root->parent;
+        std::cout << new_subroot->data;
+        std::cout << "\n";
+        while (root->parent)
+        {
+          root = root->parent;
+        }
       }
-      std::cout << root->data;
+      else
+      {
+        std::cerr << "<INVALID ROTATE>";
+        std::cerr << "\n";
+        return 5;
+      }
     }
     else if (type_of_command == "right" && subroot)
     {
-      BiTree< int > * subroot = find(root, number, std::less< int >());
-      std::cout << rotate_right(subroot)->data;
-      std::cout << "\n";
-      while (root->parent)
+      auto new_subroot = rotate_right(subroot);
+      if (new_subroot)
       {
-        root = root->parent;
+        std::cout << new_subroot->data;
+        std::cout << "\n";
+        while (root->parent)
+        {
+          root = root->parent;
+        }
       }
-      std::cout << root->data;
+      else
+      {
+        std::cerr << "<INVALID ROTATE>";
+        std::cerr << "\n";
+        return 5;
+      }
     }
     else
     {
       std::cerr << "<INVALID ROTATE>";
       std::cerr << "\n";
-      return 4;
+      return 5;
     }
   }
+  clearBiTree(root);
   delete[] elements_array;
 }
