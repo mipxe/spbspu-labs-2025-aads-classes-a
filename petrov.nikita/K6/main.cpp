@@ -71,6 +71,10 @@ BiTree< T > * find(BiTree< T > * root, const T & value, Cmp cmp)
 template< class T, class Cmp >
 BiTree< T > * convert(const T * array, size_t size, Cmp cmp)
 {
+  if (!array)
+  {
+    return nullptr;
+  }
   BiTree< T > * root = new BiTree< T >{ array[0], nullptr, nullptr, nullptr };
   try
   {
@@ -113,6 +117,10 @@ BiTree< T > * convert(const T * array, size_t size, Cmp cmp)
 template< class T >
 void clearBiTree(BiTree< T > * root)
 {
+  if (!root)
+  {
+    return;
+  }
   while (root->left)
   {
     root = root->left;
@@ -219,7 +227,7 @@ int main()
       }
       else
       {
-        std::cerr << "<INVALID ROTATE>";
+        std::cout << "<INVALID ROTATE>";
         std::cout << "\n";
       }
     }
