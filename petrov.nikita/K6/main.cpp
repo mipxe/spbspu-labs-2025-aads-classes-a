@@ -157,7 +157,14 @@ int main()
   BiTree< int > * root = nullptr;
   try
   {
-    elements_array = new int[sequence_length];
+    if (sequence_length)
+    {
+      elements_array = new int[sequence_length];
+    }
+    else
+    {
+      elements_array = nullptr;
+    }
     size_t i = 0;
     while(i != sequence_length && std::cin && !std::cin.eof())
     {
