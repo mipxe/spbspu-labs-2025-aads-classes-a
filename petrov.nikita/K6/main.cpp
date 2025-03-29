@@ -219,11 +219,8 @@ int main()
       }
       else
       {
-        clearBiTree(root);
-        delete[] elements_array;
         std::cerr << "<INVALID ROTATE>";
-        std::cerr << "\n";
-        return 5;
+        std::cout << "\n";
       }
     }
     else if (type_of_command == "right" && subroot)
@@ -240,20 +237,14 @@ int main()
       }
       else
       {
-        clearBiTree(root);
-        delete[] elements_array;
-        std::cerr << "<INVALID ROTATE>";
-        std::cerr << "\n";
-        return 5;
+        std::cout << "<INVALID ROTATE>";
+        std::cout << "\n";
       }
     }
     else
     {
-      clearBiTree(root);
-      delete[] elements_array;
-      std::cerr << "<INVALID ROTATE>";
-      std::cerr << "\n";
-      return 5;
+      std::cout << "<INVALID ROTATE>";
+      std::cout << "\n";
     }
   }
   clearBiTree(root);
