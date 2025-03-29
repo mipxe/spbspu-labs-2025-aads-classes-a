@@ -157,20 +157,31 @@ int main()
     }
     if (!std::cin)
     {
-      delete[] elements_array;
-      std::cerr << "ERROR: Invalid argument" << "\n";
-      return 1;
+      throw std::invalid_argument("ERROR: Invalid argument");
     }
     else if (std::cin.eof())
     {
-      delete[] elements_array;
-      std::cerr << "End of file" << "\n";
-      return 2;
+      throw std::logic_error("End of file");
     }
     root = convert(elements_array, sequence_length, std::less< int >());
   }
-  catch(const std::bad_alloc & e)
+  catch (const std::invalid_argument & e)
   {
+    clearBiTree(root);
+    delete[] elements_array;
+    std::cerr << e.what() << "\n";
+    return 1;
+  }
+  catch (const std::logic_error & e)
+  {
+    clearBiTree(root);
+    delete[] elements_array;
+    std::cerr << e.what() << "\n";
+    return 2;
+  }
+  catch (const std::bad_alloc & e)
+  {
+    clearBiTree(root);
     delete[] elements_array;
     std::cerr << "ERROR: Out of memory" << "\n";
     return 3;
@@ -187,6 +198,8 @@ int main()
     }
     else if (!std::cin)
     {
+      clearBiTree(root);
+      delete[] elements_array;
       std::cerr << "<INVALID COMMAND>";
       std::cerr << "\n";
       return 4;
@@ -206,6 +219,8 @@ int main()
       }
       else
       {
+        clearBiTree(root);
+        delete[] elements_array;
         std::cerr << "<INVALID ROTATE>";
         std::cerr << "\n";
         return 5;
@@ -225,6 +240,8 @@ int main()
       }
       else
       {
+        clearBiTree(root);
+        delete[] elements_array;
         std::cerr << "<INVALID ROTATE>";
         std::cerr << "\n";
         return 5;
@@ -232,6 +249,8 @@ int main()
     }
     else
     {
+      clearBiTree(root);
+      delete[] elements_array;
       std::cerr << "<INVALID ROTATE>";
       std::cerr << "\n";
       return 5;
