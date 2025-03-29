@@ -55,7 +55,7 @@ BiTree< T > * rotate_left(BiTree< T > * root)
     temp->parent = root;
   }
   root->parent = grandfather;
-  return root->right; 
+  return root->right;
 }
 
 template< class T, class Cmp >
@@ -132,7 +132,6 @@ void clearBiTree(BiTree< T > * root, Cmp cmp)
       auto subbegin = begin->right;
       while (subbegin->left)
       {
-        
       }
     }
   }
