@@ -30,7 +30,7 @@ BiTree< T > * rotate_right(BiTree< T > * root)
     temp->parent = root;
   }
   root->parent = grandfather;
-  return root->left; 
+  return root->left;
 }
 
 template< class T >
