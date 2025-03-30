@@ -185,13 +185,6 @@ int main()
   int value = 0;
   while (std::cin >> command >> value)
   {
-    if (command != "left" && command != "right")
-    {
-      deleteTree(root);
-      std::cout << "<INVALID COMMAND>\n";
-      return 1;
-    }
-
     BiTree< int >* node = find(root, value, std::less< int >());
     BiTree< int >* temp = nullptr;
     try
@@ -200,7 +193,7 @@ int main()
       {
         temp = rotate_left(node);
       }
-      else
+      else if (command == "right")
       {
         temp = rotate_right(node);
       }
@@ -210,12 +203,23 @@ int main()
       std::cout << e.what() << '\n';
       continue;
     }
+    if (!temp)
+    {
+      deleteTree(root);
+      std::cout << "<INVALID COMMAND>\n";
+      return 1;
+    }
     if (node == root)
     {
       root = temp;
     }
     std::cout << temp->data << '\n';
   }
+  if (!(std::cin.eof()))
+  {
+    std::cout << "<INVALID COMMAND>\n";
+  }
+
   deleteTree(root);
   return 0;
 }
