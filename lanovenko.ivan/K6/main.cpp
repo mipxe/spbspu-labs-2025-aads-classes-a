@@ -152,7 +152,7 @@ BiTree< T >* rotate_right(BiTree< T >* root)
   else
   {
     root->left = nullptr;
-  }  
+  }
   newRoot->right = root;
   return newRoot;
 }
