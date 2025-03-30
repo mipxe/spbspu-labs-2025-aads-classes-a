@@ -90,7 +90,7 @@ BiTree< T >* find(BiTree< T >* root, const T& value, Cmp cmp)
   }
   if (!yaroot)
   {
-    throw std::invalid_argument("INVALID ROTATE\n");
+    throw std::invalid_argument("<INVALID ROTATE>\n");
   }
   return yaroot;
 }
@@ -100,7 +100,7 @@ BiTree< T >* rotate_left(BiTree< T >* root)
 {
   if (root->right == nullptr)
   {
-    throw std::invalid_argument("INVALID ROTATE\n");
+    throw std::invalid_argument("<INVALID ROTATE>\n");
   }
   BiTree< T >* newRoot = root->right;
   if (root->parent)
@@ -131,7 +131,7 @@ BiTree< T >* rotate_right(BiTree< T >* root)
 {
   if (root->left == nullptr)
   {
-    throw std::invalid_argument("INVALID ROTATE\n");
+    throw std::invalid_argument("<INVALID ROTATE>\n");
   }
   BiTree< T >* newRoot = root->left;
   if (root->parent)
