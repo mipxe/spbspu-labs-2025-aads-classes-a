@@ -219,7 +219,7 @@ int main()
   {
     if (command == "left" || command == "right")
     {
-      if (!(std::cin >> value) || n == 0)
+      if (!(std::cin >> value))
       {
         std::cout << "<INVALID COMMAND>\n";
         clearBiTree(&root);
@@ -252,12 +252,6 @@ int main()
       clearBiTree(&root);
       return 1;
     }
-  }
-  if (n == 0)
-  {
-    std::cout << "<INVALID COMMAND>\n";
-    clearBiTree(&root);
-    return 1;
   }
   clearBiTree(&root);
 }
