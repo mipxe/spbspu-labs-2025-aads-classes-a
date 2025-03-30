@@ -108,11 +108,7 @@ BiTree< T > * createBiTree(T * arr, size_t size, Compare cmp = Compare())
   {
     for (size_t i = 0; i < size; ++i)
     {
-      BiTree< T > * new_node = new BiTree< T >;
-      new_node->data = arr[i];
-      new_node->left = nullptr;
-      new_node->right = nullptr;
-      new_node->parent = nullptr;
+      BiTree< T > * new_node = new BiTree< T >{arr[i], nullptr, nullptr, nullptr};
       if (root == nullptr)
       {
         root = new_node;
@@ -206,16 +202,11 @@ int main()
   while (std::cin >> command)
   {
     int num = 0;
-    if (!(std::cin >> num))
+    if (!(std::cin >> num) || (command != "left" && command != "right"))
     {
       std::cout << "<INVALID COMMAND>\n";
       clearBiTree(root);
       return 1;
-    }
-    if (root == nullptr)
-    {
-      std::cout << "<INVALID ROTATE>\n";
-      continue;
     }
     BiTree< int > * node = find(root, num, std::less< int >());
     if (node == nullptr)
@@ -230,15 +221,9 @@ int main()
       {
         new_node = rotate_left(node);
       }
-      else if (command == "right")
-      {
-        new_node = rotate_right(node);
-      }
       else
       {
-        std::cout << "<INVALID COMMAND>\n";
-        clearBiTree(root);
-        return 1;
+        new_node = rotate_right(node);
       }
     }
     catch (const std::runtime_error & e)
