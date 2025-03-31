@@ -27,6 +27,10 @@ BiTree< T, Cmp > * extract(BiTree< T, Cmp > * root, const T & value, BiTree< T, 
       temp = temp->right;
     }
   }
+  if (!temp)
+  {
+    return root;
+  }
   BiTree< T, Cmp > * newTemp = temp;
   if (newTemp->left)
   {
@@ -157,8 +161,8 @@ void printTree(std::ostream & out, BiTree< T, Cmp > * root)
     out << " ";
   }
   out << root->data;
-  printTree(out, root->right);
   i++;
+  printTree(out, root->right);
 }
 
 int main()
@@ -205,6 +209,14 @@ int main()
   int a = 0;
   while (!(std::cin >> a).eof())
   {
+    if (!std::cin)
+    {
+      std::cerr << "invalid input\n";
+      printTree(std::cout, root);
+      std::cout << "\n";
+      clear(root);
+      return 1;
+    }
     BiTree< int, std::less< int > > * extracted = nullptr;
     root = extract(root, a, std::addressof(extracted));
     if (extracted)
@@ -214,12 +226,6 @@ int main()
     else
     {
       std::cout << "<INVALID NODE>";
-    }
-    if (!std::cin)
-    {
-      std::cerr << "invalid input\n";
-      clear(root);
-      return 1;
     }
   }
   printTree(std::cout, root);
