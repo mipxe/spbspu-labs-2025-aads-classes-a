@@ -83,7 +83,7 @@ BiTree< int >* convert(int* nums, size_t size)
 template< class T >
 BiTree< T >* rotate_right(BiTree< T >* root)
 {
-  if (!root && !root->left)
+  if (!root || !root->left)
   {
     throw std::logic_error("<INVALID ROTATE>\n");
   }
@@ -115,7 +115,7 @@ template< class T >
 BiTree< T >* rotate_left(BiTree< T >* rotateRoot)
 {
   BiTree< T >* root = rotateRoot;
-  if (!root && !root->right)
+  if (!root || !root->right)
   {
     throw std::logic_error("<INVALID ROTATE>\n");
   }
