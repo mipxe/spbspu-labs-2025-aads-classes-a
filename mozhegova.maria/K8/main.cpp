@@ -11,6 +11,10 @@ struct BiTree {
 template< class T, class Cmp >
 BiTree< T, Cmp > * extract(BiTree< T, Cmp > * root, const T & value, BiTree< T, Cmp > ** result)
 {
+  if (!root)
+  {
+    return root;
+  }
   BiTree< T, Cmp > * temp = root;
   while (temp && temp->data != value)
   {
@@ -139,6 +143,24 @@ BiTree< T, Cmp > * createBiTree(const T * nums, size_t n, Cmp cmp)
   return root;
 }
 
+template< class T, class Cmp >
+void printTree(std::ostream & out, BiTree< T, Cmp > * root)
+{
+  if (!root)
+  {
+    return;
+  }
+  static size_t i = 0;
+  printTree(out, root->left);
+  if (i != 0)
+  {
+    out << " ";
+  }
+  out << root->data;
+  printTree(out, root->right);
+  i++;
+}
+
 int main()
 {
   size_t n = 0;
@@ -200,5 +222,7 @@ int main()
       return 1;
     }
   }
+  printTree(std::cout, root);
+  std::cout << "\n";
   clear(root);
 }
