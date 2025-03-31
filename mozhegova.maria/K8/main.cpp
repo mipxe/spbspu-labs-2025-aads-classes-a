@@ -9,7 +9,78 @@ struct BiTree {
 };
 
 template< class T, class Cmp >
-BiTree< T, Cmp > * extract(BiTree< T, Cmp > * root, const T & value, BiTree< T, Cmp > ** result);
+BiTree< T, Cmp > * extract(BiTree< T, Cmp > * root, const T & value, BiTree< T, Cmp > ** result)
+{
+  BiTree< T, Cmp > * temp = root;
+  while (temp && temp->data != value)
+  {
+    if (root->cmp(value, temp->data))
+    {
+      temp = temp->left;
+    }
+    else
+    {
+      temp = temp->right;
+    }
+  }
+  BiTree< T, Cmp > * newTemp = temp;
+  if (newTemp->left)
+  {
+    newTemp = newTemp->left;
+    while (newTemp->right)
+    {
+      newTemp = newTemp->right;
+    }
+  }
+  else if (newTemp->right)
+  {
+    newTemp = newTemp->right;
+    while (newTemp->left)
+    {
+      newTemp = newTemp->left;
+    }
+  }
+  if (newTemp->parent->left == newTemp)
+  {
+    newTemp->parent->left = nullptr;
+  }
+  else
+  {
+    newTemp->parent->right = nullptr;
+  }
+  newTemp->parent = temp->parent;
+  newTemp->left = temp->left;
+  newTemp->right = temp->right;
+  temp->left = nullptr;
+  temp->right = nullptr;
+  if (newTemp->left)
+  {
+    newTemp->left->parent = temp;
+  }
+  if (newTemp->right)
+  {
+    newTemp->right->parent = temp;
+  }
+  if (temp->parent)
+  {
+    if (temp->parent->left == temp)
+    {
+      temp->parent->left = newTemp;
+    }
+    else
+    {
+      temp->parent->right = newTemp;
+    }
+    temp->parent = nullptr;
+    *result = temp;
+    return root;
+  }
+  else
+  {
+    *result = temp;
+    return newTemp;
+  }
+}
 
 template< class T, class Cmp >
 void clear(BiTree< T, Cmp > * root)
@@ -29,7 +100,7 @@ BiTree< T, Cmp > * createBiTree(const T * nums, size_t n, Cmp cmp)
   {
     return nullptr;
   }
-  BiTree< T, Cmp > * root = new BiTree< T, Cmp >{nums[0], nullptr, nullptr, nullptr};
+  BiTree< T, Cmp > * root = new BiTree< T, Cmp >{nums[0], cmp, nullptr, nullptr, nullptr};
   for (size_t i = 1; i < n; i++)
   {
     BiTree< T, Cmp > * current = root;
@@ -49,7 +120,7 @@ BiTree< T, Cmp > * createBiTree(const T * nums, size_t n, Cmp cmp)
     BiTree< T, Cmp > * newTree = nullptr;
     try
     {
-      newTree = new BiTree< T, Cmp >{nums[i], nullptr, nullptr, parent};
+      newTree = new BiTree< T, Cmp >{nums[i], cmp, nullptr, nullptr, parent};
     }
     catch (const std::bad_alloc &)
     {
@@ -110,7 +181,7 @@ int main()
   delete[] nums;
 
   int a = 0;
-  while (!(std::cin >> a).eof() && !std::cin.fail())
+  while (!(std::cin >> a).eof())
   {
     BiTree< int, std::less< int > > * extracted = nullptr;
     root = extract(root, a, std::addressof(extracted));
@@ -122,12 +193,12 @@ int main()
     {
       std::cout << "<INVALID NODE>";
     }
-  }
-  if (!std::cin)
-  {
-    std::cerr << "invalid input\n";
-    clear(root);
-    return 1;
+    if (!std::cin)
+    {
+      std::cerr << "invalid input\n";
+      clear(root);
+      return 1;
+    }
   }
   clear(root);
 }
