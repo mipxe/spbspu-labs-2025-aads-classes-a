@@ -108,4 +108,26 @@ int main()
     return 1;
   }
   delete[] nums;
+
+  int a = 0;
+  while (!(std::cin >> a).eof() && !std::cin.fail())
+  {
+    BiTree< int, std::less< int > > * extracted = nullptr;
+    root = extract(root, a, std::addressof(extracted));
+    if (extracted)
+    {
+      delete extracted;
+    }
+    else
+    {
+      std::cout << "<INVALID NODE>";
+    }
+  }
+  if (!std::cin)
+  {
+    std::cerr << "invalid input\n";
+    clear(root);
+    return 1;
+  }
+  clear(root);
 }
