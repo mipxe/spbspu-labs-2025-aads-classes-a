@@ -164,5 +164,95 @@ TriTreeIterator< T, Cmp > rbegin(TriTree< T, Cmp > * root)
   return iter;
 }
 
+template< class T, class Cmp >
+void clearTree(TriTree< T, Cmp > * root)
+{
+  if (root)
+  {
+    clearTree(root->left);
+    clearTree(root->middle);
+    clearTree(root->right);
+    delete root;
+  }
+}
+
+template< class T, class Cmp >
+TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
+{
+  TriTree< T, Cmp > * current = root;
+  TriTree< T, Cmp > * parent = nullptr;
+  while (current)
+  {
+    parent = current;
+    if (Cmp()(pair.second, current->data.first))
+    {
+      current = current->left;
+    }
+    else if (Cmp()(current->data.first, pair.first) && Cmp()(pair.second, current->data.second))
+    {
+      current = current->middle;
+    }
+    else if (Cmp()(current->data.second, pair.first))
+    {
+      current = current->right;
+    }
+    else
+    {
+      return nullptr;
+    }
+  }
+  TriTree< T, Cmp > * newTree = nullptr;
+  try
+  {
+    newTree = new TriTree< T, Cmp >{pair, nullptr, nullptr, nullptr, parent};
+  }
+  catch (const std::bad_alloc &)
+  {
+    clearTree(root);
+    throw;
+  }
+  if (Cmp()(pair.second, parent->data.first))
+  {
+    parent->left = newTree;
+  }
+  else if (Cmp()(parent->data.second, pair.first))
+  {
+    parent->right = newTree;
+  }
+  else
+  {
+    parent->middle = newTree;
+  }
+  return newTree;
+}
+
+template< class T, class Cmp >
+TriTree< T, Cmp > * getTree(std::istream & in)
+{
+  size_t n = 0;
+  if (!(in >> n))
+  {
+    throw std::logic_error("invalid input");
+  }
+  T first, second = 0;
+  if (!in >> first >> second)
+  {
+    throw std::logic_error("invalid input");
+  }
+  TriTree< T, Cmp > * tree = new TriTree< T, Cmp >{};
+  if (!Cmp()(first, second)) std::swap(first, second);
+  tree->data = std::make_pair(first, second);
+  for (size_t i = 1; i < n; i++)
+  {
+    if (!(in >> first >> second))
+    {
+      throw std::logic_error("invalid input");
+    }
+    if (!Cmp()(first, second)) std::swap(first, second);
+    insertTree(tree, std::make_pair(first, second));
+  }
+  return tree;
+}
+
 int main()
 {}
