@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <functional>
 
 template< class T, class Cmp >
 struct TriTree {
@@ -182,15 +184,15 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
   while (current)
   {
     parent = current;
-    if (Cmp(pair.second, current->data.first))
+    if (Cmp()(pair.second, current->data.first))
     {
       current = current->left;
     }
-    else if (Cmp(current->data.first, pair.first) && Cmp(pair.second, current->data.second))
+    else if (Cmp()(current->data.first, pair.first) && Cmp()(pair.second, current->data.second))
     {
       current = current->middle;
     }
-    else if (Cmp(current->data.second, pair.first))
+    else if (Cmp()(current->data.second, pair.first))
     {
       current = current->right;
     }
@@ -209,11 +211,11 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
     clearTree(root);
     throw;
   }
-  if (Cmp(pair.second, parent->data.first))
+  if (Cmp()(pair.second, parent->data.first))
   {
     parent->left = newTree;
   }
-  else if (Cmp(parent->data.second, pair.first))
+  else if (Cmp()(parent->data.second, pair.first))
   {
     parent->right = newTree;
   }
@@ -228,31 +230,112 @@ template< class T, class Cmp >
 TriTree< T, Cmp > * getTree(std::istream & in)
 {
   size_t n = 0;
-  if (!(std::cin >> n))
+  if (!(in >> n))
   {
     throw std::logic_error("invalid input");
   }
   T first, second = 0;
-  if (!std::cin >> first >> second)
+  if (!in >> first >> second)
   {
     throw std::logic_error("invalid input");
   }
   TriTree< T, Cmp > * tree = new TriTree< T, Cmp >{};
-  if (!Cmp(first, second)) std::swap(first, second);
+  if (!Cmp()(first, second)) std::swap(first, second);
   tree->data = std::make_pair(first, second);
   for (size_t i = 1; i < n; i++)
   {
-    if (!(std::cin >> first >> second))
+    if (!(in >> first >> second))
     {
       throw std::logic_error("invalid input");
     }
-    if (!Cmp(first, second)) std::swap(first, second);
+    if (!Cmp()(first, second)) std::swap(first, second);
     insertTree(tree, std::make_pair(first, second));
   }
   return tree;
 }
 
+template< class T, class Cmp >
+size_t countInters(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  if ((root->data.first >= v1 && root->data.first <= v2) || (root->data.second >= v1 && root->data.second <= v2))
+  {
+    ++count;
+  }
+  return count + countInters(root->left, v1, v2) + countInters(root->middle, v1, v2) + countInters(root->right, v1, v2);
+}
+
+template< class T, class Cmp >
+size_t countCovers(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  if ((root->data.first >= v1 && root->data.first <= v2) && (root->data.second >= v1 && root->data.second <= v2))
+  {
+    ++count;
+  }
+  return count + countCovers(root->left, v1, v2) + countCovers(root->middle, v1, v2) + countCovers(root->right, v1, v2);
+}
+
+template< class T, class Cmp >
+size_t countAvoids(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  if (root->data.first > v2 || root->data.second < v1)
+  {
+    ++count;
+  }
+  return count + countAvoids(root->left, v1, v2) + countAvoids(root->middle, v1, v2) + countAvoids(root->right, v1, v2);
+}
+
 int main()
 {
-
+  TriTree< int, std::less< int > > * tree = nullptr;
+  try
+  {
+    tree = getTree< int, std::less< int > >(std::cin);
+  }
+  catch (const std::exception & e)
+  {
+    std::cerr << e.what() << '\n';
+  }
+  
+  while (!(std::cin.eof()))
+  {
+    TriTree< int, std::less< int > > * temp = tree;
+    std::string command = "";
+    if (!(std::cin >> command))
+    {
+      std::cerr << "invalid command!!!\n";
+      clearTree(tree);
+      return 1;
+    }
+    int v1, v2 = 0;
+    if (!(std::cin >> v1 >> v2) || v1 >= v2)
+    {
+      std::cerr << "<INVALID COMMAND>\n";
+      continue;
+    }
+    if (command == "intersects")
+    {
+      std::cout << countInters(temp, v1, v2) << '\n';
+    }
+    else if (command == "covers")
+    {
+      std::cout << countCovers(temp, v1, v2) << '\n';
+    }
+    else if (command == "avoids")
+    {
+      std::cout << countAvoids(temp, v1, v2) << '\n';
+    }
+    else
+    {
+      std::cerr << "invalid command!!!\n";
+      clearTree(tree);
+      return 1;
+    }
+  }
+  clearTree(tree);
 }
