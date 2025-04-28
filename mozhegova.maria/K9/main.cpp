@@ -254,5 +254,96 @@ TriTree< T, Cmp > * getTree(std::istream & in)
   return tree;
 }
 
+template< class T, class Cmp >
+size_t countInters(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  for (auto it = begin(root); it.hasNext(); it = it.next())
+  {
+    (it.data().first <= v2 && it.data().second >= v1)
+    {
+      ++count;
+    }
+  }
+  return count;
+}
+
+template< class T, class Cmp >
+size_t countCovers(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  for (auto it = begin(root); it.hasNext(); it = it.next())
+  {
+    (it.data().first >= v1 && it.data().second <= v2)
+    {
+      ++count;
+    }
+  }
+  return count;
+}
+
+template< class T, class Cmp >
+size_t countAvoids(TriTree< T, Cmp > * root, const T & v1, const T & v2)
+{
+  if (!root) return 0;
+  size_t count = 0;
+  for (auto it = begin(root); it.hasNext(); it = it.next())
+  {
+    (it.data().first > v2 || it.data().second < v1)
+    {
+      ++count;
+    }
+  }
+}
+
 int main()
-{}
+{
+  TriTree< int, std::less< int > > * tree = nullptr;
+  try
+  {
+    tree = getTree< int, std::less< int > >(std::cin);
+  }
+  catch (const std::exception & e)
+  {
+    std::cerr << e.what() << '\n';
+  }
+
+  while (!(std::cin.eof()))
+  {
+    TriTree< int, std::less< int > > * temp = tree;
+    std::string command = "";
+    if (!(std::cin >> command))
+    {
+      std::cerr << "invalid command!!!\n";
+      clearTree(tree);
+      return 1;
+    }
+    int v1, v2 = 0;
+    if (!(std::cin >> v1 >> v2) || v1 >= v2)
+    {
+      std::cerr << "<INVALID COMMAND>\n";
+      continue;
+    }
+    if (command == "intersects")
+    {
+      std::cout << countInters(temp, v1, v2) << '\n';
+    }
+    else if (command == "covers")
+    {
+      std::cout << countCovers(temp, v1, v2) << '\n';
+    }
+    else if (command == "avoids")
+    {
+      std::cout << countAvoids(temp, v1, v2) << '\n';
+    }
+    else
+    {
+      std::cerr << "invalid command!!!\n";
+      clearTree(tree);
+      return 1;
+    }
+  }
+  clearTree(tree);
+}
