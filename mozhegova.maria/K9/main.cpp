@@ -301,7 +301,7 @@ int main()
   {
     std::cerr << e.what() << '\n';
   }
-  
+
   while (!(std::cin.eof()))
   {
     TriTree< int, std::less< int > > * temp = tree;
