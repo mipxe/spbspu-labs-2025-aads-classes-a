@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <functional>
+#include <limits>
 
 template< class T, class Cmp >
 struct TriTree {
@@ -12,6 +12,8 @@ template< class T, class Cmp >
 struct TriTreeIterator {
 public:
   using this_t = TriTreeIterator< T, Cmp >;
+  TriTreeIterator(TriTree< T, Cmp > * node, bool isValid);
+
   bool hasNext() const;
   bool hasPrev() const;
 
@@ -25,6 +27,12 @@ private:
 };
 
 template< class T, class Cmp >
+TriTreeIterator< T, Cmp >::TriTreeIterator(TriTree< T, Cmp > * node, bool isValid):
+  root(node),
+  isFirst(isValid)
+{}
+
+template< class T, class Cmp >
 std::pair< T, T > & TriTreeIterator< T, Cmp >::data()
 {
   return root->data;
@@ -33,44 +41,45 @@ std::pair< T, T > & TriTreeIterator< T, Cmp >::data()
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::prev() const
 {
+  TriTree< T, Cmp > * temp = root;
   if (isFirst)
   {
-    if (root->left)
+    if (temp->left)
     {
-      root = root->left;
-      while (root->right)
+      temp = temp->left;
+      while (temp->right)
       {
-        root = root->right;
+        temp = temp->right;
       }
-      return TriTreeIterator< T, Cmp >{root, false};
+      return TriTreeIterator< T, Cmp >{temp, false};
     }
     else
     {
-      while (root->parent && root == root->parent->left)
+      while (temp->parent && temp == temp->parent->left)
       {
-        root = root->parent;
+        temp = temp->parent;
       }
-      if (root->parent && root == root->parent->right)
+      if (temp->parent && temp == temp->parent->right)
       {
-        return TriTreeIterator< T, Cmp >{root->parent, false};
+        return TriTreeIterator< T, Cmp >{temp->parent, false};
       }
-      return TriTreeIterator< T, Cmp >{root->parent, true};
+      return TriTreeIterator< T, Cmp >{temp->parent, true};
     }
   }
   else
   {
-    if (root->middle)
+    if (temp->middle)
     {
-      root = root->middle;
-      while (root->right)
+      temp = temp->middle;
+      while (temp->right)
       {
-        root = root->right;
+        temp = temp->right;
       }
-      return TriTreeIterator< T, Cmp >{root, false};
+      return TriTreeIterator< T, Cmp >{temp, false};
     }
     else
     {
-      return TriTreeIterator< T, Cmp >{root, true};
+      return TriTreeIterator< T, Cmp >{temp, true};
     }
   }
 }
@@ -78,44 +87,45 @@ TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::prev() const
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::next() const
 {
+  TriTree< T, Cmp > * temp = root;
   if (isFirst)
   {
-    if (root->middle)
+    if (temp->middle)
     {
-      root = root->middle;
-      while (root->left)
+      temp = temp->middle;
+      while (temp->left)
       {
-        root = root->left;
+        temp = temp->left;
       }
-      return TriTreeIterator< T, Cmp >{root, true};
+      return TriTreeIterator< T, Cmp >{temp, true};
     }
     else
     {
-      return TriTreeIterator< T, Cmp >{root, false};
+      return TriTreeIterator< T, Cmp >{temp, false};
     }
   }
   else
   {
-    if (root->right)
+    if (temp->right)
     {
-      root = root->right;
-      while (root->left)
+      temp = temp->right;
+      while (temp->left)
       {
-        root = root->left;
+        temp = temp->left;
       }
-      return TriTreeIterator< T, Cmp >{root, true};
+      return TriTreeIterator< T, Cmp >{temp, true};
     }
     else
     {
-      while (root->parent && root == root->parent->right)
+      while (temp->parent && temp == temp->parent->right)
       {
-        root = root->parent;
+        temp = temp->parent;
       }
-      if (root->parent && root == root->parent->left)
+      if (temp->parent && temp == temp->parent->left)
       {
-        return TriTreeIterator< T, Cmp >{root->parent, true};
+        return TriTreeIterator< T, Cmp >{temp->parent, true};
       }
-      return TriTreeIterator< T, Cmp >{root->parent, false};
+      return TriTreeIterator< T, Cmp >{temp->parent, false};
     }
   }
 }
@@ -143,8 +153,7 @@ bool TriTreeIterator< T, Cmp >::hasPrev() const
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > begin(TriTree< T, Cmp > * root)
 {
-  TriTree< T, Cmp > * temp = root;
-  TriTreeIterator< T, Cmp > iter = new TriTreeIterator< T, Cmp >{temp, true};
+  TriTreeIterator< T, Cmp > iter{root, true};
   while (iter.hasPrev())
   {
     iter = iter.prev();
@@ -155,8 +164,7 @@ TriTreeIterator< T, Cmp > begin(TriTree< T, Cmp > * root)
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > rbegin(TriTree< T, Cmp > * root)
 {
-  TriTree< T, Cmp > * temp = root;
-  TriTreeIterator< T, Cmp > iter = new TriTreeIterator< T, Cmp >{temp, false};
+  TriTreeIterator< T, Cmp > iter{root, false};
   while (iter.hasNext())
   {
     iter = iter.next();
@@ -235,7 +243,7 @@ TriTree< T, Cmp > * getTree(std::istream & in)
     throw std::logic_error("invalid input");
   }
   T first, second = 0;
-  if (!in >> first >> second)
+  if (!(in >> first >> second))
   {
     throw std::logic_error("invalid input");
   }
@@ -261,9 +269,9 @@ size_t countInters(TriTree< T, Cmp > * root, const T & v1, const T & v2)
   size_t count = 0;
   for (auto it = begin(root); it.hasNext(); it = it.next())
   {
-    (it.data().first <= v2 && it.data().second >= v1)
+    if (it.data().first <= v2 && it.data().second >= v1)
     {
-      ++count;
+      count++;
     }
   }
   return count;
@@ -276,9 +284,9 @@ size_t countCovers(TriTree< T, Cmp > * root, const T & v1, const T & v2)
   size_t count = 0;
   for (auto it = begin(root); it.hasNext(); it = it.next())
   {
-    (it.data().first >= v1 && it.data().second <= v2)
+    if (it.data().first >= v1 && it.data().second <= v2)
     {
-      ++count;
+      count++;
     }
   }
   return count;
@@ -291,11 +299,12 @@ size_t countAvoids(TriTree< T, Cmp > * root, const T & v1, const T & v2)
   size_t count = 0;
   for (auto it = begin(root); it.hasNext(); it = it.next())
   {
-    (it.data().first > v2 || it.data().second < v1)
+    if (it.data().first > v2 || it.data().second < v1)
     {
-      ++count;
+      count++;
     }
   }
+  return count;
 }
 
 int main()
@@ -310,39 +319,34 @@ int main()
     std::cerr << e.what() << '\n';
   }
 
-  while (!(std::cin.eof()))
+  std::string command = "";
+  while (!(std::cin >> command).eof())
   {
-    TriTree< int, std::less< int > > * temp = tree;
-    std::string command = "";
-    if (!(std::cin >> command))
+    if (command != "intersects" && command != "covers" && command != "avoids")
     {
       std::cerr << "invalid command!!!\n";
       clearTree(tree);
       return 1;
     }
     int v1, v2 = 0;
-    if (!(std::cin >> v1 >> v2) || v1 >= v2)
+    if (!(std::cin >> v1 >> v2) || (v1 >= v2))
     {
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
       std::cerr << "<INVALID COMMAND>\n";
       continue;
     }
     if (command == "intersects")
     {
-      std::cout << countInters(temp, v1, v2) << '\n';
+      std::cout << countInters(tree, v1, v2) << '\n';
     }
     else if (command == "covers")
     {
-      std::cout << countCovers(temp, v1, v2) << '\n';
+      std::cout << countCovers(tree, v1, v2) << '\n';
     }
     else if (command == "avoids")
     {
-      std::cout << countAvoids(temp, v1, v2) << '\n';
-    }
-    else
-    {
-      std::cerr << "invalid command!!!\n";
-      clearTree(tree);
-      return 1;
+      std::cout << countAvoids(tree, v1, v2) << '\n';
     }
   }
   clearTree(tree);
