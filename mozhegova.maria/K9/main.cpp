@@ -294,7 +294,7 @@ int main()
     {
       std::cerr << "out of memory\n";
       return 1;
-    } 
+    }
   }
 
   std::string command = "";
