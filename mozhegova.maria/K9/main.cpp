@@ -322,20 +322,20 @@ int main()
     {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-      std::cerr << "<INVALID COMMAND>\n";
+      std::cout << "<INVALID COMMAND>\n";
       continue;
     }
     if (command == "intersects")
     {
-      std::cout << countInters(tree, v1, v2) << '\n';
+      std::cout << countInters(tree, v1, v2) << "\n";
     }
     else if (command == "covers")
     {
-      std::cout << countCovers(tree, v1, v2) << '\n';
+      std::cout << countCovers(tree, v1, v2) << "\n";
     }
     else if (command == "avoids")
     {
-      std::cout << countAvoids(tree, v1, v2) << '\n';
+      std::cout << countAvoids(tree, v1, v2) << "\n";
     }
   }
   clearTree(tree);
