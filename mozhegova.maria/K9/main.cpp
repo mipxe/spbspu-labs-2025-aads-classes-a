@@ -12,7 +12,7 @@ template< class T, class Cmp >
 struct TriTreeIterator {
 public:
   using this_t = TriTreeIterator< T, Cmp >;
-  TriTreeIterator(TriTree< T, Cmp > * node, bool isValid);
+  TriTreeIterator(TriTree< T, Cmp > * node);
 
   bool hasNext() const;
   bool hasPrev() const;
@@ -23,13 +23,11 @@ public:
   std::pair< T, T > & data();
 private:
   TriTree< T, Cmp > * root;
-  bool isFirst;
 };
 
 template< class T, class Cmp >
-TriTreeIterator< T, Cmp >::TriTreeIterator(TriTree< T, Cmp > * node, bool isValid):
-  root(node),
-  isFirst(isValid)
+TriTreeIterator< T, Cmp >::TriTreeIterator(TriTree< T, Cmp > * node):
+  root(node)
 {}
 
 template< class T, class Cmp >
@@ -42,45 +40,44 @@ template< class T, class Cmp >
 TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::prev() const
 {
   TriTree< T, Cmp > * temp = root;
-  if (isFirst)
+  if (temp->left)
   {
-    if (temp->left)
+    temp = temp->left;
+    while (temp->right)
     {
-      temp = temp->left;
-      while (temp->right)
-      {
-        temp = temp->right;
-      }
-      return TriTreeIterator< T, Cmp >{temp, false};
+      temp = temp->right;
     }
-    else
+    return TriTreeIterator< T, Cmp >{temp};
+  }
+  else if (temp->middle)
+  {
+    temp = temp->middle;
+    while (temp->right)
     {
-      while (temp->parent && temp == temp->parent->left)
-      {
-        temp = temp->parent;
-      }
-      if (temp->parent && temp == temp->parent->right)
-      {
-        return TriTreeIterator< T, Cmp >{temp->parent, false};
-      }
-      return TriTreeIterator< T, Cmp >{temp->parent, true};
+      temp = temp->right;
     }
+    return TriTreeIterator< T, Cmp >{temp};
   }
   else
   {
-    if (temp->middle)
+    if (temp->parent && temp == temp->parent->right)
     {
-      temp = temp->middle;
-      while (temp->right)
+      if (temp->parent->middle)
       {
-        temp = temp->right;
+        temp = temp->parent->middle;
+        while (temp->right)
+        {
+          temp = temp->right;
+        }
+        return TriTreeIterator< T, Cmp >{temp};
       }
-      return TriTreeIterator< T, Cmp >{temp, false};
+      return TriTreeIterator< T, Cmp >{temp->parent}.prev();
     }
-    else
+    while (temp->parent && temp == temp->parent->left)
     {
-      return TriTreeIterator< T, Cmp >{temp, true};
+      temp = temp->parent;
     }
+    return TriTreeIterator< T, Cmp >{temp->parent};
   }
 }
 
@@ -88,88 +85,79 @@ template< class T, class Cmp >
 TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::next() const
 {
   TriTree< T, Cmp > * temp = root;
-  if (isFirst)
+  if (temp->middle)
   {
-    if (temp->middle)
+    temp = temp->middle;
+    while (temp->left)
     {
-      temp = temp->middle;
-      while (temp->left)
-      {
-        temp = temp->left;
-      }
-      return TriTreeIterator< T, Cmp >{temp, true};
+      temp = temp->left;
     }
-    else
+    return TriTreeIterator< T, Cmp >{temp};
+  }
+  if (temp->right)
+  {
+    temp = temp->right;
+    while (temp->left)
     {
-      return TriTreeIterator< T, Cmp >{temp, false};
+      temp = temp->left;
     }
+    return TriTreeIterator< T, Cmp >{temp};
   }
   else
   {
-    if (temp->right)
+    if (temp->parent && temp == temp->parent->middle)
     {
-      temp = temp->right;
-      while (temp->left)
+      if (temp->parent->right)
       {
-        temp = temp->left;
+        temp = temp->parent->right;
+        while (temp->left)
+        {
+          temp = temp->left;
+        }
+        return TriTreeIterator< T, Cmp >{temp};
       }
-      return TriTreeIterator< T, Cmp >{temp, true};
+      return TriTreeIterator< T, Cmp >{temp->parent}.next();
     }
-    else
+    while (temp->parent && temp == temp->parent->right)
     {
-      while (temp->parent && temp == temp->parent->right)
-      {
-        temp = temp->parent;
-      }
-      if (temp->parent && temp == temp->parent->left)
-      {
-        return TriTreeIterator< T, Cmp >{temp->parent, true};
-      }
-      return TriTreeIterator< T, Cmp >{temp->parent, false};
+      temp = temp->parent;
     }
+    return TriTreeIterator< T, Cmp >{temp->parent};
   }
 }
 
 template< class T, class Cmp >
 bool TriTreeIterator< T, Cmp >::hasNext() const
 {
-  if (next().root)
-  {
-    return true;
-  }
-  return false;
+  return root;
 }
 
 template< class T, class Cmp >
 bool TriTreeIterator< T, Cmp >::hasPrev() const
 {
-  if (prev().root)
-  {
-    return true;
-  }
-  return false;
+  return root;
 }
 
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > begin(TriTree< T, Cmp > * root)
 {
-  TriTreeIterator< T, Cmp > iter{root, true};
-  while (iter.hasPrev())
+  TriTree< T, Cmp > * temp = root;
+  while (temp->left)
   {
-    iter = iter.prev();
+    temp = temp->left;
   }
-  return iter;
+  return TriTreeIterator< T, Cmp >{temp};
 }
 
 template< class T, class Cmp >
 TriTreeIterator< T, Cmp > rbegin(TriTree< T, Cmp > * root)
 {
-  TriTreeIterator< T, Cmp > iter{root, false};
-  while (iter.hasNext())
+  TriTree< T, Cmp > * temp = root;
+  while (temp->right)
   {
-    iter = iter.next();
+    temp = temp->right;
   }
-  return iter;
+  return TriTreeIterator< T, Cmp >{temp};
 }
 
 template< class T, class Cmp >
