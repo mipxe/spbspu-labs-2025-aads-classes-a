@@ -223,35 +223,6 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
 }
 
 template< class T, class Cmp >
-TriTree< T, Cmp > * getTree(std::istream & in)
-{
-  size_t n = 0;
-  if (!(in >> n))
-  {
-    throw std::logic_error("invalid input");
-  }
-  T first, second = 0;
-  if (!(in >> first >> second))
-  {
-    throw std::logic_error("invalid input");
-  }
-  TriTree< T, Cmp > * tree = new TriTree< T, Cmp >{};
-  if (!Cmp()(first, second)) std::swap(first, second);
-  tree->data = std::make_pair(first, second);
-  for (size_t i = 1; i < n; i++)
-  {
-    if (!(in >> first >> second))
-    {
-      clearTree(tree);
-      throw std::logic_error("invalid input");
-    }
-    if (!Cmp()(first, second)) std::swap(first, second);
-    insertTree(tree, std::make_pair(first, second));
-  }
-  return tree;
-}
-
-template< class T, class Cmp >
 size_t countInters(TriTree< T, Cmp > * root, const T & v1, const T & v2)
 {
   if (!root) return 0;
@@ -298,15 +269,32 @@ size_t countAvoids(TriTree< T, Cmp > * root, const T & v1, const T & v2)
 
 int main()
 {
-  TriTree< int, std::less< int > > * tree = nullptr;
-  try
+  size_t n = 0;
+  if (!(std::cin >> n))
   {
-    tree = getTree< int, std::less< int > >(std::cin);
-  }
-  catch (const std::exception & e)
-  {
-    std::cerr << e.what() << '\n';
+    std::cerr << "invalid input\n";
     return 1;
+  }
+  int first, second = 0;
+  TriTree< int, std::less< int > > * tree = nullptr;
+  for (size_t i = 0; i < n; i++)
+  {
+    if (!(std::cin >> first >> second))
+    {
+      clearTree(tree);
+      std::cerr << "invalid input\n";
+      return 1;
+    }
+    if (!std::less< int >()(first, second)) std::swap(first, second);
+    try
+    {
+      insertTree(tree, std::make_pair(first, second));
+    }
+    catch (const std::bad_alloc & e)
+    {
+      std::cerr << "out of memory\n";
+      return 1;
+    } 
   }
 
   std::string command = "";
