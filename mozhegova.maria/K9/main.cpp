@@ -197,16 +197,7 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
       return nullptr;
     }
   }
-  TriTree< T, Cmp > * newTree = nullptr;
-  try
-  {
-    newTree = new TriTree< T, Cmp >{pair, nullptr, nullptr, nullptr, parent};
-  }
-  catch (const std::bad_alloc &)
-  {
-    clearTree(root);
-    throw;
-  }
+  TriTree< T, Cmp > * newTree = new TriTree< T, Cmp >{pair, nullptr, nullptr, nullptr, parent};
   if (!parent)
   {
     return newTree;
@@ -223,7 +214,7 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
   {
     parent->middle = newTree;
   }
-  return newTree;
+  return root;
 }
 
 template< class T, class Cmp >
@@ -279,7 +270,7 @@ int main()
     std::cerr << "invalid input\n";
     return 1;
   }
-  int first, second = 0;
+  int first = 0, second = 0;
   TriTree< int, std::less< int > > * tree = nullptr;
   for (size_t i = 0; i < n; i++)
   {
@@ -292,10 +283,11 @@ int main()
     if (!std::less< int >()(first, second)) std::swap(first, second);
     try
     {
-      insertTree(tree, std::make_pair(first, second));
+      tree = insertTree(tree, std::make_pair(first, second));
     }
     catch (const std::bad_alloc & e)
     {
+      clearTree(tree);
       std::cerr << "out of memory\n";
       return 1;
     }
