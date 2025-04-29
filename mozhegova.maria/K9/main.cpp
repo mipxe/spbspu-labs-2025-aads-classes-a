@@ -60,6 +60,10 @@ TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::prev() const
   }
   else
   {
+    while (temp->parent && temp == temp->parent->left)
+    {
+      temp = temp->parent;
+    }
     if (temp->parent && temp == temp->parent->right)
     {
       if (temp->parent->middle)
@@ -72,10 +76,6 @@ TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::prev() const
         return TriTreeIterator< T, Cmp >{temp};
       }
       return TriTreeIterator< T, Cmp >{temp->parent}.prev();
-    }
-    while (temp->parent && temp == temp->parent->left)
-    {
-      temp = temp->parent;
     }
     return TriTreeIterator< T, Cmp >{temp->parent};
   }
@@ -105,6 +105,10 @@ TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::next() const
   }
   else
   {
+    while (temp->parent && temp == temp->parent->right)
+    {
+      temp = temp->parent;
+    }
     if (temp->parent && temp == temp->parent->middle)
     {
       if (temp->parent->right)
@@ -117,10 +121,6 @@ TriTreeIterator< T, Cmp > TriTreeIterator< T, Cmp >::next() const
         return TriTreeIterator< T, Cmp >{temp};
       }
       return TriTreeIterator< T, Cmp >{temp->parent}.next();
-    }
-    while (temp->parent && temp == temp->parent->right)
-    {
-      temp = temp->parent;
     }
     return TriTreeIterator< T, Cmp >{temp->parent};
   }
@@ -242,6 +242,7 @@ TriTree< T, Cmp > * getTree(std::istream & in)
   {
     if (!(in >> first >> second))
     {
+      clearTree(tree);
       throw std::logic_error("invalid input");
     }
     if (!Cmp()(first, second)) std::swap(first, second);
