@@ -194,7 +194,7 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
     }
     else
     {
-      return nullptr;
+      return root;
     }
   }
   TriTree< T, Cmp > * newTree = new TriTree< T, Cmp >{pair, nullptr, nullptr, nullptr, parent};
