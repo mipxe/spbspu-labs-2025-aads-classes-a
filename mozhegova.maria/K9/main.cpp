@@ -207,6 +207,10 @@ TriTree< T, Cmp > * insertTree(TriTree< T, Cmp > * root, std::pair< T, T > pair)
     clearTree(root);
     throw;
   }
+  if (!parent)
+  {
+    return newTree;
+  }
   if (Cmp()(pair.second, parent->data.first))
   {
     parent->left = newTree;
